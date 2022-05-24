@@ -1,3 +1,9 @@
+# Ignore directory used by Visual Studio for project generation
+build
+# Ignore directories used by CLion for project generation
+.idea
+cmake-build-debug
+
 # Prerequisites
 *.d
 
