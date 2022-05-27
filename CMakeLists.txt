@@ -36,6 +36,13 @@ FetchContent_Declare(
 set(CMAKE_CXX_STANDARD 20)
 FetchContent_MakeAvailable(pugixml)
 
+FetchContent_Declare(
+    box2d
+    GIT_REPOSITORY https://github.com/erincatto/box2d.git
+    GIT_TAG origin/main
+)
+FetchContent_MakeAvailable(box2d)
+
 add_subdirectory(mainLauncher)
 add_subdirectory(src)
 
