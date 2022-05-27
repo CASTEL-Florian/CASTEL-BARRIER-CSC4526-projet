@@ -83,3 +83,16 @@ void Room::display(sf::RenderWindow& window) const {
 std::pair<int, int> Room::get_position() const {
     return std::pair(x, y);
 }
+
+bool Room::is_opened(int direction)
+{
+    if (direction == 0)
+        return up;
+    if (direction == 1)
+        return down;
+    if (direction == 2)
+        return left;
+    if (direction == 3)
+        return right;
+    return false;
+}

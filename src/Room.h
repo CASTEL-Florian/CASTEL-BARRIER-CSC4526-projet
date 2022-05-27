@@ -9,6 +9,7 @@ public:
 	void open_path(std::pair<int, int> const& target);
 	void display(sf::RenderWindow &window) const;
 	std::pair<int,int> get_position() const;
+	bool is_opened(int direction);
 private:
 	int x;
 	int y;
