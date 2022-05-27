@@ -4,6 +4,9 @@
 #include <memory>
 #include <Room.h>
 #include <RoomGenerator.h>
+#include "box2d/box2d.h"
+#include "Box.h"
+
 
 class Game
 {
@@ -20,4 +23,6 @@ private:
 	RoomGenerator roomGenerator;
 	std::vector<Room> rooms;
 
+	std::unique_ptr<b2World> world;
+	std::vector<Box> boxes;
 };
