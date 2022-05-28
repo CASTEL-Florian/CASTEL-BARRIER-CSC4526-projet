@@ -1,7 +1,5 @@
 #include "Box.h"
 
-Box::Box() {
-}
 
 void Box::init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions) {
 	b2BodyDef bodyDef;

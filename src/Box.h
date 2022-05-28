@@ -8,7 +8,7 @@
 class Box
 {
 public:
-	Box();
+	Box() = default;
 
 	void init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions);
 	b2Body* getBody() { return body; }
