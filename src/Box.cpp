@@ -26,7 +26,6 @@ void Box::updateSprite() {
 	x = body->GetPosition().x - w / 2;
 	y = -body->GetPosition().y - h / 2;
 	rota = body->GetAngle();
-	std::cout << "Update - x=" << x << ", y=" << y << std::endl;
 }
 
 void Box::render(sf::RenderWindow& window) const {
@@ -36,5 +35,4 @@ void Box::render(sf::RenderWindow& window) const {
 	rectangle.setSize(sf::Vector2(w, h));
 	rectangle.setRotation(rota);
 	window.draw(rectangle);
-	std::cout << "Render - x=" << x << ", y=" << y << std::endl;
 }
