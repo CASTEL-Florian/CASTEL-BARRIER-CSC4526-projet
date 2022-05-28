@@ -1,4 +1,6 @@
 #include "Room.h"
+#include "Room.h"
+#include "Room.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -14,9 +16,9 @@ void Room::open_path(std::pair<int, int> const& target) {
        
     if (target.first - x == 0) {
         if (target.second - y > 0)
-            up = true;
-        else
             down = true;
+        else
+            up = true;
     }
     else {
         
@@ -44,19 +46,19 @@ void Room::display(sf::RenderWindow& window) const {
     if (up) {
         sf::RectangleShape path;
         float pposx = posx + (0.4 * size);
-        float pposy = posy + (0.6 * size);
+        float pposy = posy;
         path.setSize(sf::Vector2f(0.1 * size, 0.3 * size));
         path.setPosition(pposx, pposy);
-        path.setFillColor(sf::Color::Blue);
+        path.setFillColor(sf::Color::Magenta);
         window.draw(path);
     }
     if (down) {
         sf::RectangleShape path;
         float pposx = posx + (0.4 * size);
-        float pposy = posy;
+        float pposy = posy + (0.6 * size);
         path.setSize(sf::Vector2f(0.1 * size, 0.3 * size));
         path.setPosition(pposx, pposy);
-        path.setFillColor(sf::Color::Magenta);
+        path.setFillColor(sf::Color::Blue);
         window.draw(path);
     }
     if (left) {
@@ -95,4 +97,14 @@ bool Room::is_opened(int direction)
     if (direction == 3)
         return right;
     return false;
+}
+
+int Room::get_x() const
+{
+    return x;
+}
+
+int Room::get_y() const
+{
+    return y;
 }

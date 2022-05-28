@@ -10,7 +10,7 @@ class RoomGenerator
 {
 public:
 	RoomGenerator() = default;
-	std::vector<Room> generateMap(int nb_rooms) const;
+	std::vector<std::unique_ptr<Room>> generateMap(int nb_rooms) const;
 	
 
 };

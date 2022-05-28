@@ -26,9 +26,12 @@ void Game::update()
 
 void Game::render() const
 {
+
 	window->clear();
-	for (auto r : rooms)
-		r.display(*window.get());
+	minimap->display(*window, rooms);
+	for (auto &r : rooms)
+		r->display(*window);
+
 	for (auto& b : boxes)
 		b.render(*window.get());
 	window->display();
@@ -38,6 +41,7 @@ void Game::initVariables() {
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "SFML works!");
     window->setFramerateLimit(60);
     rooms = roomGenerator.generateMap(nb_rooms);
+	minimap = std::make_unique<Minimap>("resources/minimap.png");
 
 	//box2d world
 	b2Vec2 gravity(0.0f, gravity_down);

@@ -10,6 +10,8 @@ public:
 	void display(sf::RenderWindow &window) const;
 	std::pair<int,int> get_position() const;
 	bool is_opened(int direction);
+	int get_x() const;
+	int get_y() const;
 private:
 	int x;
 	int y;

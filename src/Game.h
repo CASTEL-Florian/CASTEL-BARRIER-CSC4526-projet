@@ -6,6 +6,7 @@
 #include <RoomGenerator.h>
 #include "box2d/box2d.h"
 #include "Box.h"
+#include "Minimap.h"
 
 
 class Game
@@ -21,7 +22,8 @@ private:
 	std::unique_ptr<sf::RenderWindow> window;
 	sf::Event event;
 	RoomGenerator roomGenerator;
-	std::vector<Room> rooms;
+	std::vector<std::unique_ptr<Room>> rooms;
+	std::unique_ptr<Minimap> minimap;
 
 	std::unique_ptr<b2World> world;
 	std::vector<Box> boxes;
