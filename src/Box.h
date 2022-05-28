@@ -10,7 +10,7 @@ class Box
 public:
 	Box() = default;
 
-	void init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions, const float density);
+	void init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions, b2BodyType bodyTy);
 	b2Body* getBody() { return body; }
 	void updateSprite();
 	void render(sf::RenderWindow& window) const;

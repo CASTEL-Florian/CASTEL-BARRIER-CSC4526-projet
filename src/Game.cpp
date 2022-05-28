@@ -33,7 +33,7 @@ void Game::render() const
 	//	r->display(*window);
 
 	for (auto& b : boxes)
-		b.render(*window.get());
+		b.render(*window);
 
 	window->display();
 }
@@ -50,18 +50,18 @@ void Game::initVariables() {
 
 	//testing
 	Box newBox;
-	newBox.init(world.get(), b2Vec2(25.0f, -2.50f), b2Vec2(4.0f, 2.0f), 1.0f);
+	newBox.init(world.get(), b2Vec2(25.0f, -2.50f), b2Vec2(4.0f, 2.0f), b2_dynamicBody);
 	boxes.push_back(newBox);
 	Box newBox2;
-	newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2Vec2(2.0f, 4.0f), 0.0f);
+	newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2Vec2(2.0f, 4.0f), b2_staticBody);
 	boxes.push_back(newBox2);
 	Box newBox3; //ground
-	newBox3.init(world.get(), b2Vec2(0.0f, -40.0f), b2Vec2(200.0f, 2.0f), 0.0f);
+	newBox3.init(world.get(), b2Vec2(0.0f, -40.0f), b2Vec2(200.0f, 2.0f),  b2_staticBody);
 	boxes.push_back(newBox3);
 	Box newBox4;
-	newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2Vec2(2.0f, 4.0f), 0.0f);
+	newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2Vec2(2.0f, 4.0f), b2_staticBody);
 	boxes.push_back(newBox4);
-}
+}//est ce que ce serait pas mieux de passer dans box init le type (b2_dynamicBody ou b2_staticBody)
 
 bool Game::running() const {
 	return window->isOpen();
