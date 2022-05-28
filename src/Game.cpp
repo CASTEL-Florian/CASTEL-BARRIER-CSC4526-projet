@@ -2,11 +2,10 @@
 #include <set>
 #include <map>
 
-
 const int window_length = 800;
 const int window_height = 600;
 const int nb_rooms = 20;
-const float gravity_down = -3.0f;
+const float gravity_down = -30.0f;
 
 Game::Game()
 {
@@ -18,6 +17,11 @@ Game::Game()
 void Game::update()
 {
 	pollEvents();
+
+	//update box2d physics
+	world->Step(1.0f / 60.0f, 6, 2);
+	for (auto &b : boxes)
+		b.updateSprite();
 }
 
 void Game::render() const
@@ -25,6 +29,8 @@ void Game::render() const
 	window->clear();
 	for (auto r : rooms)
 		r.display(*window.get());
+	for (auto& b : boxes)
+		b.render(*window.get());
 	window->display();
 }
 
@@ -37,16 +43,18 @@ void Game::initVariables() {
 	b2Vec2 gravity(0.0f, gravity_down);
 	world = std::make_unique<b2World>(gravity);
 
+	
 	//box2d ground for testing
 	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set(0.0f, -10.0f);
+	groundBodyDef.position.Set(0.0f, 0.0f);
 	b2Body* groundbody = world->CreateBody(&groundBodyDef);
 	b2PolygonShape groundBox;
-	groundBox.SetAsBox(50.0f, 0.5f);
+	groundBox.SetAsBox(500.0f, 1.0f, b2Vec2(500.0f, 1.0f), 10.0f);
 	groundbody->CreateFixture(&groundBox, 0.0f);
+	
 
 	Box newBox;
-	newBox.init(world.get(), b2Vec2(0.0f, 14.0f), b2Vec2(2.0f, 2.0f));
+	newBox.init(world.get(), b2Vec2(50.0f, 50.0f), b2Vec2(20.0f, 40.0f));
 	boxes.push_back(newBox);
 }
 
