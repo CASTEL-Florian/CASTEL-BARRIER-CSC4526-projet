@@ -10,7 +10,7 @@ void Box::init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions,
 	boxShape.SetAsBox(dimensions.x / 2, dimensions.y / 2);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &boxShape;
-	fixtureDef.density = 1.0f;
+	fixtureDef.density = 0.1f;// 1.0f;
 	fixtureDef.friction = 0.3f;
 	fixture = body->CreateFixture(&fixtureDef);
 	x = position.x;
@@ -26,12 +26,12 @@ void Box::updateSprite() {
 	rota = -body->GetAngle();
 }
 
-void Box::render(sf::RenderWindow& window) const {
+void Box::renderRectangle(sf::RenderWindow& window) const {
 	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2(10 * w, 10 * h));
 	rectangle.setOrigin(rectangle.getSize() / 2.f);
 	rectangle.setFillColor(sf::Color::Yellow);
 	rectangle.setPosition(sf::Vector2(10 * x, 10 * y));
-	rectangle.setRotation(rota * 180.0 / b2_pi);
+	rectangle.setRotation(rota * 180.0f / b2_pi);
 	window.draw(rectangle);
 }

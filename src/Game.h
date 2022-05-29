@@ -7,6 +7,7 @@
 #include "box2d/box2d.h"
 #include "Box.h"
 #include "Minimap.h"
+#include "Player.h"
 #include "OxygenBar.h"
 
 
@@ -30,4 +31,5 @@ private:
 
 	std::unique_ptr<b2World> world;
 	std::vector<Box> boxes;
+	std::unique_ptr<Player> player;
 };
