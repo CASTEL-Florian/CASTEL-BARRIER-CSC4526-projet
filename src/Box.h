@@ -13,9 +13,9 @@ public:
 	void init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions, b2BodyType bodyTy);
 	b2Body* getBody() { return body; }
 	void updateSprite();
-	void render(sf::RenderWindow& window) const;
+	void renderRectangle(sf::RenderWindow& window) const;
 
-private:
+protected:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
 	float x;
