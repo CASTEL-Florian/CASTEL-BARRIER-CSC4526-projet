@@ -4,6 +4,7 @@
 class Player : public Box {
 public:
 	explicit Player(const float enginePower);
+	void move(const b2Vec2& vec);
 	void moveUp();
 	void moveDown();
 	void moveRight();

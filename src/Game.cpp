@@ -6,7 +6,7 @@ const int window_length = 800;
 const int window_height = 600;
 const int nb_rooms = 20;
 const float gravity_down = -0.3f;
-const float engine_power = 100.0f;
+const float engine_power = 10.0f;// 100.0f;
 
 Game::Game()
 {
@@ -82,12 +82,18 @@ void Game::pollEvents() {
 		if (event.type == sf::Event::Closed)
 			window->close();
 		if (event.type == sf::Event::KeyPressed) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+			/*
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->moveUp();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->moveDown();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->moveRight();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->moveLeft();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) player->rotateRight();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) player->rotateLeft();
+			*/
 		}
 	}
 }
