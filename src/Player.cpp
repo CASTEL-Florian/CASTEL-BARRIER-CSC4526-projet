@@ -8,7 +8,7 @@ Player::Player(const float enginePower) :
 //test d'application d'une force au nez du sous-marin
 void Player::move(const b2Vec2& vec) {
 	body->ApplyForce(b2Vec2(vec.x * enginePower, vec.y * enginePower), 
-		b2Vec2(w * std::cos(body->GetAngle()), w *std::sin(body->GetAngle())),
+		body->GetPosition() + b2Vec2(w * std::cos(body->GetAngle()) / 10, w *std::sin(body->GetAngle()) / 10),
 		//b2Vec2(w / 2, 0),
 		true);
 }

@@ -12,6 +12,8 @@ void Box::init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions,
 	fixtureDef.shape = &boxShape;
 	fixtureDef.density = 0.1f;// 1.0f;
 	fixtureDef.friction = 0.3f;
+	body->SetLinearDamping(1);
+	body->SetAngularDamping(1);
 	fixture = body->CreateFixture(&fixtureDef);
 	x = position.x;
 	y = -position.y;

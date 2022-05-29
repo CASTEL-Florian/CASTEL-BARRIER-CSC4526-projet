@@ -81,11 +81,7 @@ void Game::pollEvents() {
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
-		if (event.type == sf::Event::KeyPressed) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+
 			/*
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->moveUp();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->moveDown();
@@ -94,7 +90,11 @@ void Game::pollEvents() {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) player->rotateRight();
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) player->rotateLeft();
 			*/
-		}
+		
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
 }
 
