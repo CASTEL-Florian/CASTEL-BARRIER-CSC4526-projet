@@ -5,8 +5,8 @@
 const int window_length = 800;
 const int window_height = 600;
 const int nb_rooms = 20;
-const float gravity_down = -3.0f;
-const float engine_power = 1000.0f;
+const float gravity_down = -0.3f;
+const float engine_power = 100.0f;
 
 Game::Game()
 {
