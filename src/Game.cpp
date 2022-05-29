@@ -16,8 +16,9 @@ Game::Game()
 
 void Game::update()
 {
+	sf::Time elapsed = clock.restart();
+	oxygenBar.update(elapsed);
 	pollEvents();
-
 	//update box2d physics
 	world->Step(1.0f / 60.0f, 6, 2);
 	for (auto &b : boxes)

@@ -13,13 +13,13 @@ TEST(TestMapGeneration, TestConnectionsBetweenRoom) {
     }
     for (auto &[pos, id] : pos_to_room_index) {
         if (rooms[id]->is_opened(0)) {
-            auto it = pos_to_room_index.find(std::pair<int, int>(pos.first, pos.second + 1));
+            auto it = pos_to_room_index.find(std::pair<int, int>(pos.first, pos.second - 1));
             EXPECT_TRUE(it != pos_to_room_index.end());
             if (it != pos_to_room_index.end())
                 EXPECT_TRUE(rooms[it->second]->is_opened(1));
         }
         if (rooms[id]->is_opened(1)) {
-            auto it = pos_to_room_index.find(std::pair<int, int>(pos.first, pos.second - 1));
+            auto it = pos_to_room_index.find(std::pair<int, int>(pos.first, pos.second + 1));
             EXPECT_TRUE(it != pos_to_room_index.end());
             if (it != pos_to_room_index.end())
                 EXPECT_TRUE(rooms[it->second]->is_opened(0));

@@ -1,13 +1,15 @@
 #pragma once
+#include <iostream>
+#include <SFML/Graphics.hpp>
 
 class OxygenBar
 {
 public:
-	explicit OxygenBar(float x, float y, float timeMax);
-	void update();
-	void display();
+	OxygenBar(float x, float y, float timeMax);
+	void update(sf::Time elapsed);
+	void display() const;
 private:
-	const float timeMax;
+	float timeMax;
 	float time;
 	float x;
 	float y;

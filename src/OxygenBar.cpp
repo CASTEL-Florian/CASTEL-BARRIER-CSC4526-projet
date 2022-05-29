@@ -4,10 +4,13 @@ OxygenBar::OxygenBar(float x, float y, float timeMax) : x(x), y(y), timeMax(time
 {
 }
 
-void OxygenBar::update()
+void OxygenBar::update(sf::Time elapsed)
 {
+	time -= elapsed.asSeconds();
 }
 
-void OxygenBar::display()
+void OxygenBar::display() const
 {
+	sf::RectangleShape rectangle;
+	rectangle.setPosition(x, y);
 }
