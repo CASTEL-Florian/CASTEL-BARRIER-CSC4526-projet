@@ -1,6 +1,7 @@
 #include "Room.h"
 #include "Room.h"
 #include "Room.h"
+#include "Room.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -34,52 +35,9 @@ void Room::open_path(std::pair<int, int> const& target) {
 
 
 void Room::display(sf::RenderWindow& window) const {
-    sf::RectangleShape rect;
-    float size = 40;
-    rect.setSize(sf::Vector2f(0.9 * size, 0.9 * size));
-    float posx = size * x - (0.45 * size) + (window.getSize().x / 2);
-    float posy = size * y - (0.45 * size) + (window.getSize().y / 2);
-    rect.setPosition(posx, posy);
-    if (x == 0 && y == 0)
-        rect.setFillColor(sf::Color::Red);
-    window.draw(rect);
-    if (up) {
-        sf::RectangleShape path;
-        float pposx = posx + (0.4 * size);
-        float pposy = posy;
-        path.setSize(sf::Vector2f(0.1 * size, 0.3 * size));
-        path.setPosition(pposx, pposy);
-        path.setFillColor(sf::Color::Magenta);
-        window.draw(path);
-    }
-    if (down) {
-        sf::RectangleShape path;
-        float pposx = posx + (0.4 * size);
-        float pposy = posy + (0.6 * size);
-        path.setSize(sf::Vector2f(0.1 * size, 0.3 * size));
-        path.setPosition(pposx, pposy);
-        path.setFillColor(sf::Color::Blue);
-        window.draw(path);
-    }
-    if (left) {
-        sf::RectangleShape path;
-        float pposx = posx;
-        float pposy = posy + (0.4 * size);
-        path.setSize(sf::Vector2f(0.3 * size, 0.1 * size));
-        path.setPosition(pposx, pposy);
-        path.setFillColor(sf::Color::Black);
-        window.draw(path);
-    }
-    if (right) {
-        sf::RectangleShape path;
-        float pposx = posx + (0.6 * size);
-        float pposy = posy + (0.4 * size);
-        path.setSize(sf::Vector2f(0.3 * size, 0.1 * size));
-        path.setPosition(pposx, pposy);
-        path.setFillColor(sf::Color::Cyan);
-        window.draw(path);
-    }
-    
+    window.draw(map);
+    //for (auto& b : boxes)
+     //   b.renderRectangle(window);
 }
 
 std::pair<int, int> Room::get_position() const {
@@ -107,4 +65,45 @@ int Room::get_x() const
 int Room::get_y() const
 {
     return y;
+}
+
+void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorLength, int corridorWidth)
+{
+    int halfWidth = int(roomWidth / 2);
+    int halfHeight = int(roomHeight / 2);
+    for (int j = 1; j <= (int)(corridorWidth / 2) && j < halfWidth; j++) {
+        if (up) {
+            tiles[halfWidth] = emptyTile;
+            tiles[halfWidth + j] = emptyTile;
+            tiles[halfWidth - j] = emptyTile;
+        }
+        if (down) {
+            tiles[tiles.size() - halfWidth - 1] = emptyTile;
+            tiles[tiles.size() - halfWidth - 1 + j] = emptyTile;
+            tiles[tiles.size() - halfWidth - 1 - j] = emptyTile;
+        }
+        if (left) {
+            tiles[halfHeight * roomWidth] = emptyTile;
+            tiles[(halfHeight + j) * roomWidth] = emptyTile;
+            tiles[(halfWidth - j) * roomWidth] = emptyTile;
+        }
+        if (right) {
+            tiles[(halfHeight + 1) * roomWidth - 1] = emptyTile;
+            tiles[(halfHeight + 1 + j) * roomWidth - 1] = emptyTile;
+            tiles[(halfHeight + 1 - j) * roomWidth - 1] = emptyTile;
+        }
+        for (int i = 0; i < roomWidth; i++) {
+            for (int j = 0; j < roomHeight; j++) {
+                if (tiles[i + j * roomWidth] != emptyTile) {
+                    Box newBox;
+                    newBox.init(world, b2Vec2(x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth), -(y * tileHeight * roomHeight) - j * tileHeight - (0.5f * tileHeight)), b2Vec2(tileWidth, tileHeight), b2_staticBody);
+                    //boxes.push_back(newBox);
+                }
+            }
+        }
+
+    }
+    map.load(m_tileset, sf::Vector2u(spriteWidth, spriteHeight), tiles, roomWidth, roomHeight);
+    map.setPosition(x * tileWidth * roomWidth, y * tileHeight * roomHeight);
+    map.setScale(sf::Vector2f((float)tileWidth / (float)spriteWidth,(float)tileHeight / (float)spriteHeight));
 }

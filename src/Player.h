@@ -11,6 +11,7 @@ public:
 	void moveLeft();
 	void rotateRight();
 	void rotateLeft();
+
 private:
 	float enginePower;
 };

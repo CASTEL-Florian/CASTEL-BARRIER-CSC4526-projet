@@ -14,6 +14,8 @@ public:
 	b2Body* getBody() { return body; }
 	void updateSprite();
 	void renderRectangle(sf::RenderWindow& window) const;
+	float get_x() const;
+	float get_y() const;
 
 protected:
 	b2Body* body = nullptr;

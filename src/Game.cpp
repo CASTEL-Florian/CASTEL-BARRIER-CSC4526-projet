@@ -4,7 +4,7 @@
 
 const int window_length = 800;
 const int window_height = 600;
-const int nb_rooms = 20;
+const int nb_rooms = 5;
 const float gravity_down = -0.3f;
 const float engine_power = 10.0f;// 100.0f;
 
@@ -25,30 +25,32 @@ void Game::update()
 	for (auto &b : boxes)
 		b.updateSprite();
 	player->updateSprite();
+	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
+	view.zoom(1/10.f);
+	window->setView(view);
+	
 }
 
 void Game::render() const
 {
-
 	window->clear();
-	//minimap->display(*window, rooms);
-	//for (auto &r : rooms)
-	//	r->display(*window);
+	for (auto &r : rooms)
+		r->display(*window);
 
 	for (auto& b : boxes)
 		b.renderRectangle(*window);
 
 	player->renderRectangle(*window);
-
+	window->setView(window->getDefaultView());
+	minimap->display(*window, rooms);
 	window->display();
 }
 
 void Game::initVariables() {
+	
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "SFML works!");
     window->setFramerateLimit(60);
-    rooms = roomGenerator.generateMap(nb_rooms);
 	minimap = std::make_unique<Minimap>("resources/minimap.png");
-
 	//box2d world
 	b2Vec2 gravity(0.0f, gravity_down);
 	world = std::make_unique<b2World>(gravity);
@@ -60,16 +62,14 @@ void Game::initVariables() {
 	Box newBox2;
 	newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2Vec2(2.0f, 4.0f), b2_staticBody);
 	boxes.push_back(newBox2);
-	Box newBox3; //ground
-	newBox3.init(world.get(), b2Vec2(0.0f, -40.0f), b2Vec2(200.0f, 2.0f),  b2_staticBody);
-	boxes.push_back(newBox3);
 	Box newBox4;
 	newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2Vec2(2.0f, 4.0f), b2_staticBody);
 	boxes.push_back(newBox4);
 
 	Player newPlayer{ engine_power };
-	newPlayer.init(world.get(), b2Vec2(50.0f, -2.50f), b2Vec2(4.0f, 2.0f), b2_dynamicBody);
+	newPlayer.init(world.get(), b2Vec2(25.0f, -15.f), b2Vec2(4.0f, 2.0f), b2_dynamicBody);
 	player = std::make_unique<Player>(newPlayer);
+    rooms = roomGenerator.generateMap(world.get(), nb_rooms);
 }
 
 bool Game::running() const {

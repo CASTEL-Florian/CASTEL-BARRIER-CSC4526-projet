@@ -1,4 +1,6 @@
 #include "Box.h"
+#include "Box.h"
+#include "Box.h"
 
 
 void Box::init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions, b2BodyType bodyType) {
@@ -30,10 +32,20 @@ void Box::updateSprite() {
 
 void Box::renderRectangle(sf::RenderWindow& window) const {
 	sf::RectangleShape rectangle;
-	rectangle.setSize(sf::Vector2(10 * w, 10 * h));
+	rectangle.setSize(sf::Vector2(1 * w, 1 * h));
 	rectangle.setOrigin(rectangle.getSize() / 2.f);
 	rectangle.setFillColor(sf::Color::Yellow);
-	rectangle.setPosition(sf::Vector2(10 * x, 10 * y));
+	rectangle.setPosition(sf::Vector2(1 * x, 1 * y));
 	rectangle.setRotation(rota * 180.0f / b2_pi);
 	window.draw(rectangle);
+}
+
+float Box::get_x() const
+{
+	return x;
+}
+
+float Box::get_y() const
+{
+	return y;
 }
