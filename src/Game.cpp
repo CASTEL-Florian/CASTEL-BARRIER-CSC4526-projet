@@ -30,15 +30,18 @@ void Game::update()
 void Game::render() const
 {
 
-	window->clear();
+	window->clear(sf::Color(0, 0, 25, 255));
 	//minimap->display(*window, rooms);
 	//for (auto &r : rooms)
 	//	r->display(*window);
 
-	for (auto& b : boxes)
-		b.renderRectangle(*window);
+	for (auto& b : boxes) {
+		b.renderSprite(*window);
+		//b.renderRectangle(*window);
+	}
 
-	player->renderRectangle(*window);
+	player->renderSprite(*window);
+	//player->renderRectangle(*window);
 
 	window->display();
 }
@@ -53,22 +56,25 @@ void Game::initVariables() {
 	b2Vec2 gravity(0.0f, gravity_down);
 	world = std::make_unique<b2World>(gravity);
 
+	sf::Texture texture_test;
+	texture_test.loadFromFile("resources/texture_test.png");
+
 	//testing
 	Box newBox;
-	newBox.init(world.get(), b2Vec2(25.0f, -2.50f), b2Vec2(4.0f, 2.0f), b2_dynamicBody);
+	newBox.init(world.get(), b2Vec2(25.0f, -2.50f), b2_dynamicBody, texture_test, 0.2f);
 	boxes.push_back(newBox);
 	Box newBox2;
-	newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2Vec2(2.0f, 4.0f), b2_staticBody);
+	newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2_staticBody, texture_test, 0.2f);
 	boxes.push_back(newBox2);
 	Box newBox3; //ground
-	newBox3.init(world.get(), b2Vec2(0.0f, -40.0f), b2Vec2(200.0f, 2.0f),  b2_staticBody);
+	newBox3.init(world.get(), b2Vec2(0.0f, -40.0f), b2_staticBody, texture_test, 0.2f);
 	boxes.push_back(newBox3);
 	Box newBox4;
-	newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2Vec2(2.0f, 4.0f), b2_staticBody);
+	newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2_staticBody, texture_test, 0.2f);
 	boxes.push_back(newBox4);
-
+	
 	Player newPlayer{ engine_power };
-	newPlayer.init(world.get(), b2Vec2(50.0f, -2.50f), b2Vec2(4.0f, 2.0f), b2_dynamicBody);
+	newPlayer.init(world.get(), b2Vec2(70.0f, -2.50f), b2_dynamicBody, texture_test, 0.2f);
 	player = std::make_unique<Player>(newPlayer);
 }
 
@@ -81,16 +87,6 @@ void Game::pollEvents() {
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
-
-			/*
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->moveUp();
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->moveDown();
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->moveRight();
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->moveLeft();
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)) player->rotateRight();
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Q)) player->rotateLeft();
-			*/
-		
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
