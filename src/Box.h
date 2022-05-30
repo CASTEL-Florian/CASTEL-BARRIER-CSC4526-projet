@@ -10,19 +10,24 @@ class Box
 public:
 	Box() = default;
 
-	void init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions, b2BodyType bodyTy);
-	b2Body* getBody() { return body; }
+	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal);
+	void initSprite(sf::Texture& texture, const float scal);
+	void initBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy);
+	
 	void updateSprite();
 	void renderRectangle(sf::RenderWindow& window) const;
+	void renderSprite(sf::RenderWindow& window) const;
 	float get_x() const;
 	float get_y() const;
 
 protected:
 	b2Body* body = nullptr;
 	b2Fixture* fixture = nullptr;
-	float x;
-	float y;
-	float h;
-	float w;
-	float rota;
+	float x = 0.0f;
+	float y = 0.0f;
+	float h = 0.0f;
+	float w = 0.0f;
+	float rota = 0.0f;
+	float scale = 0.0f;
+	sf::Texture texture;
 };
