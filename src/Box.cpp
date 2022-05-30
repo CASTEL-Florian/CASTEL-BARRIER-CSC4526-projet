@@ -10,10 +10,10 @@ void Box::init(b2World* world, const b2Vec2& position, const b2Vec2& dimensions,
 	boxShape.SetAsBox(dimensions.x / 2, dimensions.y / 2);
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &boxShape;
-	fixtureDef.density = 0.1f;// 1.0f;
+	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.3f;
 	body->SetLinearDamping(1);
-	body->SetAngularDamping(1);
+	body->SetAngularDamping(2);
 	fixture = body->CreateFixture(&fixtureDef);
 	x = position.x;
 	y = -position.y;
