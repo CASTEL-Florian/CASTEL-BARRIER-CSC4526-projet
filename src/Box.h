@@ -10,7 +10,7 @@ class Box
 public:
 	Box() = default;
 
-	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal);
+	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal, const b2Vec2& dimensions = b2Vec2(0.f,0.f));
 	void initSprite(sf::Texture& texture, const float scal);
 	void initBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy);
 	

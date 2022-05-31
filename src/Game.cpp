@@ -35,9 +35,8 @@ void Game::render() const
 {
 
 	window->clear(sf::Color(0, 0, 25, 255));
-	//minimap->display(*window, rooms);
-	//for (auto &r : rooms)
-	//	r->display(*window);
+	for (auto &r : rooms)
+		r->display(*window);
 
 	for (auto& b : boxes) {
 		b.renderSprite(*window);
@@ -64,18 +63,18 @@ void Game::initVariables() {
 	texture_test.loadFromFile("resources/texture_test.png");
 
 	//testing
-	Box newBox;
-	newBox.init(world.get(), b2Vec2(25.0f, -2.50f), b2_dynamicBody, texture_test, 0.2f);
-	boxes.push_back(newBox);
-	Box newBox2;
-	newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2_staticBody, texture_test, 0.2f);
-	boxes.push_back(newBox2);
-	Box newBox4;
-	newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2_staticBody, texture_test, 0.2f);
-	boxes.push_back(newBox4);
+	//Box newBox;
+	//newBox.init(world.get(), b2Vec2(25.0f, -2.50f), b2_dynamicBody, texture_test, 0.2f);
+	//boxes.push_back(newBox);
+	//Box newBox2;
+	//newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2_staticBody, texture_test, 0.2f);
+	//boxes.push_back(newBox2);
+	//Box newBox4;
+	//newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2_staticBody, texture_test, 0.2f);
+	//boxes.push_back(newBox4);
 	
 	Player newPlayer{ engine_power };
-	newPlayer.init(world.get(), b2Vec2(70.0f, -2.50f), b2_dynamicBody, texture_test, 0.2f);
+	newPlayer.init(world.get(), b2Vec2(70.0f, -2.50f), b2_dynamicBody, texture_test, 0.02f);
 	player = std::make_unique<Player>(newPlayer);
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
 }

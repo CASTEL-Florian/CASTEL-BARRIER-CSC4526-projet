@@ -37,7 +37,7 @@ void Room::open_path(std::pair<int, int> const& target) {
 void Room::display(sf::RenderWindow& window) const {
     window.draw(map);
     //for (auto& b : boxes)
-     //   b.renderRectangle(window);
+      //  b.renderRectangle(window);
 }
 
 std::pair<int, int> Room::get_position() const {
@@ -96,8 +96,9 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
             for (int j = 0; j < roomHeight; j++) {
                 if (tiles[i + j * roomWidth] != emptyTile) {
                     Box newBox;
-                    newBox.init(world, b2Vec2(x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth), -(y * tileHeight * roomHeight) - j * tileHeight - (0.5f * tileHeight)), b2Vec2(tileWidth, tileHeight), b2_staticBody);
-                    //boxes.push_back(newBox);
+                    sf::Texture texture;
+                    newBox.init(world, b2Vec2(x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth), -(y * tileHeight * roomHeight) - j * tileHeight - (0.5f * tileHeight)), b2_staticBody, texture, 1,  b2Vec2(tileWidth, tileHeight));
+                    boxes.push_back(newBox);
                 }
             }
         }

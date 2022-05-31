@@ -1,7 +1,11 @@
 #include "Box.h"
 
-void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal) {
+void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal, const b2Vec2& dimensions) {
 	initSprite(textur, scal);
+	if (dimensions.x > 0 && dimensions.y > 0) {
+		w = dimensions.x;
+		h = dimensions.y;
+	}
 	initBox(world, position, bodyType);
 }
 
@@ -12,8 +16,8 @@ void Box::initSprite(sf::Texture& textur, const float scal) {
 	newSprite.setTexture(texture);
 	newSprite.setScale(sf::Vector2f(scale, scale));
 	sf::FloatRect bounds = newSprite.getGlobalBounds();
-	w = bounds.width / 10;
-	h = bounds.height / 10;
+	w = bounds.width;
+	h = bounds.height;
 }
 
 void Box::initBox(b2World* world, const b2Vec2& position, b2BodyType bodyType) {
@@ -59,11 +63,11 @@ void Box::renderSprite(sf::RenderWindow& window) const {
 	float wi = bounds.width;
 	float hi = bounds.height;
 	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
-	sprite.setPosition(sf::Vector2f(10 * x, 10 * y));
+	sprite.setPosition(sf::Vector2f(x, y));
 	sprite.setRotation(rota * 180.0f / b2_pi);
 	window.draw(sprite);
 }
-}
+
 
 float Box::get_x() const
 {

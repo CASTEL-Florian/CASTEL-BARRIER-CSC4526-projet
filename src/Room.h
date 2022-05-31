@@ -30,6 +30,6 @@ private:
 	bool down = false;
 	bool left = false;
 	bool right = false;
-	//std::vector<Box> boxes;
+	std::vector<Box> boxes;
 };
 
