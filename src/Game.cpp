@@ -53,6 +53,7 @@ void Game::render() const
 	//player->renderRectangle(*window);
 	window->setView(window->getDefaultView());
 	minimap->display(*window, rooms);
+	oxygenBar.display(*window);
 	window->display();
 }
 
