@@ -24,7 +24,7 @@ void Player::renderLight(sf::RenderWindow& window) const {
 	polygon1.setFillColor(sf::Color(0, 0, 15, 230));
 	polygon1.setOrigin(sf::Vector2f(65, 70));
 	polygon1.setRotation(rota * 180.0f / b2_pi - 90.f);
-	polygon1.setPosition(x + w / 2 * std::cos(rota), y + h / 2 * std::sin(rota));
+	polygon1.setPosition(x + w / 2 * std::cos(rota), y + w / 2 * std::sin(rota));
 	window.draw(polygon1);
 
 	sf::ConvexShape polygon2;
@@ -38,6 +38,6 @@ void Player::renderLight(sf::RenderWindow& window) const {
 	polygon2.setFillColor(sf::Color(0, 0, 15, 230));
 	polygon2.setOrigin(sf::Vector2f(65, 70));
 	polygon2.setRotation(rota * 180.0f / b2_pi - 90.f);
-	polygon2.setPosition(x + w / 2 * std::cos(rota), y + h / 2 * std::sin(rota));
+	polygon2.setPosition(x + w / 2 * std::cos(rota), y + w / 2 * std::sin(rota));
 	window.draw(polygon2);
 }
