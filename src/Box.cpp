@@ -1,11 +1,15 @@
 #include "Box.h"
+#include "Box.h"
 
-void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal, const b2Vec2& dimensions) {
+void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal) {
 	initSprite(textur, scal);
-	if (dimensions.x > 0 && dimensions.y > 0) {
-		w = dimensions.x;
-		h = dimensions.y;
-	}
+	initBox(world, position, bodyType);
+}
+
+void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, const float scal, const b2Vec2& dimensions)
+{
+	w = dimensions.x;
+	h = dimensions.y;
 	initBox(world, position, bodyType);
 }
 
