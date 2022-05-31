@@ -1,5 +1,4 @@
 #include "Box.h"
-#include "Box.h"
 
 void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal) {
 	initSprite(textur, scal);

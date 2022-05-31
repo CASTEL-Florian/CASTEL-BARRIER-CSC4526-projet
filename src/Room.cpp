@@ -8,6 +8,39 @@
 Room::Room(int x, int y) :
     x(x), y(y)
 {
+    fog.setPrimitiveType(sf::Quads);
+    fog.resize(8);
+    fog[0].position = sf::Vector2f(-tileWidth, -tileHeight);
+    fog[1].position = sf::Vector2f(0, -tileHeight);
+    fog[2].position = sf::Vector2f(0, tileHeight * (roomHeight + 1));
+    fog[3].position = sf::Vector2f(-tileWidth, tileHeight * (roomHeight + 1));
+    fog[0].color = sf::Color::Black;
+    fog[1].color = sf::Color(0, 0, 0, 0);
+    fog[2].color = sf::Color(0, 0, 0, 0);
+    fog[3].color = sf::Color::Black;
+
+    fog[4].position = sf::Vector2f(-tileWidth * roomWidth, -tileHeight);
+    fog[5].position = sf::Vector2f(-tileWidth, -tileHeight);
+    fog[6].position = sf::Vector2f(-tileWidth,  2 * tileHeight * roomHeight);
+    fog[7].position = sf::Vector2f(-tileWidth * roomWidth, 2 * tileHeight * roomHeight);
+    fog[4].color = sf::Color::Black;
+    fog[5].color = sf::Color::Black;
+    fog[6].color = sf::Color::Black;
+    fog[7].color = sf::Color::Black;
+
+    sf::Transform transform;
+    fogTransforms.reserve(4);
+    transform.translate(sf::Vector2f(x * tileWidth * roomWidth, y * tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
+    transform.rotate(90);
+    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
+    transform.rotate(90);
+    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
+    transform.rotate(90);
+    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
 }
 
 void Room::open_path(std::pair<int, int> const& target) {
@@ -33,6 +66,15 @@ void Room::open_path(std::pair<int, int> const& target) {
 
 void Room::display(sf::RenderWindow& window) const {
     window.draw(map);
+}
+
+void Room::display_fog(sf::RenderWindow& window) const{
+    sf::Transform transform;
+    transform.translate(sf::Vector2f(x * tileWidth * roomWidth, y * tileHeight * roomHeight));
+    window.draw(fog, fogTransforms[0]);
+    window.draw(fog, fogTransforms[1]);
+    window.draw(fog, fogTransforms[2]);
+    window.draw(fog, fogTransforms[3]);
 }
 
 std::pair<int, int> Room::get_position() const {

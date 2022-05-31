@@ -56,7 +56,10 @@ void Game::render() const
 	player->renderLight(*window);
 	player->renderSprite(*window);
 	//player->renderRectangle(*window);
-
+	for (auto& r : rooms) {
+		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
+			r->display_fog(*window);
+	}
 	window->setView(window->getDefaultView());
 	minimap->display(*window, rooms);
 	oxygenBar.display(*window);

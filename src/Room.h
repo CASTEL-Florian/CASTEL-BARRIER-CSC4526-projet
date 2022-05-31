@@ -10,6 +10,7 @@ public:
 	Room(int x, int y);
 	void open_path(std::pair<int, int> const& target);
 	void display(sf::RenderWindow &window) const;
+	void display_fog(sf::RenderWindow &window) const;
 	std::pair<int,int> get_position() const;
 	bool is_opened(int direction);
 	int get_x() const;
@@ -33,5 +34,7 @@ private:
 	bool left = false;
 	bool right = false;
 	bool explored = false;
+	sf::VertexArray fog;
+	std::vector<sf::Transform> fogTransforms;
 };
 

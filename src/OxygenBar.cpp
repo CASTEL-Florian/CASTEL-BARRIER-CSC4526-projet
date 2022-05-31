@@ -6,7 +6,10 @@ OxygenBar::OxygenBar(float x, float y, float timeMax) : timeMax(timeMax), time(t
 
 void OxygenBar::update(sf::Time elapsed)
 {
-	time -= elapsed.asSeconds();
+	if (time >= 0)
+		time -= elapsed.asSeconds();
+	else
+		time = 0;
 }
 
 void OxygenBar::display(sf::RenderWindow& window) const
