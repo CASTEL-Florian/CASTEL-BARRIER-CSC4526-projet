@@ -30,10 +30,12 @@ void Game::update()
 void Game::render() const
 {
 
-	window->clear(sf::Color(0, 0, 25, 255));
+	window->clear(sf::Color::Blue);
 	//minimap->display(*window, rooms);
 	//for (auto &r : rooms)
 	//	r->display(*window);
+
+	
 
 	for (auto& b : boxes) {
 		b.renderSprite(*window);
@@ -42,6 +44,31 @@ void Game::render() const
 
 	player->renderSprite(*window);
 	//player->renderRectangle(*window);
+
+	sf::ConvexShape polygon1;
+	polygon1.setPointCount(7);
+	polygon1.setPoint(0, sf::Vector2f(0, 0));
+	polygon1.setPoint(1, sf::Vector2f(0, 400));
+	polygon1.setPoint(2, sf::Vector2f(200, 400));
+	polygon1.setPoint(3, sf::Vector2f(250, 200));
+	polygon1.setPoint(4, sf::Vector2f(300, 400));
+	polygon1.setPoint(5, sf::Vector2f(500, 400));
+	polygon1.setPoint(6, sf::Vector2f(500, 0));
+	polygon1.setFillColor(sf::Color(0, 0, 25, 220));
+	polygon1.setPosition(10, 20);
+	window->draw(polygon1);
+
+	sf::ConvexShape polygon2;
+	polygon2.setPointCount(6);
+	polygon2.setPoint(0, sf::Vector2f(275, 300));
+	polygon2.setPoint(1, sf::Vector2f(260, 310));
+	polygon2.setPoint(2, sf::Vector2f(240, 310));
+	polygon2.setPoint(3, sf::Vector2f(225, 300));
+	polygon2.setPoint(4, sf::Vector2f(200, 400));
+	polygon2.setPoint(5, sf::Vector2f(300, 400));
+	polygon2.setFillColor(sf::Color(0, 0, 25, 220));
+	polygon2.setPosition(10, 20);
+	window->draw(polygon2);
 
 	window->display();
 }
@@ -67,7 +94,7 @@ void Game::initVariables() {
 	newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2_staticBody, texture_test, 0.2f);
 	boxes.push_back(newBox2);
 	Box newBox3; //ground
-	newBox3.init(world.get(), b2Vec2(0.0f, -40.0f), b2_staticBody, texture_test, 0.2f);
+	newBox3.init(world.get(), b2Vec2(0.0f, -40.0f), b2_staticBody, texture_test, 1.f);
 	boxes.push_back(newBox3);
 	Box newBox4;
 	newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2_staticBody, texture_test, 0.2f);
