@@ -10,7 +10,42 @@ int random_1_to_n(int const nbMax)
 }
 
 
-std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap (int nb_rooms) const
+RoomGenerator::RoomGenerator()
+{
+    m_tileset = std::make_unique<sf::Texture>();
+    // load the tileset texture
+    if (!(*m_tileset).loadFromFile(tileset)) {
+        std::cerr << "Could not open tileset\n";
+        return;
+    }
+        
+
+    for (int i = 0; i < roomFiles.size(); i++) {
+        roomTileMaps.push_back(std::vector<int> {});
+        pugi::xml_document doc;
+        pugi::xml_parse_result result = doc.load_file(roomFiles[i].c_str());
+
+        if (!result)
+        {
+            std::cerr << "Could not open map file because " << result.description() << std::endl;
+            return;
+        }
+        std::string csv = doc.child("map").child("layer").child("data").text().get();
+        std::string delimiter = ",";
+        std::string token;
+        std::erase(csv, '\n');
+        size_t pos = 0;
+        while ((pos = csv.find(delimiter)) != std::string::npos) {
+            token = csv.substr(0, pos);
+            roomTileMaps[i].push_back(stoi(token));
+            csv.erase(0, pos + delimiter.length());
+        }
+        roomTileMaps[i].push_back(stoi(csv));
+
+    }
+}
+
+std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, int nb_rooms) const
 {
     std::vector<std::unique_ptr<Room>> rooms;
     std::set<std::pair<int, int>> positions;
@@ -26,7 +61,7 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap (int nb_rooms) con
         available_positions[pos] = 0;
     int cur_index = 1;
     for (int i = 0; i < nb_rooms - 1; i++) {
-        int new_room_index = random_1_to_n(available_positions.size()) - 1;
+        int new_room_index = random_1_to_n((int)available_positions.size()) - 1;
         auto it = std::begin(available_positions);
         std::advance(it, new_room_index);
         auto [new_x, new_y] = it->first;
@@ -42,5 +77,13 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap (int nb_rooms) con
         }
         cur_index++;
     }
+    for (auto &room : rooms) {
+        room->build(world, m_tileset.get(), roomTileMaps[0], corridorLength, corridorWidth);
+    }
     return rooms;
+}
+
+void RoomGenerator::buildCorridors()
+{
+
 }

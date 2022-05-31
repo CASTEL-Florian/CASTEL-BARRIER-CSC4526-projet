@@ -1,7 +1,15 @@
 #include "Box.h"
+#include "Box.h"
 
 void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal) {
 	initSprite(textur, scal);
+	initBox(world, position, bodyType);
+}
+
+void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, const float scal, const b2Vec2& dimensions)
+{
+	w = dimensions.x;
+	h = dimensions.y;
 	initBox(world, position, bodyType);
 }
 
@@ -12,8 +20,8 @@ void Box::initSprite(sf::Texture& textur, const float scal) {
 	newSprite.setTexture(texture);
 	newSprite.setScale(sf::Vector2f(scale, scale));
 	sf::FloatRect bounds = newSprite.getGlobalBounds();
-	w = bounds.width / 10;
-	h = bounds.height / 10;
+	w = bounds.width;
+	h = bounds.height;
 }
 
 void Box::initBox(b2World* world, const b2Vec2& position, b2BodyType bodyType) {
@@ -43,10 +51,10 @@ void Box::updateSprite() {
 
 void Box::renderRectangle(sf::RenderWindow& window) const {
 	sf::RectangleShape rectangle;
-	rectangle.setSize(sf::Vector2(10 * w, 10 * h));
+	rectangle.setSize(sf::Vector2(1 * w, 1 * h));
 	rectangle.setOrigin(rectangle.getSize() / 2.f);
 	rectangle.setFillColor(sf::Color::Yellow);
-	rectangle.setPosition(sf::Vector2(10 * x, 10 * y));
+	rectangle.setPosition(sf::Vector2(1 * x, 1 * y));
 	rectangle.setRotation(rota * 180.0f / b2_pi);
 	window.draw(rectangle);
 }
@@ -59,7 +67,18 @@ void Box::renderSprite(sf::RenderWindow& window) const {
 	float wi = bounds.width;
 	float hi = bounds.height;
 	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
-	sprite.setPosition(sf::Vector2f(10 * x, 10 * y));
+	sprite.setPosition(sf::Vector2f(x, y));
 	sprite.setRotation(rota * 180.0f / b2_pi);
 	window.draw(sprite);
+}
+
+
+float Box::get_x() const
+{
+	return x;
+}
+
+float Box::get_y() const
+{
+	return y;
 }
