@@ -40,7 +40,7 @@ void Game::update()
 void Game::render() const
 {
 
-	window->clear(sf::Color(0, 0, 25, 255));
+	window->clear(sf::Color::Blue);
 	for (auto &r : rooms)
 		r->display(*window);
 
@@ -50,7 +50,9 @@ void Game::render() const
 	}
 
 	player->renderSprite(*window);
+	player->renderLight(*window);
 	//player->renderRectangle(*window);
+
 	window->setView(window->getDefaultView());
 	minimap->display(*window, rooms);
 	oxygenBar.display(*window);
