@@ -8,6 +8,11 @@ const int nb_rooms = 20;
 const float gravity_down = -3.0f;
 const float engine_power = 100.0f;
 
+const int roomWidth = 15;
+const int roomHeight = 15;
+const int tileWidth = 3;
+const int tileHeight = 3;
+
 Game::Game()
 {
 	initVariables();
@@ -25,6 +30,7 @@ void Game::update()
 	for (auto &b : boxes)
 		b.updateSprite();
 	player->updateSprite();
+	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
 	window->setView(view);
@@ -74,7 +80,7 @@ void Game::initVariables() {
 	//boxes.push_back(newBox4);
 	
 	Player newPlayer{ engine_power };
-	newPlayer.init(world.get(), b2Vec2(70.0f, -2.50f), b2_dynamicBody, texture_test, 0.02f);
+	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, texture_test, 0.02f);
 	player = std::make_unique<Player>(newPlayer);
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
 }

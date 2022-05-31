@@ -25,4 +25,14 @@ void Minimap::display(sf::RenderWindow& window, const std::vector<std::unique_pt
 		sprite.setPosition(sf::Vector2f(x + room->get_x() * spriteLenght * scale, y + room->get_y() * spriteHeight * scale));
 		window.draw(sprite);
 	}
+	sf::CircleShape playerIndicator(playerIndicatorRadius);
+	playerIndicator.setPosition(sf::Vector2f(x + px * spriteLenght * scale - playerIndicatorRadius / 2, x + py * spriteHeight * scale - playerIndicatorRadius / 2));
+	playerIndicator.setFillColor(sf::Color::Red);
+	window.draw(playerIndicator);
+}
+
+void Minimap::updatePlayerPosition(float playerX, float playerY)
+{
+	px = playerX / (roomWidth * tileWidth);
+	py = playerY / (roomHeight * tileHeight);
 }
