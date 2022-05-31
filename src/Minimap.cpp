@@ -14,6 +14,8 @@ void Minimap::display(sf::RenderWindow& window, const std::vector<std::unique_pt
 	sprite.setScale(scale, scale);
 	sprite.setTexture(minimapTextures);
 	for (auto const &room : rooms) {
+		if (!room->isExplored())
+			continue;
 		int sprite_id = 0;
 		for (int direction = 3; direction >= 0; direction--) {
 			sprite_id *= 2;

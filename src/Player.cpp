@@ -1,4 +1,6 @@
 #include "Player.h"
+#include <cmath>
+
 
 Player::Player(const float enginePower) :
 	enginePower(enginePower)
@@ -40,4 +42,20 @@ void Player::renderLight(sf::RenderWindow& window) const {
 	polygon2.setRotation(rota * 180.0f / b2_pi - 90.f);
 	polygon2.setPosition(x + w / 2 * std::cos(rota), y + w / 2 * std::sin(rota));
 	window.draw(polygon2);
+}
+
+void Player::updateRoomPosition()
+{
+	roomX = std::floor(x / (roomWidth * tileWidth));
+	roomY = std::floor(y / (roomHeight * tileHeight));
+}
+
+int Player::getRoomX() const
+{
+	return roomX;
+}
+
+int Player::getRoomY() const
+{
+	return roomY;
 }

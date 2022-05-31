@@ -1,7 +1,4 @@
 #include "Room.h"
-#include "Room.h"
-#include "Room.h"
-#include "Room.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -36,8 +33,6 @@ void Room::open_path(std::pair<int, int> const& target) {
 
 void Room::display(sf::RenderWindow& window) const {
     window.draw(map);
-    //for (auto& b : boxes)
-      //  b.renderRectangle(window);
 }
 
 std::pair<int, int> Room::get_position() const {
@@ -65,6 +60,16 @@ int Room::get_x() const
 int Room::get_y() const
 {
     return y;
+}
+
+void Room::enter()
+{
+    explored = true;
+}
+
+bool Room::isExplored() const
+{
+    return explored;
 }
 
 void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorLength, int corridorWidth)
@@ -97,7 +102,6 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
                 if (tiles[i + j * roomWidth] != emptyTile) {
                     Box newBox;
                     newBox.init(world, b2Vec2(x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth), -(y * tileHeight * roomHeight) - j * tileHeight - (0.5f * tileHeight)), b2_staticBody, 1,  b2Vec2(tileWidth, tileHeight));
-                    boxes.push_back(newBox);
                 }
             }
         }

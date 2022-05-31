@@ -14,6 +14,8 @@ public:
 	bool is_opened(int direction);
 	int get_x() const;
 	int get_y() const;
+	void enter();
+	bool isExplored() const;
 	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,int corridorLength, int corridorWidth);
 private:
 	const int roomWidth = 15;
@@ -30,6 +32,6 @@ private:
 	bool down = false;
 	bool left = false;
 	bool right = false;
-	std::vector<Box> boxes;
+	bool explored = false;
 };
 

@@ -30,6 +30,7 @@ void Game::update()
 	for (auto &b : boxes)
 		b.updateSprite();
 	player->updateSprite();
+	player->updateRoomPosition();
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
@@ -41,16 +42,19 @@ void Game::render() const
 {
 
 	window->clear(sf::Color::Blue);
-	for (auto &r : rooms)
+	for (auto& r : rooms) {
+		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
+			r->enter();
 		r->display(*window);
-
-	for (auto& b : boxes) {
-		b.renderSprite(*window);
-		//b.renderRectangle(*window);
 	}
 
-	player->renderSprite(*window);
+	for (auto& b : boxes) {
+		//b.renderSprite(*window);
+		b.renderRectangle(*window);
+	}
+
 	player->renderLight(*window);
+	player->renderSprite(*window);
 	//player->renderRectangle(*window);
 
 	window->setView(window->getDefaultView());
@@ -73,7 +77,7 @@ void Game::initVariables() {
 
 	//testing
 	//Box newBox;
-	//newBox.init(world.get(), b2Vec2(25.0f, -2.50f), b2_dynamicBody, texture_test, 0.2f);
+	//newBox.init(world.get(), b2Vec2(20,-20), b2_dynamicBody, 1, b2Vec2(10,10));
 	//boxes.push_back(newBox);
 	//Box newBox2;
 	//newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2_staticBody, texture_test, 0.2f);
