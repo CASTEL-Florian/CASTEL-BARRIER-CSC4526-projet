@@ -30,13 +30,14 @@ void Player::renderLight(sf::RenderWindow& window) const {
 	window.draw(polygon1);
 
 	sf::ConvexShape polygon2;
-	polygon2.setPointCount(6);
+	polygon2.setPointCount(7);
 	polygon2.setPoint(0, sf::Vector2f(72.5f, 100));
 	polygon2.setPoint(1, sf::Vector2f(70, 102.5f));
-	polygon2.setPoint(2, sf::Vector2f(60, 102.5f));
-	polygon2.setPoint(3, sf::Vector2f(57.5f, 100));
-	polygon2.setPoint(4, sf::Vector2f(50, 130));
-	polygon2.setPoint(5, sf::Vector2f(80, 130));
+	polygon2.setPoint(2, sf::Vector2f(65, 104.f));
+	polygon2.setPoint(3, sf::Vector2f(60, 102.5f));
+	polygon2.setPoint(4, sf::Vector2f(57.5f, 100));
+	polygon2.setPoint(5, sf::Vector2f(50, 130));
+	polygon2.setPoint(6, sf::Vector2f(80, 130));
 	polygon2.setFillColor(sf::Color(0, 0, 15, 230));
 	polygon2.setOrigin(sf::Vector2f(65, 70));
 	polygon2.setRotation(rota * 180.0f / b2_pi - 90.f);

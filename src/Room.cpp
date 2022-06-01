@@ -4,7 +4,7 @@
 #include <map>
 #include <random>
 
-
+/*
 Room::Room(int x, int y) :
     x(x), y(y)
 {
@@ -27,6 +27,62 @@ Room::Room(int x, int y) :
     fog[5].color = sf::Color::Black;
     fog[6].color = sf::Color::Black;
     fog[7].color = sf::Color::Black;
+
+    sf::Transform transform;
+    fogTransforms.reserve(4);
+    transform.translate(sf::Vector2f(x * tileWidth * roomWidth, y * tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
+    transform.rotate(90);
+    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
+    transform.rotate(90);
+    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
+    transform.rotate(90);
+    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
+    fogTransforms.push_back(transform);
+}
+*/
+
+Room::Room(int x, int y) :
+    x(x), y(y)
+{
+    fog.setPrimitiveType(sf::Quads);
+    fog.resize(16);
+
+    fog[0].position = sf::Vector2f(-tileWidth * roomWidth, -tileHeight);
+    fog[1].position = sf::Vector2f(-tileWidth, -tileHeight);
+    fog[2].position = sf::Vector2f(-tileWidth, 6 * tileWidth);
+    fog[3].position = sf::Vector2f(-tileWidth * roomWidth, 4 * tileWidth);
+    fog[4].position = sf::Vector2f(-tileWidth * roomWidth, 4 * tileWidth);
+    fog[5].position = sf::Vector2f(-tileWidth, 6 * tileWidth);
+    fog[6].position = sf::Vector2f(-tileWidth, 9 * tileWidth);
+    fog[7].position = sf::Vector2f(-tileWidth * roomWidth, 11 * tileWidth);
+    fog[8].position = sf::Vector2f(-tileWidth * roomWidth, 11 * tileWidth);
+    fog[9].position = sf::Vector2f(-tileWidth, 9 * tileWidth);
+    fog[10].position = sf::Vector2f(-tileWidth, 2 * tileHeight * roomHeight);
+    fog[11].position = sf::Vector2f(-tileWidth * roomWidth, 2 * tileHeight * roomHeight);
+    fog[12].position = sf::Vector2f(-tileWidth, 6 * tileWidth);
+    fog[13].position = sf::Vector2f(0, 6 * tileHeight);
+    fog[14].position = sf::Vector2f(0, 9 * tileHeight);
+    fog[15].position = sf::Vector2f(-tileWidth, 9 * tileHeight);
+
+    fog[0].color = sf::Color::Black;
+    fog[1].color = sf::Color::Black;
+    fog[2].color = sf::Color::Black;
+    fog[3].color = sf::Color::Black;
+    fog[4].color = sf::Color::Black;
+    fog[5].color = sf::Color(0, 0, 0, 180);
+    fog[6].color = sf::Color(0, 0, 0, 180);
+    fog[7].color = sf::Color::Black;
+    fog[8].color = sf::Color::Black;
+    fog[9].color = sf::Color::Black;
+    fog[10].color = sf::Color::Black;
+    fog[11].color = sf::Color::Black;
+    fog[12].color = sf::Color(0, 0, 0, 180);
+    fog[13].color = sf::Color(0, 0, 0, 0);
+    fog[14].color = sf::Color(0, 0, 0, 0);
+    fog[15].color = sf::Color(0, 0, 0, 180);
 
     sf::Transform transform;
     fogTransforms.reserve(4);
