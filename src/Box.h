@@ -12,12 +12,12 @@ public:
 
 	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal);
 	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, const float scal, const b2Vec2& dimensions = b2Vec2(0.f, 0.f));
-	void initSprite(sf::Texture& texture, const float scal);
+	virtual void initSprite(sf::Texture& texture, const float scal);
 	void initBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy);
 	
-	void updateSprite();
+	virtual void update();
 	void renderRectangle(sf::RenderWindow& window) const;
-	void renderSprite(sf::RenderWindow& window) const;
+	virtual void renderSprite(sf::RenderWindow& window) const;
 	float get_x() const;
 	float get_y() const;
 

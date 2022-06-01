@@ -42,7 +42,7 @@ void Box::initBox(b2World* world, const b2Vec2& position, b2BodyType bodyType) {
 	rota = 0;
 }
 
-void Box::updateSprite() {
+void Box::update() {
 	x = body->GetPosition().x;
 	y = -body->GetPosition().y;
 	rota = -body->GetAngle();
