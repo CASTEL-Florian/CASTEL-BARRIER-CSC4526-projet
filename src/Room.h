@@ -37,7 +37,8 @@ private:
 	bool left = false;
 	bool right = false;
 	bool explored = false;
-	sf::VertexArray fog;
+	sf::VertexArray fogOpen;
+	sf::VertexArray fogClose;
 	std::vector<sf::Transform> fogTransforms;
 };
 
