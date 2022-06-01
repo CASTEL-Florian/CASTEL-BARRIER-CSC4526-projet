@@ -4,51 +4,11 @@
 #include <map>
 #include <random>
 
-/*
-Room::Room(int x, int y) :
-    x(x), y(y)
-{
-    fog.setPrimitiveType(sf::Quads);
-    fog.resize(8);
-    fog[0].position = sf::Vector2f(-tileWidth, -tileHeight);
-    fog[1].position = sf::Vector2f(0, -tileHeight);
-    fog[2].position = sf::Vector2f(0, tileHeight * (roomHeight + 1));
-    fog[3].position = sf::Vector2f(-tileWidth, tileHeight * (roomHeight + 1));
-    fog[0].color = sf::Color::Black;
-    fog[1].color = sf::Color(0, 0, 0, 0);
-    fog[2].color = sf::Color(0, 0, 0, 0);
-    fog[3].color = sf::Color::Black;
-
-    fog[4].position = sf::Vector2f(-tileWidth * roomWidth, -tileHeight);
-    fog[5].position = sf::Vector2f(-tileWidth, -tileHeight);
-    fog[6].position = sf::Vector2f(-tileWidth,  2 * tileHeight * roomHeight);
-    fog[7].position = sf::Vector2f(-tileWidth * roomWidth, 2 * tileHeight * roomHeight);
-    fog[4].color = sf::Color::Black;
-    fog[5].color = sf::Color::Black;
-    fog[6].color = sf::Color::Black;
-    fog[7].color = sf::Color::Black;
-
-    sf::Transform transform;
-    fogTransforms.reserve(4);
-    transform.translate(sf::Vector2f(x * tileWidth * roomWidth, y * tileHeight * roomHeight));
-    fogTransforms.push_back(transform);
-    transform.rotate(90);
-    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
-    fogTransforms.push_back(transform);
-    transform.rotate(90);
-    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
-    fogTransforms.push_back(transform);
-    transform.rotate(90);
-    transform.translate(sf::Vector2f(0, -tileHeight * roomHeight));
-    fogTransforms.push_back(transform);
-}
-*/
-
 Room::Room(int x, int y) :
     x(x), y(y)
 {
     fogOpen.setPrimitiveType(sf::Quads);
-    fogOpen.resize(16);
+    fogOpen.resize(12);
 
     fogOpen[0].position = sf::Vector2f(-tileWidth * roomWidth, -tileHeight);
     fogOpen[1].position = sf::Vector2f(-tileWidth, -tileHeight);
@@ -62,27 +22,19 @@ Room::Room(int x, int y) :
     fogOpen[9].position = sf::Vector2f(-tileWidth, 9 * tileWidth);
     fogOpen[10].position = sf::Vector2f(-tileWidth, 2 * tileHeight * roomHeight);
     fogOpen[11].position = sf::Vector2f(-tileWidth * roomWidth, 2 * tileHeight * roomHeight);
-    fogOpen[12].position = sf::Vector2f(-tileWidth, 6 * tileWidth);
-    fogOpen[13].position = sf::Vector2f(0, 6 * tileHeight);
-    fogOpen[14].position = sf::Vector2f(0, 9 * tileHeight);
-    fogOpen[15].position = sf::Vector2f(-tileWidth, 9 * tileHeight);
 
     fogOpen[0].color = sf::Color::Black;
     fogOpen[1].color = sf::Color::Black;
     fogOpen[2].color = sf::Color::Black;
     fogOpen[3].color = sf::Color::Black;
     fogOpen[4].color = sf::Color::Black;
-    fogOpen[5].color = sf::Color(0, 0, 0, 180);
-    fogOpen[6].color = sf::Color(0, 0, 0, 180);
+    fogOpen[5].color = sf::Color::Transparent;
+    fogOpen[6].color = sf::Color::Transparent;
     fogOpen[7].color = sf::Color::Black;
     fogOpen[8].color = sf::Color::Black;
     fogOpen[9].color = sf::Color::Black;
     fogOpen[10].color = sf::Color::Black;
     fogOpen[11].color = sf::Color::Black;
-    fogOpen[12].color = sf::Color(0, 0, 0, 180);
-    fogOpen[13].color = sf::Color(0, 0, 0, 0);
-    fogOpen[14].color = sf::Color(0, 0, 0, 0);
-    fogOpen[15].color = sf::Color(0, 0, 0, 180);
 
     fogClose.setPrimitiveType(sf::Quads);
     fogClose.resize(8);
