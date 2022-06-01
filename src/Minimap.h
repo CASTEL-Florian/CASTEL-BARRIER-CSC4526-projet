@@ -7,7 +7,7 @@ class Minimap
 {
 public:
 	explicit Minimap(const std::string filename);
-	void display(sf::RenderWindow& window, const std::vector<std::unique_ptr<Room>>& rooms) const;
+	void display(sf::RenderWindow& window, std::vector<std::unique_ptr<Room>> const& rooms) const;
 	void updatePlayerPosition(float playerX, float playerY);
 private:
 	sf::Texture minimapTextures;

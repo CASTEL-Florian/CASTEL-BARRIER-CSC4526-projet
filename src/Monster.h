@@ -1,25 +1,38 @@
 #include "Player.h"
-enum class State{Sleep, Follow, Attack, Flee, PrepareAttack};
+#include "RoomGenerator.h"
+enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
 class Monster {
 public:
-	Monster(Player* player);
+	Monster(Player* player, std::vector<std::unique_ptr<Room>> const& rooms);
 	void display(sf::RenderWindow& window) const;
 	void update();
 private:
 	void rotateToward(float x1, float y1);
 	void moveForward();
-	float distanceFromPlayer();
+	float distanceFromPlayer() const;
+	std::pair<float,float> getRandomMapPosition();
+	void explore();
+	void sleep(float duration);
+	void dash();
+	void follow();
+	void flee();
+	void prepareAttack();
 	float x;
 	float y;
-	float angle;
+	float angle = 0;
 	float speed = 10;
-	float time = 0;
-	float const attackRange = 15;
+	float actionTime = 0;
+	float chaseTime = 10;
+	float targetX = 0;
+	float targetY = 0;;
+	float const attackRange = 20;
 	float const followSpeed = 13;
 	float const dashSpeed = 30;
-	float const prepareAttackDuration = 0.3f;
+	float const prepareAttackDuration = 1.f;
 	float const attackDuration = 1;
-	State action = State::Follow;
+	float const playerDetectRange = 60;
+	State action = State::Explore;
 	Player* player;
+	std::vector<std::pair<int,int>> roomPositions;
 };

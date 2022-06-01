@@ -8,7 +8,7 @@ Minimap::Minimap(const std::string filename)
 	}
 }
 
-void Minimap::display(sf::RenderWindow& window, const std::vector<std::unique_ptr<Room>>& rooms) const
+void Minimap::display(sf::RenderWindow& window, std::vector<std::unique_ptr<Room>> const& rooms) const
 {
 	sf::Sprite sprite;
 	sprite.setScale(scale, scale);

@@ -9,6 +9,7 @@
 
 const std::vector<std::string> roomFiles = { "resources/room1.xml" };
 const std::string tileset = "resources/test_tileset.png";
+int random_1_to_n(int const nbMax);
 
 class RoomGenerator
 {

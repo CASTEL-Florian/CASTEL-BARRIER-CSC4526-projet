@@ -91,7 +91,7 @@ void Game::initVariables() {
 	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, texture_test, 0.02f);
 	player = std::make_unique<Player>(newPlayer);
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
-	monster = std::make_unique<Monster>(player.get());
+	monster = std::make_unique<Monster>(player.get(), rooms);
 }
 
 bool Game::running() const {
