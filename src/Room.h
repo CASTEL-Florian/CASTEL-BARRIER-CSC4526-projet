@@ -4,6 +4,12 @@
 #include <iostream>
 #include "TileMap.h"
 #include "Box.h"
+
+const int roomWidth = 15;
+const int roomHeight = 15;
+const int tileWidth = 6;
+const int tileHeight = 6;
+
 class Room
 {
 public:
@@ -19,12 +25,9 @@ public:
 	bool isExplored() const;
 	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,int corridorLength, int corridorWidth);
 private:
-	const int roomWidth = 15;
-	const int roomHeight = 15;
+	
 	const int spriteWidth = 2;
 	const int spriteHeight = 2;
-	const int tileWidth = 3;
-	const int tileHeight = 3;
 	const int emptyTile = 0;
 	TileMap map;
 	int x;

@@ -2,16 +2,12 @@
 #include <set>
 #include <map>
 
-const int window_length = 800;
-const int window_height = 600;
+const int window_length = 1200;
+const int window_height = 900;
 const int nb_rooms = 20;
 const float gravity_down = -3.0f;
 const float engine_power = 100.0f;
 
-const int roomWidth = 15;
-const int roomHeight = 15;
-const int tileWidth = 3;
-const int tileHeight = 3;
 
 Game::Game()
 {
@@ -31,6 +27,7 @@ void Game::update()
 		b.updateSprite();
 	player->updateSprite();
 	player->updateRoomPosition();
+	monster->update();
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
@@ -93,6 +90,7 @@ void Game::initVariables() {
 	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, texture_test, 0.02f);
 	player = std::make_unique<Player>(newPlayer);
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
+	monster = std::make_unique<Monster>(player.get());
 }
 
 bool Game::running() const {

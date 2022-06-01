@@ -1,8 +1,9 @@
+#include "Player.h"
 enum state{Sleep, Follow, Attack, Flee};
 
 class Monster {
 public:
-	Monster() = default;
+	Monster(Player* player);
 	void display() const;
 	void update();
 private:
@@ -12,4 +13,5 @@ private:
 	double const attack_duration = 1;
 	double current_cooldown = 2;
 	state action = Sleep;
+	Player* player;
 };
