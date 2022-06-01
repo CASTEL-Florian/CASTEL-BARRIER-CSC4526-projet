@@ -6,7 +6,7 @@ const int window_length = 1200;
 const int window_height = 900;
 const int nb_rooms = 20;
 const float gravity_down = -3.0f;
-const float engine_power = 100.0f;
+const float engine_power = 1000.0f;
 
 
 Game::Game()
@@ -24,8 +24,8 @@ void Game::update()
 	//update box2d physics
 	world->Step(1.0f / 60.0f, 6, 2);
 	for (auto &b : boxes)
-		b.updateSprite();
-	player->updateSprite();
+		b.update();
+	player->update();
 	player->updateRoomPosition();
 	monster->update();
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
@@ -74,7 +74,7 @@ void Game::initVariables() {
 	world = std::make_unique<b2World>(gravity);
 
 	sf::Texture texture_test;
-	texture_test.loadFromFile("resources/texture_test.png");
+	texture_test.loadFromFile("resources/nauti_spritesheet.png");
 
 	//testing
 	//Box newBox;
@@ -88,7 +88,7 @@ void Game::initVariables() {
 	//boxes.push_back(newBox4);
 	
 	Player newPlayer{ engine_power };
-	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, texture_test, 0.02f);
+	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, texture_test, 0.2f);
 	player = std::make_unique<Player>(newPlayer);
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
 	monster = std::make_unique<Monster>(player.get(), rooms);
