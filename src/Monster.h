@@ -32,7 +32,7 @@ private:
 	float const prepareAttackDuration = 1.f;
 	float const attackDuration = 1;
 	float const playerDetectRange = 60;
-	State action = State::Explore;
+	State action = State::Sleep;
 	Player* player;
 	std::vector<std::pair<int,int>> roomPositions;
 };

@@ -3,12 +3,21 @@
 
 Monster::Monster(Player* player, std::vector<std::unique_ptr<Room>> const& rooms) : player(player)
 {
-	x = player->get_x();
-	y = player->get_y();
+	float farthestRoomDistance = 0;
+	std::pair<int, int> farthestRoomPos (0,0);
 	for (auto const& room : rooms) {
-		roomPositions.push_back(std::pair<int,int>(room->get_x(), room->get_y()));
+		int roomX = room->get_x();
+		int roomY = room->get_y();
+		roomPositions.push_back(std::pair<int,int>(roomX, roomY));
+		float roomDistance = roomX * roomX + roomY * roomY;
+		if (roomDistance > farthestRoomDistance) {
+			farthestRoomDistance = roomDistance;
+			farthestRoomPos = std::pair<int, int>(roomX, roomY);
+		}
 	}
-
+	x = (farthestRoomPos.first + 0.5f) * roomWidth* tileWidth;
+	y = (farthestRoomPos.second + 0.5f) * roomHeight * tileHeight;
+	explore();
 }
 
 void Monster::display(sf::RenderWindow& window) const {
@@ -30,7 +39,7 @@ void Monster::update() {
 	}
 	if (action == State::Explore) {
 		rotateToward(targetX, targetY);
-		if (x - targetX < tileWidth && y - targetY < tileHeight) {
+		if (std::abs(x - targetX) < tileWidth && std::abs(y - targetY) < tileHeight) {
 			sleep(1);
 		}
 		if (distanceFromPlayer() <= playerDetectRange) {
@@ -118,7 +127,9 @@ void Monster::explore()
 {
 	//std::cout << "Exploring\n";
 	action = State::Explore;
-	auto [targetX, targetY] = getRandomMapPosition();
+	auto pos = getRandomMapPosition();
+	targetX = pos.first;
+	targetY = pos.second;
 	speed = followSpeed;
 }
 
