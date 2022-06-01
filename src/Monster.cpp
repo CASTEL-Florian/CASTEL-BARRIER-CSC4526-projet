@@ -116,7 +116,7 @@ std::pair<float, float> Monster::getRandomMapPosition()
 
 void Monster::explore()
 {
-	std::cout << "Exploring\n";
+	//std::cout << "Exploring\n";
 	action = State::Explore;
 	auto [targetX, targetY] = getRandomMapPosition();
 	speed = followSpeed;
@@ -124,7 +124,7 @@ void Monster::explore()
 
 void Monster::sleep(float duration)
 {
-	std::cout << "Sleeping\n";
+	//std::cout << "Sleeping\n";
 	action = State::Sleep;
 	chaseTime = 10;
 	actionTime = duration;
@@ -132,7 +132,7 @@ void Monster::sleep(float duration)
 
 void Monster::dash()
 {
-	std::cout << "Dashing\n";
+	//std::cout << "Dashing\n";
 	action = State::Attack;
 	speed = dashSpeed;
 	actionTime = attackDuration;
@@ -140,14 +140,14 @@ void Monster::dash()
 
 void Monster::follow()
 {
-	std::cout << "Following\n";
+	//std::cout << "Following\n";
 	action = State::Follow;
 	speed = followSpeed;
 }
 
 void Monster::prepareAttack()
 {
-	std::cout << "Preparing attack\n";
+	//std::cout << "Preparing attack\n";
 	action = State::PrepareAttack;
 	actionTime = prepareAttackDuration;
 	speed = 0;
@@ -155,7 +155,7 @@ void Monster::prepareAttack()
 
 void Monster::flee()
 {
-	std::cout << "Fleeing\n";
+	//std::cout << "Fleeing\n";
 	action = State::Flee;
 	actionTime = 5;
 	speed = followSpeed/2;

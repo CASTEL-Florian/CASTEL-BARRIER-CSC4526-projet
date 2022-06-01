@@ -43,7 +43,9 @@ void Player::renderSprite(sf::RenderWindow& window) const{
 	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
 	sprite.setPosition(sf::Vector2f(x, y));
 	sprite.setRotation(rota * 180.0f / b2_pi);
-	if (std::abs((int)(rota*180/b2_pi) % 360) > 90) {
+	float rotaDegree = rota * 180 / b2_pi;
+	float rota360 = rotaDegree - std::floor(rotaDegree / 360) * 360;
+	if (rota360 > 90 && rota360 < 270) {
 		sprite.setScale(sf::Vector2f(scale, -scale));
 	}
 	window.draw(sprite);
