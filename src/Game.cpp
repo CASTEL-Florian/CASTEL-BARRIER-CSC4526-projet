@@ -52,6 +52,7 @@ void Game::render() const
 
 	player->renderLight(*window);
 	player->renderSprite(*window);
+	monster->display(*window);
 	//player->renderRectangle(*window);
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
