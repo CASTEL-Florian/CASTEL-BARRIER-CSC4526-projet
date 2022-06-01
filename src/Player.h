@@ -1,5 +1,6 @@
 #pragma once
 #include "Box.h"
+#include "Room.h"
 
 class Player : public Box {
 public:
@@ -13,8 +14,4 @@ private:
 	float enginePower;
 	int roomX;
 	int roomY;
-	const int roomWidth = 15;
-	const int roomHeight = 15;
-	const int tileWidth = 3;
-	const int tileHeight = 3;
 };

@@ -18,9 +18,5 @@ private:
 	float scale = 2;
 	int const spriteLenght = 11;
 	int const spriteHeight = 11;
-	const int roomWidth = 15;
-	const int roomHeight = 15;
-	const int tileWidth = 3;
-	const int tileHeight = 3;
 	const float playerIndicatorRadius = 3;
 };
