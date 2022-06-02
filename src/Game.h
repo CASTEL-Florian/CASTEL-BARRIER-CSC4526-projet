@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "OxygenBar.h"
 #include "Monster.h"
+#include "TreasureManager.h"
 
 
 class Game
@@ -28,12 +29,14 @@ private:
 	RoomGenerator roomGenerator;
 	std::vector<std::unique_ptr<Room>> rooms;
 	std::unique_ptr<Minimap> minimap;
-	OxygenBar oxygenBar{ 20,20,30 };
+	OxygenBar oxygenBar{ 20,70,30 };
 
 	std::unique_ptr<b2World> world;
 	std::vector<Box> boxes;
 	std::unique_ptr<Player> player;
 	std::unique_ptr<Monster> monster;
+
+	std::unique_ptr<TreasureManager> treasureManager;
 
 	sf::View view;
 };

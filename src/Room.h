@@ -23,7 +23,7 @@ public:
 	int get_y() const;
 	void enter();
 	bool isExplored() const;
-	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,int corridorLength, int corridorWidth);
+	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorWidth);
 private:
 	
 	const int spriteWidth = 2;

@@ -78,7 +78,7 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
         cur_index++;
     }
     for (auto &room : rooms) {
-        room->build(world, m_tileset.get(), roomTileMaps[0], corridorLength, corridorWidth);
+        room->build(world, m_tileset.get(), roomTileMaps[0], corridorWidth);
     }
     return rooms;
 }

@@ -19,7 +19,6 @@ public:
 	
 private:
 	void buildCorridors();
-	const int corridorLength = 1;
 	const int corridorWidth = 3;
 	std::unique_ptr<sf::Texture> m_tileset;
 

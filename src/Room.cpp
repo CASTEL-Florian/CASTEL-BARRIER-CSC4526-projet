@@ -152,7 +152,7 @@ bool Room::isExplored() const
     return explored;
 }
 
-void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorLength, int corridorWidth)
+void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorWidth)
 {
     int halfWidth = int(roomWidth / 2);
     int halfHeight = int(roomHeight / 2);

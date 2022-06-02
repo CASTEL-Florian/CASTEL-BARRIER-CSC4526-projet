@@ -1,3 +1,4 @@
+#pragma once
 #include "Player.h"
 #include "RoomGenerator.h"
 enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
