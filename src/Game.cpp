@@ -28,6 +28,7 @@ void Game::update()
 	player->update();
 	player->updateRoomPosition();
 	monster->update();
+	treasureManager->update();
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
@@ -50,7 +51,7 @@ void Game::render() const
 		//b.renderSprite(*window);
 		b.renderRectangle(*window);
 	}
-
+	treasureManager->displayTreasures(*window);
 	player->renderLight(*window);
 	player->renderSprite(*window);
 	monster->display(*window);
@@ -62,6 +63,7 @@ void Game::render() const
 	window->setView(window->getDefaultView());
 	minimap->display(*window, rooms);
 	oxygenBar.display(*window);
+	treasureManager->display(*window);
 	window->display();
 }
 
@@ -81,7 +83,9 @@ void Game::initVariables() {
 	player = std::make_unique<Player>(newPlayer);
 
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
-	monster = std::make_unique<Monster>(player.get(), rooms);
+	monster = std::make_unique<Monster>(player.get(), &roomGenerator);
+
+	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator);
 }
 
 bool Game::running() const {

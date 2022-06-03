@@ -1,6 +1,5 @@
 #include "RoomGenerator.h"
 
-
 int random_1_to_n(int const nbMax)
 {
     static std::random_device rd;
@@ -45,8 +44,9 @@ RoomGenerator::RoomGenerator()
     }
 }
 
-std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, int nb_rooms) const
+std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, int nb_rooms) 
 {
+    float farthestRoomDistance = 0;
     std::vector<std::unique_ptr<Room>> rooms;
     std::set<std::pair<int, int>> positions;
     std::map<std::pair<int, int>, int> available_positions;
@@ -76,14 +76,55 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
                 available_positions[std::pair(adj_x + new_x, adj_y + new_y)] = cur_index;
         }
         cur_index++;
+        float roomDistance = new_x * new_x + new_y * new_y;
+        if (roomDistance > farthestRoomDistance) {
+            farthestRoomDistance = roomDistance;
+            farthestRoomPos = std::pair<int, int>(new_x, new_y);
+        }
     }
-    for (auto &room : rooms) {
-        room->build(world, m_tileset.get(), roomTileMaps[0], corridorLength, corridorWidth);
+
+    int treasuresCount = 5;
+    std::vector<int> deadEnds;
+    std::vector<int> normalRooms;
+    for (int i = 0; i < rooms.size(); i++) {
+        rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], corridorWidth);
+        roomPositions.push_back(std::pair<int, int>(rooms[i]->get_x(), rooms[i]->get_y()));
+        if (i > 0) {
+            if (rooms[i]->isDeadEnd())
+                deadEnds.push_back(i);
+            else
+                normalRooms.push_back(i);
+        }
     }
+    if (deadEnds.size() >= treasuresCount) {
+        for (int i = 0; i < treasuresCount; i++) {
+            int randomIndex = random_1_to_n(deadEnds.size()) - 1;
+            auto it = deadEnds.begin() + randomIndex;
+            deadEnds.erase(it);
+        }
+
+    }
+    else {
+        // toutes les impasses sont des salles au trésor
+        for (int i = 0; i < treasuresCount - deadEnds.size() ; i++) {
+            if (normalRooms.size() <= 0) {
+                break;
+            }
+            int randomIndex = random_1_to_n(normalRooms.size()) - 1;
+            auto it = normalRooms.begin() + randomIndex;
+            normalRooms.erase(it);
+        }
+    }
+    
     return rooms;
 }
 
-void RoomGenerator::buildCorridors()
+std::pair<int, int> RoomGenerator::getFarthestRoomPos() const
 {
+    return farthestRoomPos;
+}
 
+std::pair<int, int> RoomGenerator::getRandomRoomPos() const
+{
+    return roomPositions[random_1_to_n(roomPositions.size()) - 1];
 }
