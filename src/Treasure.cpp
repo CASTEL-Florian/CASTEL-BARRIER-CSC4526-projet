@@ -1,7 +1,8 @@
 #include "Treasure.h"
 #include "TreasureManager.h"
 
-Treasure::Treasure(float x, float y, Player* player, TreasureManager* treasureManager, bool isCoin) : x(x), y(y), player(player), treasureManager(treasureManager), isCoin(isCoin)
+Treasure::Treasure(float x, float y, Player* player, TreasureManager* treasureManager, bool isCoin) : 
+	x(x), y(y), player(player), treasureManager(treasureManager), isCoin(isCoin)
 {
 }
 

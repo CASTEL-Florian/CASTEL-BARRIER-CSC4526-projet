@@ -11,6 +11,7 @@
 #include "OxygenBar.h"
 #include "Monster.h"
 #include "TreasureManager.h"
+#include "Crab.h"
 
 
 class Game
@@ -32,7 +33,10 @@ private:
 	OxygenBar oxygenBar{ 20,130,30 };
 
 	std::unique_ptr<b2World> world;
-	std::vector<Box> boxes;
+
+	std::vector<std::unique_ptr<Box>> boxes;
+	std::vector<sf::Texture> textures;
+
 	std::unique_ptr<Player> player;
 	std::unique_ptr<Monster> monster;
 

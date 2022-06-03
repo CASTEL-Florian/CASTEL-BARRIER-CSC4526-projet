@@ -10,10 +10,10 @@ class Box
 public:
 	Box() = default;
 
-	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal);
+	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture* textur, const float scal);
 	void init(b2World* world, const b2Vec2& position, b2BodyType bodyType, const float scal, const b2Vec2& dimensions = b2Vec2(0.f, 0.f));
-	virtual void initSprite(sf::Texture& texture, const float scal);
-	void initBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy);
+	virtual void initSprite(sf::Texture* texture, const float scal);
+	virtual void initBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy);
 	
 	virtual void update();
 	void renderRectangle(sf::RenderWindow& window) const;
@@ -30,5 +30,5 @@ protected:
 	float w = 0.0f;
 	float rota = 0.0f;
 	float scale = 0.0f;
-	sf::Texture texture;
+	sf::Texture* texture;
 };

@@ -21,10 +21,9 @@ void Game::update()
 	sf::Time elapsed = clock.restart();
 	oxygenBar.update(elapsed);
 	pollEvents();
-	//update box2d physics
-	world->Step(1.0f / 60.0f, 6, 2);
+	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics
 	for (auto &b : boxes)
-		b.update();
+		b->update();
 	player->update();
 	player->updateRoomPosition();
 	monster->update();
@@ -48,14 +47,13 @@ void Game::render() const
 	}
 
 	for (auto& b : boxes) {
-		//b.renderSprite(*window);
-		b.renderRectangle(*window);
+		b->renderSprite(*window);
+		//b->renderRectangle(*window);
 	}
 	treasureManager->displayTreasures(*window);
 	player->renderLight(*window);
 	player->renderSprite(*window);
 	monster->display(*window);
-	//player->renderRectangle(*window);
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
 			r->display_fog(*window);
@@ -76,11 +74,25 @@ void Game::initVariables() {
 	b2Vec2 gravity(0.0f, gravity_down);
 	world = std::make_unique<b2World>(gravity);
 
-	sf::Texture texture_test;
-	texture_test.loadFromFile("resources/nauti_spritesheet.png");
+	sf::Texture nauti_texture;
+	nauti_texture.loadFromFile("resources/nauti_spritesheet.png");
+	textures.push_back(nauti_texture);
+	sf::Texture crate_texture;
+	crate_texture.loadFromFile("resources/crate.png");
+	textures.push_back(crate_texture);
+	sf::Texture crab_texture;
+	crab_texture.loadFromFile("resources/crab_spritesheet.png");
+	textures.push_back(crab_texture);
+
 	Player newPlayer{ engine_power };
-	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, texture_test, 0.2f);
+	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[0], 0.2f);
 	player = std::make_unique<Player>(newPlayer);
+	Box crate;
+	crate.init(world.get(), b2Vec2(roomWidth * tileWidth / 2 + 2 * tileWidth, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[1], 0.2f);
+	boxes.push_back(std::make_unique<Box>(crate));
+	Crab crab;
+	crab.init(world.get(), b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[2], 0.2f);
+	boxes.push_back(std::make_unique<Crab>(crab));
 
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
 	monster = std::make_unique<Monster>(player.get(), &roomGenerator);

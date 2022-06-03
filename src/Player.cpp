@@ -7,11 +7,11 @@ Player::Player(const float enginePower) :
 {
 }
 
-void Player::initSprite(sf::Texture& textur, const float scal) {
+void Player::initSprite(sf::Texture* textur, const float scal) {
 	scale = scal;
 	texture = textur;
 	sf::Sprite newSprite;
-	newSprite.setTexture(texture);
+	newSprite.setTexture(*texture);
 	newSprite.setTextureRect(sf::IntRect(0, 0, 64, 32));
 	newSprite.setScale(sf::Vector2f(scale, scale));
 	sf::FloatRect bounds = newSprite.getGlobalBounds();
@@ -34,7 +34,7 @@ void Player::update() {
 
 void Player::renderSprite(sf::RenderWindow& window) const{
 	sf::Sprite sprite;
-	sprite.setTexture(texture);
+	sprite.setTexture(*texture);
 	sprite.setTextureRect(sf::IntRect(rectOffset, 0, 64, 32));
 	sprite.setScale(sf::Vector2f(scale, scale));
 	sf::FloatRect bounds = sprite.getLocalBounds();
@@ -83,7 +83,7 @@ void Player::renderLight(sf::RenderWindow& window) const {
 }
 
 void Player::animSprite() {
-	if (animTimer.getElapsedTime().asMilliseconds() >= 84) {
+	if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
 		rectOffset += 64;
 		if (rectOffset >= 832) {
 			rectOffset = 0;

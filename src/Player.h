@@ -5,7 +5,7 @@
 class Player : public Box {
 public:
 	explicit Player(const float enginePower);
-	void initSprite(sf::Texture& textur, const float scal) override;
+	void initSprite(sf::Texture* textur, const float scal) override;
 	void move(const b2Vec2& vec);
 	void update() override;
 	void renderLight(sf::RenderWindow& window) const;

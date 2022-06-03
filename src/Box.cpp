@@ -1,6 +1,6 @@
 #include "Box.h"
 
-void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture& textur, const float scal) {
+void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, sf::Texture* textur, const float scal) {
 	initSprite(textur, scal);
 	initBox(world, position, bodyType);
 }
@@ -12,11 +12,11 @@ void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, cons
 	initBox(world, position, bodyType);
 }
 
-void Box::initSprite(sf::Texture& textur, const float scal) {
+void Box::initSprite(sf::Texture* textur, const float scal) {
 	scale = scal;
 	texture = textur;
 	sf::Sprite newSprite;
-	newSprite.setTexture(texture);
+	newSprite.setTexture(*texture);
 	newSprite.setScale(sf::Vector2f(scale, scale));
 	sf::FloatRect bounds = newSprite.getGlobalBounds();
 	w = bounds.width;
@@ -60,7 +60,7 @@ void Box::renderRectangle(sf::RenderWindow& window) const {
 
 void Box::renderSprite(sf::RenderWindow& window) const {
 	sf::Sprite sprite;
-	sprite.setTexture(texture);
+	sprite.setTexture(*texture);
 	sprite.setScale(sf::Vector2f(scale, scale));
 	sf::FloatRect bounds = sprite.getLocalBounds();
 	float wi = bounds.width;
