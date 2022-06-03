@@ -39,6 +39,7 @@ void Game::render() const
 {
 
 	window->clear(sf::Color::Blue);
+
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
 			r->enter();
@@ -75,21 +76,10 @@ void Game::initVariables() {
 
 	sf::Texture texture_test;
 	texture_test.loadFromFile("resources/nauti_spritesheet.png");
-
-	//testing
-	//Box newBox;
-	//newBox.init(world.get(), b2Vec2(20,-20), b2_dynamicBody, 1, b2Vec2(10,10));
-	//boxes.push_back(newBox);
-	//Box newBox2;
-	//newBox2.init(world.get(), b2Vec2(27.5f, -17.5f), b2_staticBody, texture_test, 0.2f);
-	//boxes.push_back(newBox2);
-	//Box newBox4;
-	//newBox4.init(world.get(), b2Vec2(23.0f, -25.5f), b2_staticBody, texture_test, 0.2f);
-	//boxes.push_back(newBox4);
-	
 	Player newPlayer{ engine_power };
 	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, texture_test, 0.2f);
 	player = std::make_unique<Player>(newPlayer);
+
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
 	monster = std::make_unique<Monster>(player.get(), rooms);
 }
