@@ -37,7 +37,7 @@ void Monster::animSprite() {
 	if (action == State::Attack) {
 		rectOffsetY = 128;
 		if (lastState == false) rectOffsetX = 0;
-		if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
+		if (animTimer.getElapsedTime().asSeconds() >= attackDuration / 10) {
 			rectOffsetX += 256;
 			if (rectOffsetX >= 2304) {
 				rectOffsetX = 0;
