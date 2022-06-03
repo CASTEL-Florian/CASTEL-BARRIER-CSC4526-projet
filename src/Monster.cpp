@@ -1,20 +1,10 @@
 #include "Monster.h"
 #include <cmath>
 
-Monster::Monster(Player* player, std::vector<std::unique_ptr<Room>> const& rooms) : player(player)
+Monster::Monster(Player* player, RoomGenerator* roomGenerator) : player(player), roomGenerator(roomGenerator)
 {
-	float farthestRoomDistance = 0;
-	std::pair<int, int> farthestRoomPos (0,0);
-	for (auto const& room : rooms) {
-		int roomX = room->get_x();
-		int roomY = room->get_y();
-		roomPositions.push_back(std::pair<int,int>(roomX, roomY));
-		float roomDistance = roomX * roomX + roomY * roomY;
-		if (roomDistance > farthestRoomDistance) {
-			farthestRoomDistance = roomDistance;
-			farthestRoomPos = std::pair<int, int>(roomX, roomY);
-		}
-	}
+	std::pair<int, int> farthestRoomPos = roomGenerator->getFarthestRoomPos();
+	
 	x = (farthestRoomPos.first + 0.5f) * roomWidth* tileWidth;
 	y = (farthestRoomPos.second + 0.5f) * roomHeight * tileHeight;
 	explore();
@@ -116,7 +106,7 @@ float Monster::distanceFromPlayer() const
 
 std::pair<float, float> Monster::getRandomMapPosition()
 {
-	auto& roomPos = roomPositions[random_1_to_n(roomPositions.size()) - 1];
+	auto roomPos = roomGenerator->getRandomRoomPos();
 	std::pair<float, float> pos(roomPos.first * roomWidth* tileWidth, roomPos.second * roomHeight * tileHeight);
 	pos.first += (random_1_to_n(roomWidth) - 1) * tileWidth;
 	pos.second += (random_1_to_n(roomHeight) - 1) * tileHeight;

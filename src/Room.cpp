@@ -1,4 +1,5 @@
 #include "Room.h"
+#include "Room.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -150,6 +151,19 @@ void Room::enter()
 bool Room::isExplored() const
 {
     return explored;
+}
+
+bool Room::isDeadEnd() const
+{
+    if (up)
+        return !down && !left && !right;
+    if (down)
+        return !up && !left && !right;
+    if (left)
+        return !up && !down && !right;
+    if (right)
+        return !up && !left && !down;
+    return false;
 }
 
 void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorWidth)

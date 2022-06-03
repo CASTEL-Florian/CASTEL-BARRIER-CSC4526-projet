@@ -5,7 +5,7 @@ enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
 class Monster {
 public:
-	Monster(Player* player, std::vector<std::unique_ptr<Room>> const& rooms);
+	Monster(Player* player, RoomGenerator* roomGenerator);
 	void display(sf::RenderWindow& window) const;
 	void update();
 private:
@@ -35,5 +35,5 @@ private:
 	float const playerDetectRange = 60;
 	State action = State::Sleep;
 	Player* player;
-	std::vector<std::pair<int,int>> roomPositions;
+	RoomGenerator* roomGenerator;
 };
