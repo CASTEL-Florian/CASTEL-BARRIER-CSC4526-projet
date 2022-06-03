@@ -26,7 +26,7 @@ private:
 	float actionTime = 0;
 	float chaseTime = 10;
 	float targetX = 0;
-	float targetY = 0;;
+	float targetY = 0;
 	float const attackRange = 20;
 	float const followSpeed = 13;
 	float const dashSpeed = 30;

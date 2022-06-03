@@ -97,6 +97,7 @@ void Game::initVariables() {
 	monster = std::make_unique<Monster>(player.get(), &roomGenerator);
 
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator);
+	treasureManager->createMainTreasures(rooms);
 }
 
 bool Game::running() const {

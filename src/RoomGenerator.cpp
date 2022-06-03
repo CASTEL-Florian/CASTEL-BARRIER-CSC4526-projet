@@ -83,7 +83,6 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
         }
     }
 
-    int treasuresCount = 5;
     std::vector<int> deadEnds;
     std::vector<int> normalRooms;
     for (int i = 0; i < rooms.size(); i++) {
@@ -100,18 +99,22 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
         for (int i = 0; i < treasuresCount; i++) {
             int randomIndex = random_1_to_n(deadEnds.size()) - 1;
             auto it = deadEnds.begin() + randomIndex;
+            rooms[*it]->generateObjects(roomTileMaps[1]);
             deadEnds.erase(it);
         }
 
     }
     else {
-        // toutes les impasses sont des salles au trésor
+        for (auto const& id : deadEnds) {
+            rooms[id]->generateObjects(roomTileMaps[1]);
+        }
         for (int i = 0; i < treasuresCount - deadEnds.size() ; i++) {
             if (normalRooms.size() <= 0) {
                 break;
             }
             int randomIndex = random_1_to_n(normalRooms.size()) - 1;
             auto it = normalRooms.begin() + randomIndex;
+            rooms[*it]->generateObjects(roomTileMaps[1]);
             normalRooms.erase(it);
         }
     }

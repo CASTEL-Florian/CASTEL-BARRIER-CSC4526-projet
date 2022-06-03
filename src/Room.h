@@ -25,6 +25,8 @@ public:
 	bool isExplored() const;
 	bool isDeadEnd() const;
 	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorWidth);
+	void generateObjects(std::vector<int> const& objects);
+	std::vector<std::pair<int, int>> getTreasurePos();
 private:
 	
 	const int spriteWidth = 2;
@@ -41,5 +43,6 @@ private:
 	sf::VertexArray fogOpen;
 	sf::VertexArray fogClose;
 	std::vector<sf::Transform> fogTransforms;
+	std::vector<std::pair<int, int>> treasurePos;
 };
 

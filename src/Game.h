@@ -29,7 +29,7 @@ private:
 	RoomGenerator roomGenerator;
 	std::vector<std::unique_ptr<Room>> rooms;
 	std::unique_ptr<Minimap> minimap;
-	OxygenBar oxygenBar{ 20,70,30 };
+	OxygenBar oxygenBar{ 20,130,30 };
 
 	std::unique_ptr<b2World> world;
 	std::vector<Box> boxes;

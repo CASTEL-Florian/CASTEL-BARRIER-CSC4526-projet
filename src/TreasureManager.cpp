@@ -1,4 +1,5 @@
 #include "TreasureManager.h"
+#include "TreasureManager.h"
 #include "Treasure.h"
 
 TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator) : player(player), roomGenerator(roomGenerator) {
@@ -13,7 +14,7 @@ TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator) :
 	text.setString(std::to_string(treasuresFoundCount));
 	for (int i = 0; i < coinCount; i++) {
 		auto pos = findAvailablePlace();
-		createTreasure(pos.first, pos.second);
+		createTreasure(pos.first, pos.second, true);
 	}
 }
 
@@ -26,7 +27,7 @@ void TreasureManager::displayTreasures(sf::RenderWindow& window) const
 
 void TreasureManager::update()
 {
-	text.setString(std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount));
+	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
 	for (auto &treasure : treasures) {
 		treasure->update();
 	}
@@ -37,9 +38,12 @@ void TreasureManager::display(sf::RenderWindow& window) const
 	window.draw(text);
 }
 
-void TreasureManager::findTreasure()
+void TreasureManager::findTreasure(bool isCoin)
 {
-	treasuresFoundCount++;
+	if (isCoin)
+		coinFoundCount++;
+	else
+		treasuresFoundCount++;
 }
 
 std::pair<float, float> TreasureManager::findAvailablePlace () const
@@ -51,7 +55,17 @@ std::pair<float, float> TreasureManager::findAvailablePlace () const
 	return pos;
 }
 
-void TreasureManager::createTreasure(float treasureX, float treasureY)
+void TreasureManager::createMainTreasures(std::vector<std::unique_ptr<Room>> const& rooms)
 {
-	treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this));
+	for (auto const& room : rooms) {
+		for (auto const& [posX, posY] : room->getTreasurePos()) {
+			createTreasure(posX, posY, false);
+			treasuresCount++;
+		}
+	}
+}
+
+void TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)
+{
+	treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin));
 }

@@ -1,9 +1,12 @@
 #include "Room.h"
 #include "Room.h"
+#include "Room.h"
 #include <vector>
 #include <set>
 #include <map>
 #include <random>
+
+enum class Object{Empty, Treasure};
 
 Room::Room(int x, int y) :
     x(x), y(y)
@@ -199,9 +202,29 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
                 }
             }
         }
-
     }
     map.load(m_tileset, sf::Vector2u(spriteWidth, spriteHeight), tiles, roomWidth, roomHeight);
     map.setPosition(x * tileWidth * roomWidth, y * tileHeight * roomHeight);
     map.setScale(sf::Vector2f((float)tileWidth / (float)spriteWidth,(float)tileHeight / (float)spriteHeight));
+}
+
+void Room::generateObjects(std::vector<int> const& objects)
+{
+    if (objects.size() > 0) {
+        for (int i = 0; i < roomWidth; i++) {
+            for (int j = 0; j < roomHeight; j++) {
+                if (objects[i + j * roomWidth] == int(Object::Treasure)) {
+                    treasurePos.push_back(std::pair(
+                        x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth),
+                        y * tileHeight * roomHeight + j * tileHeight + (0.5f * tileHeight)
+                    ));
+                }
+            }
+        }
+    }
+}
+
+std::vector<std::pair<int, int>> Room::getTreasurePos()
+{
+    return treasurePos;
 }
