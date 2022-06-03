@@ -5,7 +5,7 @@ enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
 class Monster {
 public:
-	Monster(Player* player, RoomGenerator* roomGenerator);
+	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture);
 	void display(sf::RenderWindow& window) const;
 	void update();
 private:
@@ -19,6 +19,7 @@ private:
 	void follow();
 	void flee();
 	void prepareAttack();
+	void animSprite();
 	float x;
 	float y;
 	float angle = 0;
@@ -36,4 +37,10 @@ private:
 	State action = State::Sleep;
 	Player* player;
 	RoomGenerator* roomGenerator;
+
+	sf::Texture* texture;
+	int rectOffsetX = 0;
+	int rectOffsetY = 0;
+	sf::Clock animTimer;
+	bool lastState = false;
 };

@@ -1,7 +1,8 @@
 #include "Monster.h"
 #include <cmath>
 
-Monster::Monster(Player* player, RoomGenerator* roomGenerator) : player(player), roomGenerator(roomGenerator)
+Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture) : 
+	player(player), roomGenerator(roomGenerator), texture(texture)
 {
 	std::pair<int, int> farthestRoomPos = roomGenerator->getFarthestRoomPos();
 	
@@ -11,13 +12,52 @@ Monster::Monster(Player* player, RoomGenerator* roomGenerator) : player(player),
 }
 
 void Monster::display(sf::RenderWindow& window) const {
-	sf::RectangleShape rect;
+	/*sf::RectangleShape rect;
 	rect.setSize(sf::Vector2f(2, 2));
 	rect.setOrigin(rect.getSize() / 2.f);
 	rect.setRotation(angle);
 	rect.setFillColor(sf::Color::Red);
 	rect.setPosition(x, y);
-	window.draw(rect);
+	window.draw(rect);*/
+	sf::Sprite sprite;
+	sprite.setTexture(*texture);
+	sprite.setTextureRect(sf::IntRect(rectOffsetX, rectOffsetY, 256, 128));
+	sprite.setScale(sf::Vector2f(0.2f, 0.2f));
+	sf::FloatRect bounds = sprite.getLocalBounds();
+	float wi = bounds.width;
+	float hi = bounds.height;
+	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
+	sprite.setPosition(sf::Vector2f(x, y));
+	sprite.setRotation(angle + 180);
+	if (action == State::Attack) sprite.setScale(sf::Vector2f(-0.2f, 0.2f));
+	window.draw(sprite);
+}
+
+void Monster::animSprite() {
+	if (action == State::Attack) {
+		rectOffsetY = 128;
+		if (lastState == false) rectOffsetX = 0;
+		if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
+			rectOffsetX += 256;
+			if (rectOffsetX >= 2304) {
+				rectOffsetX = 0;
+			}
+			animTimer.restart();
+		}
+		lastState = true;
+	}
+	else {
+		rectOffsetY = 0;
+		if (lastState == true) rectOffsetX = 0;
+		if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
+			rectOffsetX += 256;
+			if (rectOffsetX >= 1792) {
+				rectOffsetX = 0;
+			}
+			animTimer.restart();
+		}
+		lastState = false;
+	}
 }
 
 void Monster::update() {
@@ -71,6 +111,7 @@ void Monster::update() {
 		rotateToward(player->get_x(), player->get_y());
 	}
 	moveForward();
+	animSprite();
 }
 
 void Monster::rotateToward(float x1, float y1)

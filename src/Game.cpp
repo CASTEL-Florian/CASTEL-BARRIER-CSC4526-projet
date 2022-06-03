@@ -51,9 +51,9 @@ void Game::render() const
 		//b->renderRectangle(*window);
 	}
 	treasureManager->displayTreasures(*window);
+	monster->display(*window);
 	player->renderLight(*window);
 	player->renderSprite(*window);
-	monster->display(*window);
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
 			r->display_fog(*window);
@@ -83,6 +83,9 @@ void Game::initVariables() {
 	sf::Texture crab_texture;
 	crab_texture.loadFromFile("resources/crab_spritesheet.png");
 	textures.push_back(crab_texture);
+	sf::Texture monster_texture;
+	monster_texture.loadFromFile("resources/kalmar_spritesheet.png");
+	textures.push_back(monster_texture);
 
 	Player newPlayer{ engine_power };
 	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[0], 0.2f);
@@ -95,7 +98,7 @@ void Game::initVariables() {
 	boxes.push_back(std::make_unique<Crab>(crab));
 
     rooms = roomGenerator.generateMap(world.get(), nb_rooms);
-	monster = std::make_unique<Monster>(player.get(), &roomGenerator);
+	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3]);
 
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator);
 	treasureManager->createMainTreasures(rooms);
