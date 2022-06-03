@@ -83,7 +83,7 @@ void Player::renderLight(sf::RenderWindow& window) const {
 }
 
 void Player::animSprite() {
-	if (animTimer.getElapsedTime().asMilliseconds() >= 25) {
+	if (animTimer.getElapsedTime().asMilliseconds() >= 84) {
 		rectOffset += 64;
 		if (rectOffset >= 832) {
 			rectOffset = 0;
