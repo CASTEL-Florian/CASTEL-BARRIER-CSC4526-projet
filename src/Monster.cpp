@@ -89,13 +89,13 @@ void Monster::update() {
 		}
 		return;
 	}
-	chaseTime -= 1 / 60.f;
 	
 	if (action == State::Follow && distanceFromPlayer() <= attackRange) {
 		prepareAttack();
 	}
 	if (action == State::PrepareAttack) {
 		actionTime -= 1 / 60.f;
+		chaseTime -= 1 / 60.f;
 		if (actionTime < 0) {
 			dash();
 		}
@@ -103,11 +103,13 @@ void Monster::update() {
 	}
 	if (action == State::Attack) {
 		actionTime -= 1 / 60.f;
+		chaseTime -= 1 / 60.f;
 		if (actionTime < 0) {
 			follow();
 		}
 	}
 	if (action == State::Follow) {
+		chaseTime -= 1 / 60.f;
 		rotateToward(player->get_x(), player->get_y());
 	}
 	moveForward();
