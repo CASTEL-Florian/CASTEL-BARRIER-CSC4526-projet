@@ -22,12 +22,12 @@ void Game::update()
 	oxygenBar.update(elapsed);
 	pollEvents();
 	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics
-	for (auto &b : boxes)
-		b->update();
-	player->update();
+	for (auto const& o : objects)
+		o->update(elapsed);
+	player->update(elapsed);
 	player->updateRoomPosition();
-	monster->update();
-	treasureManager->update();
+	monster->update(elapsed);
+	treasureManager->update(elapsed);
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
@@ -54,14 +54,14 @@ void Game::render() const
 			r->display(*window);
 	}
 
-	for (auto& b : boxes) {
-		b->renderSprite(*window);
-		//b->renderRectangle(*window);
-	}
+	for (auto& o : objects)
+		o->display(*window);
+		
+	//}
 	treasureManager->displayTreasures(*window);
 	monster->display(*window);
 	player->renderLight(*window);
-	player->renderSprite(*window);
+	player->display(*window);
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
 			r->display_fog(*window);
@@ -74,7 +74,6 @@ void Game::render() const
 }
 
 void Game::initVariables() {
-	
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "4526 lieues sous les mers");
     window->setFramerateLimit(60);
 	minimap = std::make_unique<Minimap>("resources/minimap.png");
@@ -101,19 +100,12 @@ void Game::initVariables() {
 	chest_texture.loadFromFile("resources/treasure_spritesheet.png");
 	textures.push_back(chest_texture); //5
 
-	Player newPlayer{ engine_power };
-	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[0], 0.2f);
-	player = std::make_unique<Player>(newPlayer);
-	Box crate;
-	crate.init(world.get(), b2Vec2(roomWidth * tileWidth / 2 + 2 * tileWidth, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[1], 0.2f);
-	boxes.push_back(std::make_unique<Box>(crate));
-	Crab crab;
-	crab.init(world.get(), b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[2], 0.2f);
-	boxes.push_back(std::make_unique<Crab>(crab));
-
+	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
+	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2)));
+	objects.push_back(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 2 * tileWidth, roomHeight * tileHeight / 2)));
     rooms = roomGenerator.generateMap(nb_rooms);
 	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
-	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3]);
+	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], 0.2f);
 
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
 	treasureManager->createMainTreasures(rooms);

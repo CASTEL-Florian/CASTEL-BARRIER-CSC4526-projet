@@ -12,6 +12,8 @@
 #include "Monster.h"
 #include "TreasureManager.h"
 #include "Crab.h"
+#include "Object.h"
+#include "Crate.h"
 
 
 class Game
@@ -34,7 +36,7 @@ private:
 
 	std::unique_ptr<b2World> world;
 
-	std::vector<std::unique_ptr<Box>> boxes;
+	std::vector<std::unique_ptr<Object>> objects;
 	std::vector<sf::Texture> textures;
 
 	std::unique_ptr<Player> player;

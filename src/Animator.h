@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 class Animator {
 public:
@@ -10,15 +11,17 @@ public:
 	void setOrigin(sf::Vector2f origin);
 	void setRotation(float angle);
 	void setPosition(sf::Vector2f pos);
+	void setScale(sf::Vector2f s);
+	sf::FloatRect getLocalBounds();
+	void setMirrored(bool mirrored);
 private:
-	float animTimer;
+	float animTimer = 0;
 	sf::Texture* texture;
 	sf::Sprite sprite;
 	sf::IntRect spriteRect;
 	std::vector<int> imagesNumber;
 	int spriteWidth;
 	int spriteHeight;
-	float scale;
 	float animationTimestep;
 	int animationNumber = 0;
 };

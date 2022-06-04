@@ -1,16 +1,16 @@
 #pragma once
 #include "Box.h"
 #include "Room.h"
+#include "Animator.h"
+#include "Object.h"
 
-class Player : public Box {
+class Player : public Box, public Object {
 public:
-	explicit Player(const float enginePower);
-	void initSprite(sf::Texture* textur, const float scal) override;
+	Player(b2World* world, const float enginePower, sf::Texture* texture, float scale);
 	void move(const b2Vec2& vec);
-	void update() override;
+	void update(sf::Time elapsed) override;
 	void renderLight(sf::RenderWindow& window) const;
-	void renderSprite(sf::RenderWindow& window) const override;
-	void animSprite();
+	void display(sf::RenderWindow& window) const override;
 	void updateRoomPosition();
 	int getRoomX() const;
 	int getRoomY() const;
@@ -19,5 +19,5 @@ private:
 	int roomX;
 	int roomY;
 	int rectOffset = 0;
-	sf::Clock animTimer;
+	std::unique_ptr<Animator> animator;
 };

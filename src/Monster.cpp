@@ -1,68 +1,32 @@
 #include "Monster.h"
 #include <cmath>
 
-Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture) : 
-	player(player), roomGenerator(roomGenerator), texture(texture)
+Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale) : 
+	player(player), roomGenerator(roomGenerator)
 {
 	std::pair<int, int> farthestRoomPos = roomGenerator->getFarthestRoomPos();
 	
 	x = (farthestRoomPos.first + 0.5f) * roomWidth* tileWidth;
 	y = (farthestRoomPos.second + 0.5f) * roomHeight * tileHeight;
 	explore();
+	animator = std::make_unique<Animator>(texture, scale, 256, 128, 0.1f, std::vector<int> { 8,10 });
+	auto bounds = animator->getLocalBounds();
+	float wi = bounds.width;
+	float hi = bounds.height;
+	animator->setOrigin(sf::Vector2f(wi, hi) / 2.f);
 }
 
 void Monster::display(sf::RenderWindow& window) const {
-	/*sf::RectangleShape rect;
-	rect.setSize(sf::Vector2f(2, 2));
-	rect.setOrigin(rect.getSize() / 2.f);
-	rect.setRotation(angle);
-	rect.setFillColor(sf::Color::Red);
-	rect.setPosition(x, y);
-	window.draw(rect);*/
-	sf::Sprite sprite;
-	sprite.setTexture(*texture);
-	sprite.setTextureRect(sf::IntRect(rectOffsetX, rectOffsetY, 256, 128));
-	sprite.setScale(sf::Vector2f(0.2f, 0.2f));
-	sf::FloatRect bounds = sprite.getLocalBounds();
-	float wi = bounds.width;
-	float hi = bounds.height;
-	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
-	sprite.setPosition(sf::Vector2f(x, y));
-	sprite.setRotation(angle + 180);
-	if (action == State::Attack) sprite.setScale(sf::Vector2f(-0.2f, 0.2f));
-	window.draw(sprite);
+	animator->setPosition(sf::Vector2f(x, y));
+	animator->setRotation(angle + 180);
+	if (action == State::Attack) animator->setScale(sf::Vector2f(-0.2f, 0.2f));
+	animator->display(window);
 }
 
-void Monster::animSprite() {
-	if (action == State::Attack) {
-		rectOffsetY = 128;
-		if (lastState == false) rectOffsetX = 0;
-		if (animTimer.getElapsedTime().asSeconds() >= attackDuration / 10) {
-			rectOffsetX += 256;
-			if (rectOffsetX >= 2304) {
-				rectOffsetX = 0;
-			}
-			animTimer.restart();
-		}
-		lastState = true;
-	}
-	else {
-		rectOffsetY = 0;
-		if (lastState == true) rectOffsetX = 0;
-		if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
-			rectOffsetX += 256;
-			if (rectOffsetX >= 1792) {
-				rectOffsetX = 0;
-			}
-			animTimer.restart();
-		}
-		lastState = false;
-	}
-}
 
-void Monster::update() {
+void Monster::update(sf::Time elapsed) {
 	if (action == State::Flee) {
-		actionTime -= 1 / 60.f;
+		actionTime -= elapsed.asSeconds();
 		if (actionTime <= 0) {
 			sleep(5);
 		}
@@ -80,7 +44,7 @@ void Monster::update() {
 		flee();
 	}
 	if (action == State::Sleep) {
-		actionTime -= 1 / 60.f;
+		actionTime -= elapsed.asSeconds();
 		if (distanceFromPlayer() <= playerDetectRange) {
 			follow();
 		}
@@ -94,26 +58,30 @@ void Monster::update() {
 		prepareAttack();
 	}
 	if (action == State::PrepareAttack) {
-		actionTime -= 1 / 60.f;
-		chaseTime -= 1 / 60.f;
+		actionTime -= elapsed.asSeconds();
+		chaseTime -= elapsed.asSeconds();
 		if (actionTime < 0) {
 			dash();
 		}
 
 	}
 	if (action == State::Attack) {
-		actionTime -= 1 / 60.f;
-		chaseTime -= 1 / 60.f;
+		actionTime -= elapsed.asSeconds();
+		chaseTime -= elapsed.asSeconds();
 		if (actionTime < 0) {
 			follow();
 		}
 	}
 	if (action == State::Follow) {
-		chaseTime -= 1 / 60.f;
+		chaseTime -= elapsed.asSeconds();
 		rotateToward(player->get_x(), player->get_y());
 	}
 	moveForward();
-	animSprite();
+	if (action == State::Attack) 
+		animator->playAnimation(1);
+	else
+		animator->playAnimation(0);
+	animator->update(elapsed);
 }
 
 void Monster::rotateToward(float x1, float y1)

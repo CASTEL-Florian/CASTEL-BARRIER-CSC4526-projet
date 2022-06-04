@@ -1,15 +1,14 @@
 #pragma once
 #include "Box.h"
+#include "Animator.h"
+#include "Object.h"
 
-class Crab : public Box {
+class Crab : public Box, public Object {
 public:
-	Crab() = default;
-	void initSprite(sf::Texture* textur, const float scal) override;
-	void initBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy) override;
-	void update() override;
-	void renderSprite(sf::RenderWindow& window) const override;
-	void animSprite();
+	Crab(b2World* world, sf::Texture *texture, float scal, const b2Vec2& position);
+	void initCrabBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy);
+	void update(sf::Time elapsed) override;
+	void display(sf::RenderWindow& window) const override;
 private:
-	int rectOffset = 0;
-	sf::Clock animTimer;
+	std::unique_ptr<Animator> animator;
 };

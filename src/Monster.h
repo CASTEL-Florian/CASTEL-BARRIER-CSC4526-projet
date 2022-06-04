@@ -3,11 +3,11 @@
 #include "RoomGenerator.h"
 enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
-class Monster {
+class Monster : public Object{
 public:
-	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture);
-	void display(sf::RenderWindow& window) const;
-	void update();
+	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale);
+	void display(sf::RenderWindow& window) const override;
+	void update(sf::Time elapsed) override;
 private:
 	void rotateToward(float x1, float y1);
 	void moveForward();
@@ -19,7 +19,6 @@ private:
 	void follow();
 	void flee();
 	void prepareAttack();
-	void animSprite();
 	float x;
 	float y;
 	float angle = 0;
@@ -38,9 +37,5 @@ private:
 	Player* player;
 	RoomGenerator* roomGenerator;
 
-	sf::Texture* texture;
-	int rectOffsetX = 0;
-	int rectOffsetY = 0;
-	sf::Clock animTimer;
-	bool lastState = false;
+	std::unique_ptr<Animator> animator;
 };

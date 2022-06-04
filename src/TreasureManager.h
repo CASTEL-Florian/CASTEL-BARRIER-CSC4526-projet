@@ -8,7 +8,7 @@ class TreasureManager {
 public:
 	TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture);
 	void displayTreasures(sf::RenderWindow& window) const;
-	void update();
+	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 	void findTreasure(bool isCoin);
 	std::pair<float, float> findAvailablePlace() const;

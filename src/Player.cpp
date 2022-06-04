@@ -2,21 +2,15 @@
 #include <cmath>
 
 
-Player::Player(const float enginePower) :
+Player::Player(b2World* world, const float enginePower, sf::Texture* texture, float scale) :
 	enginePower(enginePower)
 {
-}
-
-void Player::initSprite(sf::Texture* textur, const float scal) {
-	scale = scal;
-	texture = textur;
-	sf::Sprite newSprite;
-	newSprite.setTexture(*texture);
-	newSprite.setTextureRect(sf::IntRect(0, 0, 64, 32));
-	newSprite.setScale(sf::Vector2f(scale, scale));
-	sf::FloatRect bounds = newSprite.getGlobalBounds();
-	w = bounds.width;
-	h = bounds.height;
+	animator = std::make_unique<Animator>(texture, scale, 64, 32, 0.1f, std::vector<int> {14});
+	sf::FloatRect bounds = animator->getLocalBounds();
+	w = bounds.width * scale;
+	h = bounds.height * scale;
+	animator->setOrigin(sf::Vector2f(w / scale, h / scale) / 2.f);
+	initBox(world, b2Vec2(roomWidth * tileWidth / 2, roomHeight * tileHeight / 2), b2_dynamicBody);
 }
 
 void Player::move(const b2Vec2& vec) {
@@ -25,29 +19,22 @@ void Player::move(const b2Vec2& vec) {
 		true);
 }
 
-void Player::update() {
+void Player::update(sf::Time elapsed) {
 	x = body->GetPosition().x;
 	y = -body->GetPosition().y;
 	rota = -body->GetAngle();
-	animSprite();
+	animator->update(elapsed);
 }
 
-void Player::renderSprite(sf::RenderWindow& window) const{
-	sf::Sprite sprite;
-	sprite.setTexture(*texture);
-	sprite.setTextureRect(sf::IntRect(rectOffset, 0, 64, 32));
-	sprite.setScale(sf::Vector2f(scale, scale));
-	sf::FloatRect bounds = sprite.getLocalBounds();
-	float wi = bounds.width;
-	float hi = bounds.height;
-	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
-	sprite.setPosition(sf::Vector2f(x, y));
-	sprite.setRotation(rota * 180.0f / b2_pi);
+void Player::display(sf::RenderWindow& window) const{
+	animator->setPosition(sf::Vector2f(x, y));
+	animator->setRotation(rota * 180.0f / b2_pi);
 	float rotaDegree = rota * 180 / b2_pi;
-	if (float rota360 = rotaDegree - std::floor(rotaDegree / 360) * 360; rota360 > 90 && rota360 < 270) {
-		sprite.setScale(sf::Vector2f(scale, -scale));
-	}
-	window.draw(sprite);
+	if (float rota360 = rotaDegree - std::floor(rotaDegree / 360) * 360; rota360 > 90 && rota360 < 270)
+		animator->setMirrored(true);
+	else
+		animator->setMirrored(false);
+	animator->display(window);
 }
 
 void Player::renderLight(sf::RenderWindow& window) const {
@@ -82,15 +69,6 @@ void Player::renderLight(sf::RenderWindow& window) const {
 	window.draw(polygon2);
 }
 
-void Player::animSprite() {
-	if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
-		rectOffset += 64;
-		if (rectOffset >= 832) {
-			rectOffset = 0;
-		}
-		animTimer.restart();
-	}
-}
 
 void Player::updateRoomPosition()
 {

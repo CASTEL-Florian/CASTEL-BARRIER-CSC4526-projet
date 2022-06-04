@@ -1,5 +1,4 @@
 #include "TreasureManager.h"
-#include "TreasureManager.h"
 #include "Treasure.h"
 
 
@@ -31,12 +30,12 @@ void TreasureManager::displayTreasures(sf::RenderWindow& window) const
 	}
 }
 
-void TreasureManager::update()
+void TreasureManager::update(sf::Time elapsed)
 {
 	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
 	for (auto &treasure : treasures) {
 		if (closeToPlayer(treasure->get_x(), treasure->get_y()))
-			treasure->update();
+			treasure->update(elapsed);
 	}
 }
 

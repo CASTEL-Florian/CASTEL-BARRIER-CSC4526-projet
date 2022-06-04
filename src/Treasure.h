@@ -3,16 +3,15 @@
 
 class TreasureManager;
 
-class Treasure {
+class Treasure : public Object {
 public:
 	Treasure(float x, float y, Player* player, TreasureManager* treasureManager, bool isCoin, sf::Texture* texture);
-	void update();
-	void display(sf::RenderWindow& window) const;
+	void update(sf::Time elapsed) override;
+	void display(sf::RenderWindow& window) const override;
 	float get_x() const;
 	float get_y() const;
 private:
 	float distanceFromPlayer() const;
-	void animSprite();
 	float x;
 	float y;
 	bool found = false;
@@ -21,7 +20,5 @@ private:
 	TreasureManager* treasureManager;
 	float playerCatchRange = 5;
 
-	sf::Texture* texture;
-	int rectOffset = 0;
-	sf::Clock animTimer;
+	std::unique_ptr<Animator> animator;
 };

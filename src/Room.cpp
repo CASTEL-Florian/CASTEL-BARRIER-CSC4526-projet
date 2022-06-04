@@ -198,7 +198,7 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
                 int choice = random_1_to_n(numberOfTilesChoices);
                 if (tiles[i + j * roomWidth] != emptyTile) {
                     Box newBox;
-                    newBox.init(world, b2Vec2(x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth), -(y * tileHeight * roomHeight) - j * tileHeight - (0.5f * tileHeight)), b2_staticBody, 1, b2Vec2(tileWidth, tileHeight));
+                    newBox.init(world, b2Vec2(x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth), (y * tileHeight * roomHeight) + j * tileHeight + (0.5f * tileHeight)), b2_staticBody, b2Vec2(tileWidth, tileHeight));
                     tiles[i + j * roomWidth] = choice;
                 }
                 else{

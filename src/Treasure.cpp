@@ -2,19 +2,30 @@
 #include "TreasureManager.h"
 
 Treasure::Treasure(float x, float y, Player* player, TreasureManager* treasureManager, bool isCoin, sf::Texture* texture) : 
-	x(x), y(y), player(player), treasureManager(treasureManager), isCoin(isCoin), texture(texture)
+	x(x), y(y), player(player), treasureManager(treasureManager), isCoin(isCoin)
 {
+	int spriteLength = 32;
+	int numberOfImages = 12;
+	if (isCoin) {
+		spriteLength = 16;
+		numberOfImages = 14;
+	}
+	animator = std::make_unique<Animator>(texture, 0.2f, spriteLength, spriteLength, 0.1f, std::vector<int> {numberOfImages});
+	sf::FloatRect bounds = animator->getLocalBounds();
+	float wi = bounds.width;
+	float hi = bounds.height;
+	animator->setOrigin(sf::Vector2f(wi, hi) / 2.f);
 }
 
 
 
-void Treasure::update()
+void Treasure::update(sf::Time elapsed)
 {
 	if (!found && distanceFromPlayer() < playerCatchRange) {
 		found = true;
 		treasureManager->findTreasure(isCoin);
 	}
-	animSprite();
+	animator->update(elapsed);
 }
 
 void Treasure::display(sf::RenderWindow& window) const
@@ -31,17 +42,8 @@ void Treasure::display(sf::RenderWindow& window) const
 	rect.setPosition(x, y);
 	window.draw(rect);*/
 	
-	sf::Sprite sprite;
-	sprite.setTexture(*texture);
-	if(isCoin) sprite.setTextureRect(sf::IntRect(rectOffset, 0, 16, 16));
-	else sprite.setTextureRect(sf::IntRect(rectOffset, 0, 32, 32));
-	sprite.setScale(sf::Vector2f(0.2f, 0.2f));
-	sf::FloatRect bounds = sprite.getLocalBounds();
-	float wi = bounds.width;
-	float hi = bounds.height;
-	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
-	sprite.setPosition(sf::Vector2f(x, y));
-	window.draw(sprite);
+	animator->setPosition(sf::Vector2f(x, y));
+	animator->display(window);
 }
 float Treasure::get_x() const
 {
@@ -51,27 +53,6 @@ float Treasure::get_x() const
 float Treasure::get_y() const
 {
 	return y;
-}
-
-void Treasure::animSprite() {
-	if (isCoin) {
-		if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
-			rectOffset += 16;
-			if (rectOffset >= 208) {
-				rectOffset = 0;
-			}
-			animTimer.restart();
-		}
-	}
-	else {
-		if (animTimer.getElapsedTime().asMilliseconds() >= 100) {
-			rectOffset += 32;
-			if (rectOffset >= 352) {
-				rectOffset = 0;
-			}
-			animTimer.restart();
-		}
-	}
 }
 
 float Treasure::distanceFromPlayer() const
