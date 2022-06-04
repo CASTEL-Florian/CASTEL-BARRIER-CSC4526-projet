@@ -1,11 +1,13 @@
 #pragma once
 #include "Player.h"
 #include "RoomGenerator.h"
+#include "SoundHandler.h"
+
 enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
 class Monster {
 public:
-	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture);
+	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, SoundHandler* soundhandler);
 	void display(sf::RenderWindow& window) const;
 	void update();
 private:
@@ -43,4 +45,6 @@ private:
 	int rectOffsetY = 0;
 	sf::Clock animTimer;
 	bool lastState = false;
+
+	SoundHandler* soundHandler;
 };

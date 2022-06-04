@@ -111,9 +111,12 @@ void Game::initVariables() {
 	crab.init(world.get(), b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[2], 0.2f);
 	boxes.push_back(std::make_unique<Crab>(crab));
 
+	soundHandler = std::make_unique<SoundHandler>();
+	soundHandler->playMusic();
+
     rooms = roomGenerator.generateMap(nb_rooms);
 	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
-	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3]);
+	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], soundHandler.get());
 
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
 	treasureManager->createMainTreasures(rooms);

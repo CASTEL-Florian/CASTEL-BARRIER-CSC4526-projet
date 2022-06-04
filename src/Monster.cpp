@@ -1,8 +1,8 @@
 #include "Monster.h"
 #include <cmath>
 
-Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture) : 
-	player(player), roomGenerator(roomGenerator), texture(texture)
+Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, SoundHandler* soundHandler) : 
+	player(player), roomGenerator(roomGenerator), texture(texture), soundHandler(soundHandler)
 {
 	std::pair<int, int> farthestRoomPos = roomGenerator->getFarthestRoomPos();
 	
@@ -62,12 +62,14 @@ void Monster::animSprite() {
 
 void Monster::update() {
 	if (action == State::Flee) {
+		soundHandler->switchToCalm();
 		actionTime -= 1 / 60.f;
 		if (actionTime <= 0) {
 			sleep(5);
 		}
 	}
 	if (action == State::Explore) {
+		soundHandler->switchToCalm();
 		rotateToward(targetX, targetY);
 		if (std::abs(x - targetX) < tileWidth && std::abs(y - targetY) < tileHeight) {
 			sleep(1);
@@ -80,6 +82,7 @@ void Monster::update() {
 		flee();
 	}
 	if (action == State::Sleep) {
+		soundHandler->switchToCalm();
 		actionTime -= 1 / 60.f;
 		if (distanceFromPlayer() <= playerDetectRange) {
 			follow();
@@ -94,6 +97,7 @@ void Monster::update() {
 		prepareAttack();
 	}
 	if (action == State::PrepareAttack) {
+		soundHandler->switchToFrantic();
 		actionTime -= 1 / 60.f;
 		chaseTime -= 1 / 60.f;
 		if (actionTime < 0) {
@@ -102,6 +106,7 @@ void Monster::update() {
 
 	}
 	if (action == State::Attack) {
+		soundHandler->switchToFrantic();
 		actionTime -= 1 / 60.f;
 		chaseTime -= 1 / 60.f;
 		if (actionTime < 0) {
@@ -109,6 +114,7 @@ void Monster::update() {
 		}
 	}
 	if (action == State::Follow) {
+		soundHandler->switchToFrantic();
 		chaseTime -= 1 / 60.f;
 		rotateToward(player->get_x(), player->get_y());
 	}
