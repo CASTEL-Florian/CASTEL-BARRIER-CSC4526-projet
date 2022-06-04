@@ -1,4 +1,5 @@
 #include "RoomGenerator.h"
+#include "RoomGenerator.h"
 
 int random_1_to_n(int const nbMax)
 {
@@ -44,11 +45,10 @@ RoomGenerator::RoomGenerator()
     }
 }
 
-std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, int nb_rooms) 
+std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(int nb_rooms) 
 {
     float farthestRoomDistance = 0;
     std::vector<std::unique_ptr<Room>> rooms;
-    std::set<std::pair<int, int>> positions;
     std::map<std::pair<int, int>, int> available_positions;
     std::vector<std::pair<int, int>> adjacent_positions;
     adjacent_positions.push_back(std::pair(0, 1));
@@ -56,7 +56,7 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
     adjacent_positions.push_back(std::pair(1, 0));
     adjacent_positions.push_back(std::pair(-1, 0));
     rooms.push_back(std::make_unique<Room>(0, 0));
-    positions.insert(std::pair(0, 0));
+    roomPositions.insert(std::pair(0, 0));
     for (auto pos : adjacent_positions)
         available_positions[pos] = 0;
     int cur_index = 1;
@@ -69,10 +69,10 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
         new_room->open_path(rooms[it->second]->get_position());
         rooms[it->second]->open_path(new_room->get_position());
         rooms.push_back(std::move(new_room));
-        positions.insert(std::pair(new_x, new_y));
+        roomPositions.insert(std::pair(new_x, new_y));
         available_positions.erase(it);
         for (auto const& [adj_x, adj_y] : adjacent_positions) {
-            if (!positions.contains(std::pair(adj_x + new_x, adj_y + new_y)))
+            if (!roomPositions.contains(std::pair(adj_x + new_x, adj_y + new_y)))
                 available_positions[std::pair(adj_x + new_x, adj_y + new_y)] = cur_index;
         }
         cur_index++;
@@ -83,11 +83,16 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
         }
     }
 
+    
+    return rooms;
+}
+
+std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std::vector<std::unique_ptr<Room>> rooms)
+{
     std::vector<int> deadEnds;
     std::vector<int> normalRooms;
     for (int i = 0; i < rooms.size(); i++) {
         rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], corridorWidth);
-        roomPositions.push_back(std::pair<int, int>(rooms[i]->get_x(), rooms[i]->get_y()));
         if (i > 0) {
             if (rooms[i]->isDeadEnd())
                 deadEnds.push_back(i);
@@ -108,7 +113,7 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
         for (auto const& id : deadEnds) {
             rooms[id]->generateObjects(roomTileMaps[1]);
         }
-        for (int i = 0; i < treasuresCount - deadEnds.size() ; i++) {
+        for (int i = 0; i < treasuresCount - deadEnds.size(); i++) {
             if (normalRooms.size() <= 0) {
                 break;
             }
@@ -118,7 +123,6 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(b2World* world, in
             normalRooms.erase(it);
         }
     }
-    
     return rooms;
 }
 
@@ -129,5 +133,7 @@ std::pair<int, int> RoomGenerator::getFarthestRoomPos() const
 
 std::pair<int, int> RoomGenerator::getRandomRoomPos() const
 {
-    return roomPositions[random_1_to_n(roomPositions.size()) - 1];
+    auto it = std::begin(roomPositions);
+    std::advance(it, random_1_to_n(roomPositions.size()) - 1);
+    return *it;
 }

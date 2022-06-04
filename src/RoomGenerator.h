@@ -15,7 +15,8 @@ class RoomGenerator
 {
 public:
 	RoomGenerator();
-	std::vector<std::unique_ptr<Room>> generateMap(b2World* world, int nb_rooms);
+	std::vector<std::unique_ptr<Room>> generateMap(int nb_rooms);
+	std::vector<std::unique_ptr<Room>> buildRooms(b2World* world, std::vector<std::unique_ptr<Room>> rooms);
 	std::pair<int, int> getFarthestRoomPos() const;
 	std::pair<int, int> getRandomRoomPos() const;
 	
@@ -26,6 +27,6 @@ private:
 	std::unique_ptr<sf::Texture> m_tileset;
 
 	std::vector<std::vector<int>> roomTileMaps;
-	std::vector<std::pair<int, int>> roomPositions;
+	std::set<std::pair<int, int>> roomPositions;
 };
 
