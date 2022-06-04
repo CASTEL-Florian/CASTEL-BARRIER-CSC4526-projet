@@ -8,7 +8,7 @@
 #include "pugixml.hpp"
 
 const std::vector<std::string> roomFiles = { "resources/room1.xml", "resources/treasureRoom1.xml" };
-const std::string tileset = "resources/test_tileset.png";
+const std::string tileset = "resources/room_spritesheet.png";
 int random_1_to_n(int const nbMax);
 
 class RoomGenerator

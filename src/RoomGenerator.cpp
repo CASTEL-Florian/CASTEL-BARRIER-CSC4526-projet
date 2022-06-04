@@ -1,5 +1,4 @@
 #include "RoomGenerator.h"
-#include "RoomGenerator.h"
 
 int random_1_to_n(int const nbMax)
 {

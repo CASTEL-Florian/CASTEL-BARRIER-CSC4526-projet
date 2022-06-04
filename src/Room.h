@@ -9,6 +9,7 @@ const int roomWidth = 15;
 const int roomHeight = 15;
 const int tileWidth = 6;
 const int tileHeight = 6;
+const int emptyBackgroundTilePercentage = 50;
 
 class Room
 {
@@ -29,8 +30,9 @@ public:
 	std::vector<std::pair<int, int>> getTreasurePos();
 private:
 	
-	const int spriteWidth = 2;
-	const int spriteHeight = 2;
+	const int spriteWidth = 16;
+	const int spriteHeight = 16;
+	const int numberOfTilesChoices = 6;
 	const int emptyTile = 0;
 	TileMap map;
 	int x;
