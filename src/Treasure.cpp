@@ -30,6 +30,7 @@ void Treasure::display(sf::RenderWindow& window) const
 	rect.setFillColor(sf::Color::Yellow);
 	rect.setPosition(x, y);
 	window.draw(rect);*/
+	
 	sf::Sprite sprite;
 	sprite.setTexture(*texture);
 	if(isCoin) sprite.setTextureRect(sf::IntRect(rectOffset, 0, 16, 16));
@@ -41,6 +42,15 @@ void Treasure::display(sf::RenderWindow& window) const
 	sprite.setOrigin(sf::Vector2f(wi, hi) / 2.f);
 	sprite.setPosition(sf::Vector2f(x, y));
 	window.draw(sprite);
+}
+float Treasure::get_x() const
+{
+	return x;
+}
+
+float Treasure::get_y() const
+{
+	return y;
 }
 
 void Treasure::animSprite() {

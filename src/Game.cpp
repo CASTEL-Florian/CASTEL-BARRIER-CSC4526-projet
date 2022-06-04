@@ -50,7 +50,8 @@ void Game::render() const
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
 			r->enter();
-		r->display(*window);
+		if (std::abs(r->get_x() - player->getRoomX()) + std::abs(r->get_y() - player->getRoomY()) <= 1)
+			r->display(*window);
 	}
 
 	for (auto& b : boxes) {

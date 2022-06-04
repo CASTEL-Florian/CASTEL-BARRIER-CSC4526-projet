@@ -2,6 +2,9 @@
 #include "TreasureManager.h"
 #include "Treasure.h"
 
+
+
+
 TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture) :
 	player(player), roomGenerator(roomGenerator), coin_texture(coin_texture), chest_texture(chest_texture)
 {
@@ -23,7 +26,8 @@ TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator, s
 void TreasureManager::displayTreasures(sf::RenderWindow& window) const
 {
 	for (auto &treasure : treasures) {
-		treasure->display(window);
+		if (closeToPlayer(treasure->get_x(), treasure->get_y()))
+			treasure->display(window);
 	}
 }
 
@@ -31,7 +35,8 @@ void TreasureManager::update()
 {
 	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
 	for (auto &treasure : treasures) {
-		treasure->update();
+		if (closeToPlayer(treasure->get_x(), treasure->get_y()))
+			treasure->update();
 	}
 }
 
@@ -72,3 +77,11 @@ void TreasureManager::createTreasure(float treasureX, float treasureY, bool isCo
 	if(isCoin) treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, coin_texture));
 	else treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, chest_texture));
 }
+
+bool TreasureManager::closeToPlayer(float x, float y) const
+{
+	float roomX = std::floor(x / (roomWidth * tileWidth));
+	float roomY = std::floor(y / (roomWidth * tileWidth));
+	return std::abs(roomX - player->getRoomX()) + std::abs(roomY - player->getRoomY()) <= 1;
+}
+

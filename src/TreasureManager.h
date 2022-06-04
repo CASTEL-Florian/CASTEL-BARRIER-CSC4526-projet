@@ -28,4 +28,5 @@ private:
 	const int coinCount = 20;
 	sf::Texture* coin_texture;
 	sf::Texture* chest_texture;
+	bool closeToPlayer(float x, float y) const;
 };
