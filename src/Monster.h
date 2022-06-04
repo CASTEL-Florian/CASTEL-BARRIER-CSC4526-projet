@@ -1,6 +1,8 @@
 #pragma once
 #include "Player.h"
 #include "RoomGenerator.h"
+#include "SoundHandler.h"
+
 enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
 class Monster : public Object{
@@ -38,4 +40,5 @@ private:
 	RoomGenerator* roomGenerator;
 
 	std::unique_ptr<Animator> animator;
+	SoundHandler* soundHandler;
 };

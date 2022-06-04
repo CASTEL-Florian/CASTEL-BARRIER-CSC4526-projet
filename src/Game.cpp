@@ -103,7 +103,10 @@ void Game::initVariables() {
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2)));
 	objects.push_back(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 2 * tileWidth, roomHeight * tileHeight / 2)));
-    rooms = roomGenerator.generateMap(nb_rooms);
+	soundHandler = std::make_unique<SoundHandler>();
+	soundHandler->playMusic();
+
+	rooms = roomGenerator.generateMap(nb_rooms);
 	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
 	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], 0.2f);
 

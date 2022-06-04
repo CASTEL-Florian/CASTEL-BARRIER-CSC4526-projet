@@ -14,6 +14,7 @@
 #include "Crab.h"
 #include "Object.h"
 #include "Crate.h"
+#include "SoundHandler.h"
 
 
 class Game
@@ -43,6 +44,7 @@ private:
 	std::unique_ptr<Monster> monster;
 
 	std::unique_ptr<TreasureManager> treasureManager;
+	std::unique_ptr<SoundHandler> soundHandler;
 
 	sf::View view;
 };
