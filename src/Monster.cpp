@@ -27,13 +27,12 @@ void Monster::display(sf::RenderWindow& window) const {
 void Monster::update(sf::Time elapsed) {
 	if (action == State::Flee) {
 		actionTime -= elapsed.asSeconds();
-		soundHandler->switchToCalm();
+		
 		if (actionTime <= 0) {
 			sleep(5);
 		}
 	}
 	if (action == State::Explore) {
-		soundHandler->switchToCalm();
 		rotateToward(targetX, targetY);
 		if (std::abs(x - targetX) < tileWidth && std::abs(y - targetY) < tileHeight) {
 			sleep(1);
@@ -47,7 +46,6 @@ void Monster::update(sf::Time elapsed) {
 	}
 	if (action == State::Sleep) {
 		actionTime -= elapsed.asSeconds();
-		soundHandler->switchToCalm();
 		if (distanceFromPlayer() <= playerDetectRange) {
 			follow();
 		}
@@ -63,7 +61,7 @@ void Monster::update(sf::Time elapsed) {
 	if (action == State::PrepareAttack) {
 		actionTime -= elapsed.asSeconds();
 		chaseTime -= elapsed.asSeconds();
-		soundHandler->switchToFrantic();
+		
 		if (actionTime < 0) {
 			dash();
 		}
@@ -72,14 +70,12 @@ void Monster::update(sf::Time elapsed) {
 	if (action == State::Attack) {
 		actionTime -= elapsed.asSeconds();
 		chaseTime -= elapsed.asSeconds();
-		soundHandler->switchToFrantic();
 		if (actionTime < 0) {
 			follow();
 		}
 	}
 	if (action == State::Follow) {
 		chaseTime -= elapsed.asSeconds();
-		soundHandler->switchToFrantic();
 		rotateToward(player->get_x(), player->get_y());
 	}
 	moveForward();
@@ -159,6 +155,7 @@ void Monster::dash()
 void Monster::follow()
 {
 	//std::cout << "Following\n";
+	soundHandler->switchToFrantic();
 	action = State::Follow;
 	speed = followSpeed;
 }
@@ -178,4 +175,5 @@ void Monster::flee()
 	actionTime = 5;
 	speed = followSpeed/2;
 	rotateToward(2 * x - player->get_x(), 2 * y - player->get_y());
+	soundHandler->switchToCalm();
 }

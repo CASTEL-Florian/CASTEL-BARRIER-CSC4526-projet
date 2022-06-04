@@ -1,5 +1,5 @@
 #include "SoundHandler.h"
-
+#include <algorithm>
 SoundHandler::SoundHandler() 
 {
 	calm_music = std::make_unique<sf::Music>();
@@ -18,21 +18,21 @@ void SoundHandler::playMusic() {
 }
 
 void SoundHandler::switchToCalm() {
-	if (calm_music->getVolume() < 90) {
-		if (timer.getElapsedTime().asMilliseconds() >= 100) {
-			calm_music->setVolume(calm_music->getVolume() + 10);
-			frantic_music->setVolume(frantic_music->getVolume() - 10);
-			timer.restart();
-		}
-	}
+	calmTarget = 100;
 }
 
 void SoundHandler::switchToFrantic() {
-	if (frantic_music->getVolume() < 90) {
-		if (timer.getElapsedTime().asMilliseconds() >= 100) {
-			frantic_music->setVolume(frantic_music->getVolume() + 10);
-			calm_music->setVolume(calm_music->getVolume() - 10);
-			timer.restart();
-		}
+	calmTarget = 0;
+}
+
+void SoundHandler::update(sf::Time elapsed) const
+{
+	if (calm_music->getVolume() < calmTarget) {
+		calm_music->setVolume(std::min(calm_music->getVolume() + (100 * elapsed.asSeconds() / transitionTimeToCalm), calmTarget));
+		frantic_music->setVolume(100 - calm_music->getVolume());
+	}
+	if (calm_music->getVolume() > calmTarget) {
+		calm_music->setVolume(std::max(calm_music->getVolume() - (100 * elapsed.asSeconds() / transitionTimeToFrantic), calmTarget));
+		frantic_music->setVolume(100 - calm_music->getVolume());
 	}
 }
