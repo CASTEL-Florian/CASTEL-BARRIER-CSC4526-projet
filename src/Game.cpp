@@ -38,7 +38,14 @@ void Game::update()
 void Game::render() const
 {
 
-	window->clear(sf::Color::Blue);
+	window->clear(sf::Color(60, 140, 255));
+	sf::Sprite background;
+	sf::Texture background_texture;
+	background_texture.loadFromFile("resources/background.png");
+	background.setTexture(background_texture);
+	background.setPosition(-420, -420);
+	background.setScale(1.2f, 1.2f);
+	window->draw(background);
 
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
@@ -67,7 +74,7 @@ void Game::render() const
 
 void Game::initVariables() {
 	
-	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "SFML works!");
+	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "4526 lieues sous les mers");
     window->setFramerateLimit(60);
 	minimap = std::make_unique<Minimap>("resources/minimap.png");
 	//box2d world
@@ -77,15 +84,21 @@ void Game::initVariables() {
 	sf::Texture nauti_texture;
 	nauti_texture.loadFromFile("resources/nauti_spritesheet.png");
 	textures.push_back(nauti_texture);
-	sf::Texture crate_texture;
+	sf::Texture crate_texture; //0
 	crate_texture.loadFromFile("resources/crate.png");
 	textures.push_back(crate_texture);
-	sf::Texture crab_texture;
+	sf::Texture crab_texture; //1
 	crab_texture.loadFromFile("resources/crab_spritesheet.png");
 	textures.push_back(crab_texture);
-	sf::Texture monster_texture;
+	sf::Texture monster_texture; //2
 	monster_texture.loadFromFile("resources/kalmar_spritesheet.png");
 	textures.push_back(monster_texture);
+	sf::Texture coin_texture; //3
+	coin_texture.loadFromFile("resources/coin_spritesheet.png");
+	textures.push_back(coin_texture);
+	sf::Texture chest_texture; //4
+	chest_texture.loadFromFile("resources/treasure_spritesheet.png");
+	textures.push_back(chest_texture); //5
 
 	Player newPlayer{ engine_power };
 	newPlayer.init(world.get(), b2Vec2(roomWidth * tileWidth / 2, -roomHeight * tileHeight / 2), b2_dynamicBody, &textures[0], 0.2f);
@@ -101,7 +114,7 @@ void Game::initVariables() {
 	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
 	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3]);
 
-	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator);
+	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
 	treasureManager->createMainTreasures(rooms);
 }
 

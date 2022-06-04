@@ -6,7 +6,7 @@
 
 class TreasureManager {
 public:
-	TreasureManager(Player* player, RoomGenerator* roomGenerator);
+	TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture);
 	void displayTreasures(sf::RenderWindow& window) const;
 	void update();
 	void display(sf::RenderWindow& window) const;
@@ -26,4 +26,6 @@ private:
 	int treasuresCount = 0;
 	int coinFoundCount = 0;
 	const int coinCount = 20;
+	sf::Texture* coin_texture;
+	sf::Texture* chest_texture;
 };

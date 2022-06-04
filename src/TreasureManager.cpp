@@ -2,7 +2,9 @@
 #include "TreasureManager.h"
 #include "Treasure.h"
 
-TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator) : player(player), roomGenerator(roomGenerator) {
+TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture) :
+	player(player), roomGenerator(roomGenerator), coin_texture(coin_texture), chest_texture(chest_texture)
+{
 	//createTreasure(player->get_x(), 30);
 	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
 	{
@@ -67,5 +69,6 @@ void TreasureManager::createMainTreasures(std::vector<std::unique_ptr<Room>> con
 
 void TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)
 {
-	treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin));
+	if(isCoin) treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, coin_texture));
+	else treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, chest_texture));
 }
