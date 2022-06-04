@@ -13,7 +13,7 @@ public:
 	void setPosition(sf::Vector2f pos);
 	void setScale(sf::Vector2f s);
 	sf::FloatRect getLocalBounds();
-	void setMirrored(bool mirrored);
+	void setMirrored(bool mirrored, bool horizontalAxis = false);
 private:
 	float animTimer = 0;
 	sf::Texture* texture;

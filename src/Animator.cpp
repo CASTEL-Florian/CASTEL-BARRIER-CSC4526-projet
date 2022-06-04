@@ -49,10 +49,13 @@ sf::FloatRect Animator::getLocalBounds()
 	return sprite.getLocalBounds();
 }
 
-void Animator::setMirrored(bool mirrored)
+void Animator::setMirrored(bool mirrored, bool horizontalAxis)
 {
 	sf::Vector2f scale = sprite.getScale();
-	sprite.setScale(scale.x, mirrored ? -std::abs(scale.y) : std::abs(scale.y));
+	if (horizontalAxis)
+		sprite.setScale(mirrored ? -std::abs(scale.x) : std::abs(scale.x), scale.y);
+	else
+		sprite.setScale(scale.x, mirrored ? -std::abs(scale.y) : std::abs(scale.y));
 }
 
 void Animator::update(sf::Time elapsed)

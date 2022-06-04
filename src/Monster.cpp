@@ -19,7 +19,10 @@ Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* text
 void Monster::display(sf::RenderWindow& window) const {
 	animator->setPosition(sf::Vector2f(x, y));
 	animator->setRotation(angle + 180);
-	if (action == State::Attack) animator->setScale(sf::Vector2f(-0.2f, 0.2f));
+	if (action == State::Attack|| action == State::PrepareAttack) 
+		animator->setMirrored(true, true); 
+	else 
+		animator->setMirrored(false, true);
 	animator->display(window);
 }
 
