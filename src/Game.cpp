@@ -108,7 +108,7 @@ void Game::initVariables() {
 
 	rooms = roomGenerator.generateMap(nb_rooms);
 	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
-	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], 0.2f);
+	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], 0.2f, soundHandler.get());
 
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
 	treasureManager->createMainTreasures(rooms);

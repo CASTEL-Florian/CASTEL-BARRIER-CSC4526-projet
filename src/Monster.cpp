@@ -1,8 +1,8 @@
 #include "Monster.h"
 #include <cmath>
 
-Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale) : 
-	player(player), roomGenerator(roomGenerator)
+Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale, SoundHandler* soundHandler) :
+	player(player), roomGenerator(roomGenerator), soundHandler(soundHandler)
 {
 	std::pair<int, int> farthestRoomPos = roomGenerator->getFarthestRoomPos();
 	

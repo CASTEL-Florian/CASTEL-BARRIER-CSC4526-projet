@@ -7,7 +7,7 @@ enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
 class Monster : public Object{
 public:
-	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale);
+	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale, SoundHandler* soundHandler);
 	void display(sf::RenderWindow& window) const override;
 	void update(sf::Time elapsed) override;
 private:
