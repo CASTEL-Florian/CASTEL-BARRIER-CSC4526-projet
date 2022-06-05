@@ -10,6 +10,7 @@
 const std::vector<std::string> roomFiles = { "resources/room1.xml", "resources/treasureRoom1.xml" };
 const std::string tileset = "resources/room_spritesheet.png";
 int random_1_to_n(int const nbMax);
+const int corridorWidth = 5;
 
 class RoomGenerator
 {
@@ -21,7 +22,6 @@ public:
 	std::pair<int, int> getRandomRoomPos() const;
 	
 private:
-	const int corridorWidth = 3;
 	std::pair<int, int> farthestRoomPos{ 0,0 };
 	std::unique_ptr<sf::Texture> m_tileset;
 

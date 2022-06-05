@@ -94,7 +94,7 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
     std::vector<int> deadEnds;
     std::vector<int> normalRooms;
     for (int i = 0; i < rooms.size(); i++) {
-        rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], corridorWidth);
+        rooms[i]->build(world, m_tileset.get(), roomTileMaps[0]);
         if (i > 0) {
             if (rooms[i]->isDeadEnd())
                 deadEnds.push_back(i);
