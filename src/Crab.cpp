@@ -44,3 +44,13 @@ void Crab::display(sf::RenderWindow& window) const {
 	animator->setRotation(rota * 180.0f / b2_pi);
 	animator->display(window);
 }
+
+float Crab::get_x() const
+{
+	return x;
+}
+
+float Crab::get_y() const
+{
+	return y;
+}

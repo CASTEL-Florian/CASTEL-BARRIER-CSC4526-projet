@@ -28,6 +28,12 @@ void Game::update()
 	player->updateRoomPosition();
 	currentRoom = currentRoom->updateCurrentRoom(player->getRoomX(), player->getRoomY());
 	currentRoom->enter();
+	currentRoom->updateObjects(elapsed);
+	for (auto& r : currentRoom->getAjacentRooms()) {
+		if (r) {
+			r->updateObjects(elapsed);
+		}
+	}
 	monster->update(elapsed);
 	treasureManager->update(elapsed);
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
@@ -43,15 +49,17 @@ void Game::render() const
 	window->clear(sf::Color(20, 60, 100));
 
 	currentRoom->display(*window);
+	currentRoom->displayObjects(*window);
 	for (auto& r : currentRoom->getAjacentRooms()) {
-		if (r)
+		if (r) {
 			r->display(*window);
+			r->displayObjects(*window);
+		}
 	}
 
 	for (auto& o : objects)
 		o->display(*window);
 		
-	treasureManager->displayTreasures(*window);
 	monster->display(*window);
 	player->renderLight(*window);
 	player->display(*window);
@@ -62,7 +70,6 @@ void Game::render() const
 	treasureManager->display(*window);
 	
 	window->display();
-
 }
 
 void Game::initVariables() {
@@ -101,9 +108,7 @@ void Game::initVariables() {
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - 3 * tileHeight)));
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - 2 * tileHeight)));
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - tileHeight)));
-	
-	objects.push_back(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 2 * tileWidth, roomHeight * tileHeight / 2 - 5 * tileHeight)));
-	
+		
 	objects.push_back(std::make_unique<Fish>(&textures[1], 0.2f, roomWidth * tileWidth / 2 - 2 * tileWidth, roomHeight * tileHeight / 2));
 	soundHandler = std::make_unique<SoundHandler>();
 	soundHandler->playMusic();
@@ -112,9 +117,10 @@ void Game::initVariables() {
 	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
 	currentRoom = rooms[0].get();
 	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], 0.2f, soundHandler.get());
+	rooms[0]->addObject(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth* tileWidth / 2 + 2 * tileWidth, roomHeight* tileHeight / 2)));
 
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
-	treasureManager->createMainTreasures(rooms);
+	treasureManager->createTreasures(rooms);
 }
 
 bool Game::running() const {

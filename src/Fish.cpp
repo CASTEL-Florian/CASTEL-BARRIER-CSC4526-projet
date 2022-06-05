@@ -18,3 +18,13 @@ void Fish::display(sf::RenderWindow& window) const
 	rect.setPosition(x, y);
 	window.draw(rect);
 }
+
+float Fish::get_x() const
+{
+	return x;
+}
+
+float Fish::get_y() const
+{
+	return y;
+}

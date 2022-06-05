@@ -85,3 +85,13 @@ int Player::getRoomY() const
 {
 	return roomY;
 }
+
+float Player::get_x() const
+{
+	return x;
+}
+
+float Player::get_y() const
+{
+	return y;
+}

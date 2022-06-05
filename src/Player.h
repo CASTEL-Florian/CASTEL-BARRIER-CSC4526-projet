@@ -14,6 +14,8 @@ public:
 	void updateRoomPosition();
 	int getRoomX() const;
 	int getRoomY() const;
+	float get_x() const override;
+	float get_y() const override;
 private:
 	float enginePower;
 	int roomX;

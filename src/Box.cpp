@@ -45,14 +45,3 @@ void Box::renderRectangle(sf::RenderWindow& window) const {
 	window.draw(rectangle);
 }
 
-
-
-float Box::get_x() const
-{
-	return x;
-}
-
-float Box::get_y() const
-{
-	return y;
-}

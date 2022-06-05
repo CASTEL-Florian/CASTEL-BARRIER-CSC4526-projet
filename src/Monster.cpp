@@ -89,6 +89,16 @@ void Monster::update(sf::Time elapsed) {
 	animator->update(elapsed);
 }
 
+float Monster::get_x() const
+{
+	return x;
+}
+
+float Monster::get_y() const
+{
+	return y;
+}
+
 void Monster::rotateToward(float x1, float y1)
 {
 	sf::Vector2f dir(x1 - x, y1 - y);
