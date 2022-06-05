@@ -53,7 +53,7 @@ void FishSpawner::spawnFish(float x, float y)
         inactiveFish.pop_back();
     }
     else {
-        fishVector.push_back(std::make_unique<Fish>(fishTexture, this, player, 1, x, y));
+        fishVector.push_back(std::make_unique<Fish>(fishTexture, this, player, 0.2f, x, y));
     }
 }
 

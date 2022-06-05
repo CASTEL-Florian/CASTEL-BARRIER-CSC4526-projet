@@ -2,15 +2,19 @@
 #include "FishSpawner.h"
 #include "RoomGenerator.h"
 
-Fish::Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player,float scal, float x, float y) : fishSpawner(fishSpawner), player(player), x(x), y(y)
+Fish::Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player,float scale, float x, float y) : fishSpawner(fishSpawner), player(player), x(x), y(y)
 {
-	
+	animator = std::make_unique<Animator>(texture, scale, 32, 16, 0.1f, std::vector<int> {18, 18});
+	animator->playAnimation(random_1_to_n(2) - 1);
+	sf::FloatRect bounds = animator->getLocalBounds();
+	float w = bounds.width * scale;
+	float h = bounds.height * scale;
+	animator->setOrigin(sf::Vector2f(w / scale, h / scale) / 2.f);
 }
 
 void Fish::update(sf::Time elapsed)
 {
 	actionTime -= elapsed.asSeconds();
-
 	if (action != FishAction::Flee && distanceFromPlayer() < fleeDistance) {
 		action = FishAction::Flee;
 		rotateToward(2 * x - player->get_x(), 2 * y - player->get_y());
@@ -48,17 +52,20 @@ void Fish::update(sf::Time elapsed)
 			speed = maxSpeed;
 	}
 	x += speed * elapsed.asSeconds();
+	animator->update(elapsed);
 }
 
 void Fish::display(sf::RenderWindow& window) const
 {
-	sf::RectangleShape rect;
-	rect.setFillColor(sf::Color::Magenta);
-	rect.setSize(sf::Vector2f(5, 2));
-	rect.setOrigin(rect.getSize() / 2.f);
-	rect.setPosition(x, y);
-	rect.setRotation(angle);
-	window.draw(rect);
+	if (angle > 90 && angle < 270)
+		animator->setMirrored(true, true, true);
+	else if (speed < 0)
+		animator->setMirrored(false, true);
+	else
+		animator->setMirrored(true, true);
+	animator->setPosition(sf::Vector2f(x, y));
+	animator->setRotation(angle);
+	animator->display(window);
 }
 
 float Fish::get_x() const

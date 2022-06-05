@@ -99,6 +99,9 @@ void Game::initVariables() {
 	sf::Texture chest_texture; //4
 	chest_texture.loadFromFile("resources/treasure_spritesheet.png");
 	textures.push_back(chest_texture); //5
+	sf::Texture fish_texture;
+	fish_texture.loadFromFile("resources/fish_spritesheet.png");
+	textures.push_back(fish_texture);
 
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
 	
@@ -123,7 +126,7 @@ void Game::initVariables() {
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
 	treasureManager->createTreasures(rooms);
 
-	fishSpawner = std::make_unique<FishSpawner>(nullptr, player.get());
+	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get());
 }
 
 bool Game::running() const {

@@ -9,7 +9,7 @@ enum class FishAction {Stop, MoveLeft, MoveRight, Flee};
 
 class Fish :public Object {
 public:
-	Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player, float scal, float x, float y);
+	Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player, float scale, float x, float y);
 	void update(sf::Time elapsed) override;
 	void display(sf::RenderWindow& window) const override;
 	float get_x() const override;

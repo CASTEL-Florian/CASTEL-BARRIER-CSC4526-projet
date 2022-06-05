@@ -10,7 +10,7 @@ const int roomWidth = 31;
 const int roomHeight = 31;
 const int tileWidth = 3;
 const int tileHeight = 3;
-const int emptyBackgroundTilePercentage = 85;
+const int emptyBackgroundTilePercentage = 15;
 
 class Room
 {

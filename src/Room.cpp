@@ -227,7 +227,7 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles)
                 tiles[i + j * roomWidth] = choice;
             }
             else{
-                if (random_1_to_n(100)<emptyBackgroundTilePercentage)
+                if (random_1_to_n(100)>emptyBackgroundTilePercentage)
                     tiles[i + j * roomWidth] = numberOfTilesChoices + 1 + choice;
             }
 
