@@ -5,11 +5,11 @@
 #include "TileMap.h"
 #include "Box.h"
 
-const int roomWidth = 15;
-const int roomHeight = 15;
-const int tileWidth = 6;
-const int tileHeight = 6;
-const int emptyBackgroundTilePercentage = 50;
+const int roomWidth = 31;
+const int roomHeight = 31;
+const int tileWidth = 3;
+const int tileHeight = 3;
+const int emptyBackgroundTilePercentage = 85;
 
 class Room
 {

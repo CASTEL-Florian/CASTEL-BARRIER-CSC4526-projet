@@ -21,7 +21,6 @@ void Animator::playAnimation(int id)
 {
 	animationNumber = id;
 	spriteRect.top = id * spriteHeight;
-	spriteRect.left = 0;
 }
 
 void Animator::setOrigin(sf::Vector2f origin)

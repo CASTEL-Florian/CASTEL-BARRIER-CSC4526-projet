@@ -6,7 +6,7 @@ const int window_length = 1200;
 const int window_height = 900;
 const int nb_rooms = 20;
 const float gravity_down = -3.0f;
-const float engine_power = 1000.0f;
+const float engine_power = 750.0f;
 
 
 Game::Game()
@@ -40,7 +40,7 @@ void Game::update()
 
 void Game::render() const
 {
-	window->clear(sf::Color(60, 140, 255));
+	window->clear(sf::Color(20, 60, 100));
 
 	currentRoom->display(*window);
 	for (auto& r : currentRoom->getAjacentRooms()) {
@@ -93,8 +93,17 @@ void Game::initVariables() {
 	textures.push_back(chest_texture); //5
 
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
+	
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2)));
-	objects.push_back(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 2 * tileWidth, roomHeight * tileHeight / 2)));
+	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 + tileHeight)));
+	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 + 2 * tileHeight)));
+	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 + 3 * tileHeight)));
+	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - 3 * tileHeight)));
+	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - 2 * tileHeight)));
+	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - tileHeight)));
+	
+	objects.push_back(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 2 * tileWidth, roomHeight * tileHeight / 2 - 5 * tileHeight)));
+	
 	objects.push_back(std::make_unique<Fish>(&textures[1], 0.2f, roomWidth * tileWidth / 2 - 2 * tileWidth, roomHeight * tileHeight / 2));
 	soundHandler = std::make_unique<SoundHandler>();
 	soundHandler->playMusic();
