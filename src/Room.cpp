@@ -1,4 +1,7 @@
 #include "Room.h"
+#include "Room.h"
+#include "Room.h"
+#include "Room.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -168,6 +171,26 @@ bool Room::isDeadEnd() const
     return false;
 }
 
+void Room::linkToRoom(Room* room)
+{
+    if (room->get_x() > x) {
+        rightRoom = room;
+        return;
+    }
+    if (room->get_x() < x) {
+        leftRoom = room;
+        return;
+    }
+    if (room->get_y() < y) {
+        upRoom = room;
+        return;
+    }
+    if (room->get_y() > y) {
+        downRoom = room;
+        return;
+    }
+}
+
 void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorWidth)
 {
     int halfWidth = int(roomWidth / 2);
@@ -228,6 +251,28 @@ void Room::generateObjects(std::vector<int> const& objects)
             }
         }
     }
+}
+
+Room* Room::updateCurrentRoom(int roomX, int roomY) 
+{
+    if (roomX > x) {
+        return rightRoom;
+    }
+    if (roomX < x) {
+        return leftRoom;
+    }
+    if (roomY < y) {
+        return upRoom;
+    }
+    if (roomY > y) {
+        return downRoom;
+    }
+    return this;
+}
+
+std::vector<Room*> Room::getAjacentRooms()
+{
+    return std::vector<Room*>{upRoom, downRoom, leftRoom, rightRoom};
 }
 
 std::vector<std::pair<int, int>> Room::getTreasurePos()

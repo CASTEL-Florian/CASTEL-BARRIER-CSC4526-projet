@@ -3,7 +3,8 @@
 #include "Treasure.h"
 #include "RoomGenerator.h"
 
-
+const int coinCount = 20;
+const int treasuresCount = 5;
 class TreasureManager {
 public:
 	TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture);
@@ -25,7 +26,7 @@ private:
 	int treasuresFoundCount = 0;
 	int treasuresCount = 0;
 	int coinFoundCount = 0;
-	const int coinCount = 20;
+	
 	sf::Texture* coin_texture;
 	sf::Texture* chest_texture;
 	bool closeToPlayer(float x, float y) const;

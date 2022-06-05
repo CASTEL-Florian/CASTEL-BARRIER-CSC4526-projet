@@ -1,4 +1,5 @@
 #include "Box.h"
+#include "Box.h"
 
 
 void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, const b2Vec2& dimensions)

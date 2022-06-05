@@ -15,6 +15,7 @@
 #include "Object.h"
 #include "Crate.h"
 #include "SoundHandler.h"
+#include "Fish.h"
 
 
 class Game
@@ -47,4 +48,6 @@ private:
 	std::unique_ptr<SoundHandler> soundHandler;
 
 	sf::View view;
+
+	Room* currentRoom;
 };
