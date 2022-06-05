@@ -17,12 +17,12 @@ Room::Room(int x, int y) :
     fogOpen[0].position = sf::Vector2f(-tileWidth * roomWidth, -tileHeight);
     fogOpen[1].position = sf::Vector2f(-tileWidth, -tileHeight);
     fogOpen[2].position = sf::Vector2f(-tileWidth, offset * tileWidth);
-    fogOpen[3].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 2) * tileWidth);
-    fogOpen[4].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 2) * tileWidth);
+    fogOpen[3].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 4) * tileWidth);
+    fogOpen[4].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 4) * tileWidth);
     fogOpen[5].position = sf::Vector2f(-tileWidth, offset * tileWidth);
     fogOpen[6].position = sf::Vector2f(-tileWidth, (offset + corridorWidth) * tileWidth);
-    fogOpen[7].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 2) * tileWidth);
-    fogOpen[8].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 2) * tileWidth);
+    fogOpen[7].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 4) * tileWidth);
+    fogOpen[8].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 4) * tileWidth);
     fogOpen[9].position = sf::Vector2f(-tileWidth, (offset + corridorWidth) * tileWidth);
     fogOpen[10].position = sf::Vector2f(-tileWidth, 2 * tileHeight * roomHeight);
     fogOpen[11].position = sf::Vector2f(-tileWidth * roomWidth, 2 * tileHeight * roomHeight);
