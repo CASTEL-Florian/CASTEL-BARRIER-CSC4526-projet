@@ -23,8 +23,7 @@ void Game::update()
 	pollEvents();
 	soundHandler->update(elapsed);
 	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics
-	for (auto const& o : objects)
-		o->update(elapsed);
+	for (auto const& o : objects) o->update(elapsed);
 	player->update(elapsed);
 	player->updateRoomPosition();
 	monster->update(elapsed);
@@ -34,12 +33,14 @@ void Game::update()
 	view.zoom(1/10.f);
 	window->setView(view);
 	
+	//std::cout << 1 / elapsed.asSeconds() << " fps" << std::endl;
 }
 
 void Game::render() const
 {
-
+	
 	window->clear(sf::Color(60, 140, 255));
+	/*
 	sf::Sprite background;
 	sf::Texture background_texture;
 	background_texture.loadFromFile("resources/background.png");
@@ -47,7 +48,7 @@ void Game::render() const
 	background.setPosition(-420, -420);
 	background.setScale(1.2f, 1.2f);
 	window->draw(background);
-
+	*/
 	for (auto& r : rooms) {
 		if (r->get_x() == player->getRoomX() && r->get_y() == player->getRoomY())
 			r->enter();
@@ -58,7 +59,6 @@ void Game::render() const
 	for (auto& o : objects)
 		o->display(*window);
 		
-	//}
 	treasureManager->displayTreasures(*window);
 	monster->display(*window);
 	player->renderLight(*window);
@@ -71,7 +71,9 @@ void Game::render() const
 	minimap->display(*window, rooms);
 	oxygenBar.display(*window);
 	treasureManager->display(*window);
+	
 	window->display();
+
 }
 
 void Game::initVariables() {
