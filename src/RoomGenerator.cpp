@@ -1,4 +1,5 @@
 #include "RoomGenerator.h"
+#include "TreasureManager.h"
 
 int random_1_to_n(int const nbMax)
 {
@@ -66,6 +67,8 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(int nb_rooms)
         auto [new_x, new_y] = it->first;
         auto new_room = std::make_unique<Room>(new_x, new_y);
         new_room->open_path(rooms[it->second]->get_position());
+        new_room->linkToRoom(rooms[it->second].get());
+        rooms[it->second]->linkToRoom(new_room.get());
         rooms[it->second]->open_path(new_room->get_position());
         rooms.push_back(std::move(new_room));
         roomPositions.insert(std::pair(new_x, new_y));

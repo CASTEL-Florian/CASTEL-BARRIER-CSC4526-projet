@@ -25,8 +25,11 @@ public:
 	void enter();
 	bool isExplored() const;
 	bool isDeadEnd() const;
+	void linkToRoom(Room* room);
 	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorWidth);
 	void generateObjects(std::vector<int> const& objects);
+	Room* updateCurrentRoom(int roomX, int roomY);
+	std::vector<Room*> getAjacentRooms();
 	std::vector<std::pair<int, int>> getTreasurePos();
 private:
 	
@@ -41,6 +44,10 @@ private:
 	bool down = false;
 	bool left = false;
 	bool right = false;
+	Room* upRoom = nullptr;
+	Room* downRoom = nullptr;
+	Room* leftRoom = nullptr;
+	Room* rightRoom = nullptr;
 	bool explored = false;
 	sf::VertexArray fogOpen;
 	sf::VertexArray fogClose;

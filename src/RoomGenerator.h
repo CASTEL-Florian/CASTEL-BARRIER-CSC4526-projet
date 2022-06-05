@@ -22,7 +22,6 @@ public:
 	
 private:
 	const int corridorWidth = 3;
-	int treasuresCount = 5;
 	std::pair<int, int> farthestRoomPos{ 0,0 };
 	std::unique_ptr<sf::Texture> m_tileset;
 
