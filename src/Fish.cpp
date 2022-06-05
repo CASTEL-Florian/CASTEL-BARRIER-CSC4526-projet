@@ -85,6 +85,7 @@ void Fish::init(float posX, float posY)
 	angle = 0;
 	speed = 0;
 	action = FishAction::Stop;
+	animator->playAnimation(random_1_to_n(2) - 1);
 }
 
 float Fish::distanceFromPlayer() const
