@@ -60,10 +60,5 @@ std::unique_ptr<Treasure> TreasureManager::createTreasure(float treasureX, float
 	else return std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, chest_texture);
 }
 
-bool TreasureManager::closeToPlayer(float x, float y) const
-{
-	float roomX = std::floor(x / (roomWidth * tileWidth));
-	float roomY = std::floor(y / (roomWidth * tileWidth));
-	return std::abs(roomX - player->getRoomX()) + std::abs(roomY - player->getRoomY()) <= 1;
-}
+
 

@@ -15,7 +15,7 @@
 #include "Object.h"
 #include "Crate.h"
 #include "SoundHandler.h"
-#include "Fish.h"
+#include "FishSpawner.h"
 
 
 class Game
@@ -47,6 +47,7 @@ private:
 	std::unique_ptr<TreasureManager> treasureManager;
 	std::unique_ptr<SoundHandler> soundHandler;
 
+	std::unique_ptr<FishSpawner> fishSpawner;
 	sf::View view;
 
 	Room* currentRoom;

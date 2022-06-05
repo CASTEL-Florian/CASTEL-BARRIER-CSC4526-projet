@@ -36,6 +36,7 @@ void Game::update()
 	}
 	monster->update(elapsed);
 	treasureManager->update(elapsed);
+	fishSpawner->update(elapsed);
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
@@ -59,7 +60,7 @@ void Game::render() const
 
 	for (auto& o : objects)
 		o->display(*window);
-		
+	fishSpawner->display(*window);
 	monster->display(*window);
 	player->renderLight(*window);
 	player->display(*window);
@@ -109,7 +110,7 @@ void Game::initVariables() {
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - 2 * tileHeight)));
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - tileHeight)));
 		
-	objects.push_back(std::make_unique<Fish>(&textures[1], 0.2f, roomWidth * tileWidth / 2 - 2 * tileWidth, roomHeight * tileHeight / 2));
+
 	soundHandler = std::make_unique<SoundHandler>();
 	soundHandler->playMusic();
 
@@ -121,6 +122,8 @@ void Game::initVariables() {
 
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
 	treasureManager->createTreasures(rooms);
+
+	fishSpawner = std::make_unique<FishSpawner>(nullptr, player.get());
 }
 
 bool Game::running() const {
