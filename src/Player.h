@@ -18,8 +18,8 @@ public:
 	float get_y() const override;
 private:
 	float enginePower;
-	int roomX;
-	int roomY;
+	int roomX = 0;
+	int roomY = 0;
 	int rectOffset = 0;
 	std::unique_ptr<Animator> animator;
 };

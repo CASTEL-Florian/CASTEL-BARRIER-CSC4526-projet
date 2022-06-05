@@ -26,5 +26,4 @@ private:
 	
 	sf::Texture* coin_texture;
 	sf::Texture* chest_texture;
-	bool closeToPlayer(float x, float y) const;
 };
