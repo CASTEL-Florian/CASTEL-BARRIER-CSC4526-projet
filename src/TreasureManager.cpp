@@ -16,27 +16,12 @@ TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator, s
 	text.setCharacterSize(30);
 	text.setPosition(10, 10);
 	text.setString(std::to_string(treasuresFoundCount));
-	for (int i = 0; i < coinCount; i++) {
-		auto pos = findAvailablePlace();
-		createTreasure(pos.first, pos.second, true);
-	}
 }
 
-void TreasureManager::displayTreasures(sf::RenderWindow& window) const
-{
-	for (auto &treasure : treasures) {
-		if (closeToPlayer(treasure->get_x(), treasure->get_y()))
-			treasure->display(window);
-	}
-}
 
 void TreasureManager::update(sf::Time elapsed)
 {
 	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
-	for (auto &treasure : treasures) {
-		if (closeToPlayer(treasure->get_x(), treasure->get_y()))
-			treasure->update(elapsed);
-	}
 }
 
 void TreasureManager::display(sf::RenderWindow& window) const
@@ -52,29 +37,27 @@ void TreasureManager::findTreasure(bool isCoin)
 		treasuresFoundCount++;
 }
 
-std::pair<float, float> TreasureManager::findAvailablePlace () const
-{
-	auto roomPos = roomGenerator->getRandomRoomPos();
-	std::pair<float, float> pos(roomPos.first * roomWidth * tileWidth, roomPos.second * roomHeight * tileHeight);
-	pos.first += (random_1_to_n(roomWidth - 2) + 0.5f) * tileWidth;
-	pos.second += (random_1_to_n(roomHeight - 2) + 0.5f) * tileHeight;
-	return pos;
-}
 
-void TreasureManager::createMainTreasures(std::vector<std::unique_ptr<Room>> const& rooms)
+void TreasureManager::createTreasures(std::vector<std::unique_ptr<Room>> const& rooms)
 {
+	for (int i = 0; i < coinCount; i++) {
+		int randomId = random_1_to_n(rooms.size()) - 1;
+		std::pair<float, float> pos(rooms[randomId]->get_x() * roomWidth * tileWidth, rooms[randomId]->get_y() * roomHeight * tileHeight);
+		pos.first += (random_1_to_n(roomWidth - 2) + 0.5f) * tileWidth;
+		pos.second += (random_1_to_n(roomHeight - 2) + 0.5f) * tileHeight;
+		rooms[randomId]->addObject(createTreasure(pos.first, pos.second, true));
+	}
 	for (auto const& room : rooms) {
 		for (auto const& [posX, posY] : room->getTreasurePos()) {
-			createTreasure(posX, posY, false);
-			treasuresCount++;
+			room->addObject(createTreasure(posX, posY, false));
 		}
 	}
 }
 
-void TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)
+std::unique_ptr<Treasure> TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)
 {
-	if(isCoin) treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, coin_texture));
-	else treasures.push_back(std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, chest_texture));
+	if (isCoin) return std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, coin_texture);
+	else return std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, chest_texture);
 }
 
 bool TreasureManager::closeToPlayer(float x, float y) const

@@ -15,8 +15,6 @@ public:
 	
 	virtual void update(sf::Time elapsed);
 	void renderRectangle(sf::RenderWindow& window) const;
-	float get_x() const;
-	float get_y() const;
 	virtual ~Box() = default;
 
 protected:

@@ -4,6 +4,7 @@
 #include <iostream>
 #include "TileMap.h"
 #include "Box.h"
+#include "Object.h"
 
 const int roomWidth = 15;
 const int roomHeight = 15;
@@ -28,6 +29,9 @@ public:
 	void linkToRoom(Room* room);
 	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, int corridorWidth);
 	void generateObjects(std::vector<int> const& objects);
+	void displayObjects(sf::RenderWindow& window) const;
+	void updateObjects(sf::Time elapsed);
+	void addObject(std::unique_ptr<Object> object);
 	Room* updateCurrentRoom(int roomX, int roomY);
 	std::vector<Room*> getAjacentRooms();
 	std::vector<std::pair<int, int>> getTreasurePos();
@@ -53,5 +57,6 @@ private:
 	sf::VertexArray fogClose;
 	std::vector<sf::Transform> fogTransforms;
 	std::vector<std::pair<int, int>> treasurePos;
+	std::vector<std::unique_ptr<Object>> objects;
 };
 

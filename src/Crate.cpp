@@ -23,3 +23,13 @@ void Crate::display(sf::RenderWindow& window) const {
 	animator->setRotation(rota * 180.0f / b2_pi);
 	animator->display(window);
 }
+
+float Crate::get_x() const
+{
+	return x;
+}
+
+float Crate::get_y() const
+{
+	return y;
+}

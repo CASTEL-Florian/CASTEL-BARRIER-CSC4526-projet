@@ -9,6 +9,8 @@ public:
 	void initCrabBox(b2World* world, const b2Vec2& position, b2BodyType bodyTy);
 	void update(sf::Time elapsed) override;
 	void display(sf::RenderWindow& window) const override;
+	float get_x() const override;
+	float get_y() const override;
 private:
 	std::unique_ptr<Animator> animator;
 };

@@ -12,19 +12,16 @@ public:
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 	void findTreasure(bool isCoin);
-	std::pair<float, float> findAvailablePlace() const;
-	void createMainTreasures(std::vector<std::unique_ptr<Room>> const& rooms);
+	void createTreasures(std::vector<std::unique_ptr<Room>> const& rooms);
 private:
 	float x;
 	float y;
 	Player* player;
 	RoomGenerator* roomGenerator;
-	std::vector<std::unique_ptr<Treasure>> treasures;
-	void createTreasure(float treasureX, float treasureY, bool isCoin);
+	std::unique_ptr<Treasure> createTreasure(float treasureX, float treasureY, bool isCoin);
 	sf::Font font;
 	sf::Text text;
 	int treasuresFoundCount = 0;
-	int treasuresCount = 0;
 	int coinFoundCount = 0;
 	
 	sf::Texture* coin_texture;

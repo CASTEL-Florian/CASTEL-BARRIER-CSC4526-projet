@@ -8,7 +8,7 @@
 #include <random>
 #include "RoomGenerator.h"
 
-enum class Object{Empty, Treasure};
+enum class ObjectType{Empty, Treasure};
 
 Room::Room(int x, int y) :
     x(x), y(y)
@@ -242,7 +242,7 @@ void Room::generateObjects(std::vector<int> const& objects)
     if (objects.size() > 0) {
         for (int i = 0; i < roomWidth; i++) {
             for (int j = 0; j < roomHeight; j++) {
-                if (objects[i + j * roomWidth] == int(Object::Treasure)) {
+                if (objects[i + j * roomWidth] == int(ObjectType::Treasure)) {
                     treasurePos.push_back(std::pair(
                         x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth),
                         y * tileHeight * roomHeight + j * tileHeight + (0.5f * tileHeight)
@@ -251,6 +251,44 @@ void Room::generateObjects(std::vector<int> const& objects)
             }
         }
     }
+}
+
+void Room::displayObjects(sf::RenderWindow& window) const
+{
+    for (auto const& o : objects)
+        o->display(window);
+}
+
+void Room::updateObjects(sf::Time elapsed)
+{
+    for (auto it = objects.begin(); it != objects.end();) {
+        it->get()->update(elapsed);
+        int roomX = std::floor(it->get()->get_x() / (roomWidth * tileWidth));
+        int roomY = std::floor(it->get()->get_y() / (roomHeight * tileHeight));
+        if (roomX > x) {
+            rightRoom->addObject(std::move(*it));
+            it = objects.erase(it);
+        }
+        else if (roomX < x) {
+            leftRoom->addObject(std::move(*it));
+            it = objects.erase(it);
+        }
+        else if (roomY > y) {
+            downRoom->addObject(std::move(*it));
+            it = objects.erase(it);
+        }
+        else if (roomY < y) {
+            upRoom->addObject(std::move(*it));
+            it = objects.erase(it);
+        }
+        else
+            it++;
+    }
+}
+
+void Room::addObject(std::unique_ptr<Object> object)
+{
+    objects.push_back(std::move(object));
 }
 
 Room* Room::updateCurrentRoom(int roomX, int roomY) 

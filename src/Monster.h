@@ -10,6 +10,8 @@ public:
 	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale, SoundHandler* soundHandler);
 	void display(sf::RenderWindow& window) const override;
 	void update(sf::Time elapsed) override;
+	float get_x() const override;
+	float get_y() const override;
 private:
 	void rotateToward(float x1, float y1);
 	void moveForward();
