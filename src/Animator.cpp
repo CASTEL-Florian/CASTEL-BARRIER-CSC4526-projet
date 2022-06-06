@@ -10,6 +10,7 @@ Animator::Animator(sf::Texture* textur, const float scal, int spriteWidth, int s
 	spriteRect.width = spriteWidth;
 	spriteRect.height = spriteHeight;
 	sprite.setTextureRect(spriteRect);
+	sprite.setOrigin(sf::Vector2f((float)spriteWidth / 2, (float)spriteHeight / 2));
 }
 
 void Animator::display(sf::RenderWindow& window) const

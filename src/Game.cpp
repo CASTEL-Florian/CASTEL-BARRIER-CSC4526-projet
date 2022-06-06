@@ -96,6 +96,7 @@ void Game::initWindow()
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "4526 lieues sous les mers");
 	window->setFramerateLimit(60);
 	fader = std::make_unique<Fader>(window_length, window_height);
+	clock.restart();
 }
 
 void Game::loadMainMenu()
@@ -103,6 +104,11 @@ void Game::loadMainMenu()
 	mainMenu = std::make_unique<MainMenu>(&textures[7], &textures[0], fader.get(), window_length, window_height);
 	gameState = GameState::MainMenu;
 	fader->fadeIn();
+}
+
+void Game::loadEndScreen()
+{
+	endScreen = std::make_unique<EndScreen>(&textures[7], &textures[4], &textures[5], fader.get(), window_length, window_height);
 }
 
 void Game::initGameVariables() {
@@ -125,19 +131,19 @@ void Game::initGameVariables() {
 
 	soundHandler = std::make_unique<SoundHandler>();
 	soundHandler->playMusic();
-
-	rooms = roomGenerator.generateMap(nb_rooms);
-	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
+	roomGenerator = std::make_unique<RoomGenerator>();
+	rooms = roomGenerator->generateMap(nb_rooms);
+	rooms = roomGenerator->buildRooms(world.get(), std::move(rooms));
 	currentRoom = rooms[0].get();
-	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], 0.2f, soundHandler.get());
+	monster = std::make_unique<Monster>(player.get(), roomGenerator.get(), &textures[3], 0.2f, soundHandler.get());
 	rooms[0]->addObject(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth* tileWidth / 2 + 2 * tileWidth, roomHeight* tileHeight / 2)));
 
-	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
+	treasureManager = std::make_unique<TreasureManager>(player.get(), &textures[4], &textures[5]);
 	treasureManager->createTreasures(rooms);
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get());
-
-	fader->fadeIn(1, true);
+	clock.restart();
+	fader->fadeIn(1);
 }
 
 void Game::loadTextures()

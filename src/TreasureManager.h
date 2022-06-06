@@ -7,7 +7,7 @@ const int coinCount = 20;
 const int treasuresCount = 5;
 class TreasureManager {
 public:
-	TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture);
+	TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture);
 	void displayTreasures(sf::RenderWindow& window) const;
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
@@ -17,7 +17,6 @@ private:
 	float x;
 	float y;
 	Player* player;
-	RoomGenerator* roomGenerator;
 	std::unique_ptr<Treasure> createTreasure(float treasureX, float treasureY, bool isCoin);
 	sf::Font font;
 	sf::Text text;

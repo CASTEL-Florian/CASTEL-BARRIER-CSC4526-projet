@@ -1,4 +1,6 @@
 #include "TileMap.h"
+#include <random>
+#include "myRandom.h"
 
 bool TileMap::load(sf::Texture* tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height)
 {
@@ -27,11 +29,14 @@ bool TileMap::load(sf::Texture* tileset, sf::Vector2u tileSize, std::vector<int>
             quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
             quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
 
+            std::vector<sf::Vector2f> corners = { sf::Vector2f(tu * tileSize.x, tv * tileSize.y) ,
+                sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y) ,
+                sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y) ,
+                sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y) };
+            int rotation = random_1_to_n(4) - 1;
             // define its 4 texture coordinates
-            quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-            quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-            quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+            for (int k = 0; k < 4; k++) 
+                quad[k].texCoords = corners[(rotation + k) % 4];
         }
     return true;
 }

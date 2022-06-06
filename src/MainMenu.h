@@ -18,7 +18,6 @@ private:
 	sf::Text gameName;
 	sf::Text playText;
 	sf::Texture* backgroundTexture;
-	sf::Texture* playerTexture;
 	std::unique_ptr<Animator> playerAnimator;
 	sf::Sprite background;
 	Fader* fader;

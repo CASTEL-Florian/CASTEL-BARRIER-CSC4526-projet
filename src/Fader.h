@@ -8,7 +8,7 @@ public:
 	Fader(float width, float height);
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
-	void fadeIn(float fadeDuration = 1, bool ignoreFirstFrame = false);
+	void fadeIn(float fadeDuration = 1);
 	void fadeOut(float fadeDuration = 1);
 	FaderState getState();
 private:
@@ -16,6 +16,5 @@ private:
 	float height;
 	float fadeTime = 1;
 	float currentTime = 0;
-	bool flag = false;
 	FaderState state = FaderState::Sleep;
 };

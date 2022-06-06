@@ -17,9 +17,10 @@
 #include "SoundHandler.h"
 #include "FishSpawner.h"
 #include "MainMenu.h"
+#include "EndScreen.h"
 
 
-enum class GameState {MainMenu, Playing};
+enum class GameState {MainMenu, Playing, EndScreen};
 
 class Game
 {
@@ -32,13 +33,14 @@ public:
 private:
 	void initWindow();
 	void loadMainMenu();
+	void loadEndScreen();
 	void initGameVariables();
 	void loadTextures();
 	std::unique_ptr<Fader> fader;
 	std::unique_ptr<sf::RenderWindow> window;
 	sf::Clock clock;
 	sf::Event event;
-	RoomGenerator roomGenerator;
+	std::unique_ptr<RoomGenerator> roomGenerator;
 	std::vector<std::unique_ptr<Room>> rooms;
 	std::unique_ptr<Minimap> minimap;
 	std::unique_ptr<OxygenBar> oxygenBar;
@@ -60,6 +62,7 @@ private:
 	Room* currentRoom;
 
 	std::unique_ptr<MainMenu> mainMenu;
+	std::unique_ptr<EndScreen> endScreen;
 
 	GameState gameState = GameState::Playing;
 };

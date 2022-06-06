@@ -2,7 +2,7 @@
 #include <cmath>
 
 MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, Fader* fader, float width, float height) :
-	backgroundTexture(backgroundTexture), playerTexture(playerTexture), fader(fader), width(width), height(height)
+	backgroundTexture(backgroundTexture), fader(fader), width(width), height(height)
 {
 	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
 	{
@@ -20,8 +20,6 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 	sf::FloatRect playTextBounds = playText.getGlobalBounds();
 	playText.setPosition((width - playTextBounds.width)/2, 200);
 	playerAnimator = std::make_unique<Animator>(playerTexture, 3.f, 64, 32, 0.1f, std::vector<int> {14});
-	sf::FloatRect bounds = playerAnimator->getLocalBounds();
-	playerAnimator->setOrigin(sf::Vector2f(bounds.width, bounds.height) / 2.f);
 	playerAnimator->setPosition(sf::Vector2f(width / 2, height / 2));
 
 	sf::Vector2u backgroundSize = backgroundTexture->getSize();

@@ -11,10 +11,6 @@ Treasure::Treasure(float x, float y, Player* player, TreasureManager* treasureMa
 		numberOfImages = 14;
 	}
 	animator = std::make_unique<Animator>(texture, 0.2f, spriteLength, spriteLength, 0.1f, std::vector<int> {numberOfImages});
-	sf::FloatRect bounds = animator->getLocalBounds();
-	float wi = bounds.width;
-	float hi = bounds.height;
-	animator->setOrigin(sf::Vector2f(wi, hi) / 2.f);
 }
 
 
