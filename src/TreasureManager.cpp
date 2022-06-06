@@ -54,6 +54,16 @@ void TreasureManager::createTreasures(std::vector<std::unique_ptr<Room>> const& 
 	}
 }
 
+int TreasureManager::getTreasuresFoundCount() const
+{
+	return treasuresFoundCount;
+}
+
+int TreasureManager::getCoinFoundCount() const
+{
+	return coinFoundCount;
+}
+
 std::unique_ptr<Treasure> TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)
 {
 	if (isCoin) return std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, coin_texture);

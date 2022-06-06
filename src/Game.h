@@ -36,6 +36,7 @@ private:
 	void loadEndScreen();
 	void initGameVariables();
 	void loadTextures();
+	void resetGame();
 	std::unique_ptr<Fader> fader;
 	std::unique_ptr<sf::RenderWindow> window;
 	sf::Clock clock;

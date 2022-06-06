@@ -10,7 +10,7 @@ public:
 	void display(sf::RenderWindow& window) const;
 	void fadeIn(float fadeDuration = 1);
 	void fadeOut(float fadeDuration = 1);
-	FaderState getState();
+	FaderState getState() const;
 private:
 	float width;
 	float height;

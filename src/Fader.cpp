@@ -44,7 +44,7 @@ void Fader::fadeOut(float fadeDuration)
 	state = FaderState::FadeOut;
 }
 
-FaderState Fader::getState()
+FaderState Fader::getState() const
 {
 	return state;
 }

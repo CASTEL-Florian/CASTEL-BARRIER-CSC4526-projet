@@ -74,12 +74,11 @@ void MainMenu::display(sf::RenderWindow& window) const
 void MainMenu::mousePressed(int x, int y)
 {
 	if (playText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
-		//fader->fadeOut();
 		state = MainMenuState::Transition1;
 	}
 }
 
-MainMenuState MainMenu::getState()
+MainMenuState MainMenu::getState() const
 {
 	return state;
 }

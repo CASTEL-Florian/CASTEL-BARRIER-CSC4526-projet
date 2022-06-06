@@ -11,7 +11,7 @@ public:
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 	void mousePressed(int x, int y);
-	MainMenuState getState();
+	MainMenuState getState() const;
 private:
 	float easeInOutQuad(float x) const;
 	sf::Font font;

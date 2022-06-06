@@ -13,7 +13,8 @@ Game::Game()
 {
 	initWindow();
 	loadTextures();
-	loadMainMenu();
+	//loadMainMenu();
+	loadEndScreen();
 }
 
 
@@ -25,11 +26,22 @@ void Game::update()
 	pollEvents();
 	if (gameState == GameState::MainMenu) {
 		if (mainMenu->getState() == MainMenuState::TransitionFinished) {
+			mainMenu.reset();
 			gameState = GameState::Playing;
 			initGameVariables();
 			return;
 		}
 		mainMenu->update(elapsed);
+		return;
+	}
+	if (gameState == GameState::EndScreen) {
+		if (endScreen->getState() == EndScreenState::TransitionFinished) {
+			endScreen.reset();
+			resetGame();
+			loadMainMenu();
+			return;
+		}
+		endScreen->update(elapsed);
 		return;
 	}
 	oxygenBar->update(elapsed);
@@ -65,6 +77,12 @@ void Game::render() const
 		window->display();
 		return;
 	}
+	if (gameState == GameState::EndScreen) {
+		endScreen->display(*window);
+		fader->display(*window);
+		window->display();
+		return;
+	}
 	window->setView(view);
 
 	currentRoom->display(*window);
@@ -96,7 +114,6 @@ void Game::initWindow()
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "4526 lieues sous les mers");
 	window->setFramerateLimit(60);
 	fader = std::make_unique<Fader>(window_length, window_height);
-	clock.restart();
 }
 
 void Game::loadMainMenu()
@@ -104,11 +121,15 @@ void Game::loadMainMenu()
 	mainMenu = std::make_unique<MainMenu>(&textures[7], &textures[0], fader.get(), window_length, window_height);
 	gameState = GameState::MainMenu;
 	fader->fadeIn();
+	clock.restart();
 }
 
 void Game::loadEndScreen()
 {
-	endScreen = std::make_unique<EndScreen>(&textures[7], &textures[4], &textures[5], fader.get(), window_length, window_height);
+	endScreen = std::make_unique<EndScreen>(&textures[7], &textures[4], &textures[5], fader.get(), treasureManager.get(), window_length, window_height);
+	gameState = GameState::EndScreen;
+	fader->fadeIn();
+	clock.restart();
 }
 
 void Game::initGameVariables() {
@@ -174,6 +195,20 @@ void Game::loadTextures()
 	textures.push_back(background_texture);
 }
 
+void Game::resetGame()
+{
+	minimap.reset();
+	world.reset();
+	oxygenBar.reset();
+	player.reset();
+	objects.clear();
+	soundHandler.reset();
+	roomGenerator.reset();
+	monster.reset();
+	treasureManager.reset();
+	fishSpawner.reset();
+}
+
 bool Game::running() const {
 	return window->isOpen();
 }
@@ -183,13 +218,18 @@ void Game::pollEvents() {
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
-		if (event.type == sf::Event::MouseButtonPressed)
+		if (event.type == sf::Event::MouseButtonPressed) {
 			if (gameState == GameState::MainMenu && event.mouseButton.button == sf::Mouse::Left)
 				mainMenu->mousePressed(event.mouseButton.x, event.mouseButton.y);
+			if (gameState == GameState::EndScreen && event.mouseButton.button == sf::Mouse::Left)
+				endScreen->mousePressed(event.mouseButton.x, event.mouseButton.y);
+		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+	if (gameState == GameState::Playing) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+	}
 }
 
