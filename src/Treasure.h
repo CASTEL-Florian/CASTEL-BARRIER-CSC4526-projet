@@ -18,7 +18,7 @@ private:
 	bool isCoin;
 	Player* player;
 	TreasureManager* treasureManager;
-	float playerCatchRange = 5;
+	float playerCatchRange = 7;
 
 	std::unique_ptr<Animator> animator;
 };

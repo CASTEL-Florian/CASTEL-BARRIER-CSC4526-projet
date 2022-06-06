@@ -16,7 +16,10 @@
 #include "Crate.h"
 #include "SoundHandler.h"
 #include "FishSpawner.h"
+#include "MainMenu.h"
 
+
+enum class GameState {MainMenu, Playing};
 
 class Game
 {
@@ -27,14 +30,18 @@ public:
 	bool running() const;
 	void pollEvents();
 private:
-	void initVariables();
+	void initWindow();
+	void loadMainMenu();
+	void initGameVariables();
+	void loadTextures();
+	std::unique_ptr<Fader> fader;
 	std::unique_ptr<sf::RenderWindow> window;
 	sf::Clock clock;
 	sf::Event event;
 	RoomGenerator roomGenerator;
 	std::vector<std::unique_ptr<Room>> rooms;
 	std::unique_ptr<Minimap> minimap;
-	OxygenBar oxygenBar{ 20,130,30 };
+	std::unique_ptr<OxygenBar> oxygenBar;
 
 	std::unique_ptr<b2World> world;
 
@@ -51,4 +58,8 @@ private:
 	sf::View view;
 
 	Room* currentRoom;
+
+	std::unique_ptr<MainMenu> mainMenu;
+
+	GameState gameState = GameState::Playing;
 };

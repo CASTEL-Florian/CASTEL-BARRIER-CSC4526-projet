@@ -7,7 +7,6 @@
 TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture) :
 	player(player), roomGenerator(roomGenerator), coin_texture(coin_texture), chest_texture(chest_texture)
 {
-	//createTreasure(player->get_x(), 30);
 	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
 	{
 		std::cout << "Erreur de chargement du fichier Roboto-Regular.ttf";
