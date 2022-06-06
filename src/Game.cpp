@@ -11,7 +11,9 @@ const float engine_power = 750.0f;
 
 Game::Game()
 {
-	initVariables();
+	initWindow();
+	loadTextures();
+	loadMainMenu();
 }
 
 
@@ -19,8 +21,18 @@ Game::Game()
 void Game::update()
 {
 	sf::Time elapsed = clock.restart();
-	oxygenBar.update(elapsed);
+	fader->update(elapsed);
 	pollEvents();
+	if (gameState == GameState::MainMenu) {
+		if (mainMenu->getState() == MainMenuState::TransitionFinished) {
+			gameState = GameState::Playing;
+			initGameVariables();
+			return;
+		}
+		mainMenu->update(elapsed);
+		return;
+	}
+	oxygenBar->update(elapsed);
 	soundHandler->update(elapsed);
 	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics
 	for (auto const& o : objects) o->update(elapsed);
@@ -40,7 +52,6 @@ void Game::update()
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
-	window->setView(view);
 	
 	//std::cout << 1 / elapsed.asSeconds() << " fps" << std::endl;
 }
@@ -48,6 +59,13 @@ void Game::update()
 void Game::render() const
 {
 	window->clear(sf::Color(20, 60, 100));
+	if (gameState == GameState::MainMenu) {
+		mainMenu->display(*window);
+		fader->display(*window);
+		window->display();
+		return;
+	}
+	window->setView(view);
 
 	currentRoom->display(*window);
 	currentRoom->displayObjects(*window);
@@ -67,42 +85,33 @@ void Game::render() const
 	currentRoom->display_fog(*window);
 	window->setView(window->getDefaultView());
 	minimap->display(*window, rooms);
-	oxygenBar.display(*window);
+	oxygenBar->display(*window);
 	treasureManager->display(*window);
-	
+	fader->display(*window);
 	window->display();
 }
 
-void Game::initVariables() {
+void Game::initWindow()
+{
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "4526 lieues sous les mers");
-    window->setFramerateLimit(60);
+	window->setFramerateLimit(60);
+	fader = std::make_unique<Fader>(window_length, window_height);
+}
+
+void Game::loadMainMenu()
+{
+	mainMenu = std::make_unique<MainMenu>(&textures[7], &textures[0], fader.get(), window_length, window_height);
+	gameState = GameState::MainMenu;
+	fader->fadeIn();
+}
+
+void Game::initGameVariables() {
 	minimap = std::make_unique<Minimap>("resources/minimap.png");
 	//box2d world
 	b2Vec2 gravity(0.0f, gravity_down);
 	world = std::make_unique<b2World>(gravity);
 
-	sf::Texture nauti_texture;
-	nauti_texture.loadFromFile("resources/nauti_spritesheet.png");
-	textures.push_back(nauti_texture);
-	sf::Texture crate_texture; //0
-	crate_texture.loadFromFile("resources/crate.png");
-	textures.push_back(crate_texture);
-	sf::Texture crab_texture; //1
-	crab_texture.loadFromFile("resources/crab_spritesheet.png");
-	textures.push_back(crab_texture);
-	sf::Texture monster_texture; //2
-	monster_texture.loadFromFile("resources/kalmar_spritesheet.png");
-	textures.push_back(monster_texture);
-	sf::Texture coin_texture; //3
-	coin_texture.loadFromFile("resources/coin_spritesheet.png");
-	textures.push_back(coin_texture);
-	sf::Texture chest_texture; //4
-	chest_texture.loadFromFile("resources/treasure_spritesheet.png");
-	textures.push_back(chest_texture); //5
-	sf::Texture fish_texture;
-	fish_texture.loadFromFile("resources/fish_spritesheet.png");
-	textures.push_back(fish_texture);
-
+	oxygenBar = std::make_unique<OxygenBar>(20, 130, 30);
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
 	
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2)));
@@ -127,6 +136,36 @@ void Game::initVariables() {
 	treasureManager->createTreasures(rooms);
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get());
+
+	fader->fadeIn(1, true);
+}
+
+void Game::loadTextures()
+{
+	sf::Texture nauti_texture;//0
+	nauti_texture.loadFromFile("resources/nauti_spritesheet.png");
+	textures.push_back(nauti_texture);
+	sf::Texture crate_texture; //1
+	crate_texture.loadFromFile("resources/crate.png");
+	textures.push_back(crate_texture);
+	sf::Texture crab_texture; //2
+	crab_texture.loadFromFile("resources/crab_spritesheet.png");
+	textures.push_back(crab_texture);
+	sf::Texture monster_texture; //3
+	monster_texture.loadFromFile("resources/kalmar_spritesheet.png");
+	textures.push_back(monster_texture);
+	sf::Texture coin_texture; //4
+	coin_texture.loadFromFile("resources/coin_spritesheet.png");
+	textures.push_back(coin_texture);
+	sf::Texture chest_texture; //5
+	chest_texture.loadFromFile("resources/treasure_spritesheet.png");
+	textures.push_back(chest_texture); 
+	sf::Texture fish_texture; // 6
+	fish_texture.loadFromFile("resources/fish_spritesheet.png");
+	textures.push_back(fish_texture);
+	sf::Texture background_texture; // 7
+	background_texture.loadFromFile("resources/background.png");
+	textures.push_back(background_texture);
 }
 
 bool Game::running() const {
@@ -138,6 +177,9 @@ void Game::pollEvents() {
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
+		if (event.type == sf::Event::MouseButtonPressed)
+			if (gameState == GameState::MainMenu && event.mouseButton.button == sf::Mouse::Left)
+				mainMenu->mousePressed(event.mouseButton.x, event.mouseButton.y);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
