@@ -28,13 +28,13 @@ private:
 	float angle = 0;
 	float speed = 10;
 	float actionTime = 0;
-	float chaseTime = 10;
+	float chaseTime = 20;// 10;
 	float targetX = 0;
 	float targetY = 0;
 	float const attackRange = 20;
 	float const followSpeed = 13;
 	float const dashSpeed = 30;
-	float const prepareAttackDuration = 1.f;
+	float const prepareAttackDuration = 0.3f;// 1.f;
 	float const attackDuration = 1;
 	float const playerDetectRange = 60;
 	State action = State::Sleep;
