@@ -6,7 +6,7 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 {
 	if (!font.loadFromFile("resources/Pixeled.ttf"))
 	{
-		std::cout << "Erreur de chargement du fichier Roboto-Regular.ttf";
+		std::cout << "Erreur de chargement du fichier Pixeled.ttf";
 	}
 	gameName.setString("4526 lieues sous les mers");
 	gameName.setFont(font);

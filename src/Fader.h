@@ -11,10 +11,12 @@ public:
 	void fadeIn(float fadeDuration = 1);
 	void fadeOut(float fadeDuration = 1);
 	FaderState getState() const;
+	void setFadeColor(sf::Color color);
 private:
 	float width;
 	float height;
 	float fadeTime = 1;
 	float currentTime = 0;
+	sf::Color fadeColor = sf::Color::Black;
 	FaderState state = FaderState::Sleep;
 };

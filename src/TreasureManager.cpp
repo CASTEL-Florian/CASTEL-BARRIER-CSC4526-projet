@@ -10,7 +10,7 @@ TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::
 {
 	if (!font.loadFromFile("resources/Pixeled.ttf"))
 	{
-		std::cout << "Erreur de chargement du fichier Roboto-Regular.ttf";
+		std::cout << "Erreur de chargement du fichier Pixeled.ttf";
 	}
 	text.setFont(font);
 	text.setCharacterSize(15);
@@ -23,6 +23,9 @@ void TreasureManager::update(sf::Time elapsed)
 {
 	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
 	text.setPosition(10, 20);
+	if (gameWon()) {
+		player->kill(sf::Color::Yellow);
+	}
 }
 
 void TreasureManager::display(sf::RenderWindow& window) const
@@ -67,6 +70,11 @@ int TreasureManager::getTreasuresFoundCount() const
 int TreasureManager::getCoinFoundCount() const
 {
 	return coinFoundCount;
+}
+
+bool TreasureManager::gameWon() const
+{
+	return treasuresFoundCount == treasuresCount;
 }
 
 std::unique_ptr<Treasure> TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)

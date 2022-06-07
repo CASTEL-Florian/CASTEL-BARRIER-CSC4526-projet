@@ -17,7 +17,8 @@ public:
 	float get_x() const override;
 	float get_y() const override;
 	bool isAlive() const;
-	void kill();
+	void kill(sf::Color transitionCol);
+	sf::Color getTransitionColor();
 private:
 	float enginePower;
 	int roomX = 0;
@@ -25,4 +26,5 @@ private:
 	int rectOffset = 0;
 	bool alive = true;
 	std::unique_ptr<Animator> animator;
+	sf::Color transitionColor = sf::Color::Yellow;
 };
