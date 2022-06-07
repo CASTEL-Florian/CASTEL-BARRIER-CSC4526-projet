@@ -5,7 +5,7 @@
 
 class FishSpawner {
 public:
-	FishSpawner(sf::Texture* fishTexture, Player* player);
+	FishSpawner(sf::Texture* fishTexture, Player* player, SoundHandler* soundHandler);
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 private:
@@ -19,4 +19,5 @@ private:
 	bool closeToPlayer(float x, float y) const;
 	int oldPlayerX = 0;
 	int oldPlayerY = 0;
+	SoundHandler* soundHandler;
 };

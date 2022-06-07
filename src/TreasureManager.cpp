@@ -5,8 +5,8 @@
 
 
 
-TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture) :
-	player(player), coin_texture(coin_texture), chest_texture(chest_texture)
+TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture, SoundHandler* soundHandler) :
+	player(player), coin_texture(coin_texture), chest_texture(chest_texture), soundHandler(soundHandler)
 {
 	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
 	{
@@ -31,10 +31,14 @@ void TreasureManager::display(sf::RenderWindow& window) const
 
 void TreasureManager::findTreasure(bool isCoin)
 {
-	if (isCoin)
+	if (isCoin) {
 		coinFoundCount++;
-	else
+		soundHandler->playCoinSound();
+	}
+	else {
 		treasuresFoundCount++;
+		soundHandler->playChestSound();
+	}
 }
 
 

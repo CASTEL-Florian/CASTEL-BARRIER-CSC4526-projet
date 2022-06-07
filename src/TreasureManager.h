@@ -2,12 +2,13 @@
 #include <Player.h>
 #include "Treasure.h"
 #include "RoomGenerator.h"
+#include "SoundHandler.h"
 
 const int coinCount = 20;
 const int treasuresCount = 5;
 class TreasureManager {
 public:
-	TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture);
+	TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture, SoundHandler* soundHandler);
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 	void findTreasure(bool isCoin);
@@ -26,4 +27,6 @@ private:
 	
 	sf::Texture* coin_texture;
 	sf::Texture* chest_texture;
+
+	SoundHandler* soundHandler;
 };

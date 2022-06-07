@@ -31,6 +31,16 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 	background.setTextureRect(backgroundSpriteRect);
 	float scale = width / (float)backgroundSpriteRect.width;
 	background.setScale(sf::Vector2f(scale, scale));
+
+	sea_ambiant = std::make_unique<sf::Music>();
+	sea_ambiant->openFromFile("resources/sea_ambiant_sound.wav");
+	sea_ambiant->setLoop(true);
+	sea_ambiant->setVolume(80);
+	sea_ambiant->play();
+	diving_music = std::make_unique<sf::Music>();
+	diving_music->openFromFile("resources/diving_music.wav");
+	diving_music->setLoop(false);
+	diving_music->setVolume(50);
 }
 
 void MainMenu::update(sf::Time elapsed)
@@ -75,6 +85,7 @@ void MainMenu::mousePressed(int x, int y)
 {
 	if (playText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
 		state = MainMenuState::Transition1;
+		diving_music->play();
 	}
 }
 

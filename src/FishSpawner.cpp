@@ -1,6 +1,7 @@
 #include "FishSpawner.h"
 
-FishSpawner::FishSpawner(sf::Texture* fishTexture, Player* player) : fishTexture(fishTexture), player(player)
+FishSpawner::FishSpawner(sf::Texture* fishTexture, Player* player, SoundHandler* soundHandler) : 
+    fishTexture(fishTexture), player(player), soundHandler(soundHandler)
 {
     spawnFishRoom(1, 0);
     spawnFishRoom(0, 1);
@@ -52,7 +53,7 @@ void FishSpawner::spawnFish(float x, float y)
         inactiveFish.pop_back();
     }
     else {
-        fishVector.push_back(std::make_unique<Fish>(fishTexture, this, player, 0.2f, x, y));
+        fishVector.push_back(std::make_unique<Fish>(fishTexture, this, player, 0.2f, x, y, soundHandler));
     }
 }
 
