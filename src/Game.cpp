@@ -27,6 +27,7 @@ void Game::update()
 	pollEvents();
 	if (gameState == GameState::MainMenu) {
 		if (mainMenu->getState() == MainMenuState::TransitionFinished) {
+			userVolume = mainMenu->getUserVolume();
 			mainMenu.reset();
 			gameState = GameState::Playing;
 			initGameVariables();
@@ -134,6 +135,7 @@ void Game::loadMainMenu()
 {
 	mainMenu = std::make_unique<MainMenu>(&textures[7], &textures[0], fader.get(), window_length, window_height);
 	gameState = GameState::MainMenu;
+	mainMenu->setUserVolume(userVolume);
 	fader->fadeIn();
 	clock.restart();
 }
@@ -193,8 +195,9 @@ void Game::initGameVariables() {
 	treasureManager->createTreasures(rooms);
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get(), soundHandler.get());
-	clock.restart();
+	soundHandler->setUserVolume(userVolume);
 	fader->fadeIn(1);
+	clock.restart();
 }
 
 void Game::loadTextures()
@@ -261,6 +264,11 @@ void Game::pollEvents() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+	}
+	if (gameState == GameState::MainMenu) {
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			mainMenu->updateVolume(sf::Mouse::getPosition(*window));
+		}
 	}
 }
 

@@ -41,11 +41,34 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 	diving_music->openFromFile("resources/diving_music.wav");
 	diving_music->setLoop(false);
 	diving_music->setVolume(50);
+
+	volumeBar.setPosition(volumeBarX, volumeBarY);
+	volumeBarWhite.setPosition(volumeBar.getPosition());
+	volumeBar.setSize(sf::Vector2f(volumeBarWidth, volumeBarHeight));
+	volumeMouseBox.left = volumeBarX - 10;
+	volumeMouseBox.top = volumeBarY - 10;
+	volumeMouseBox.width = volumeBarWidth + 20;
+	volumeMouseBox.height = volumeBarHeight + 20;
+
+	volumeText.setFont(font);
+	volumeText.setString("Volume");
+	volumeText.setCharacterSize(20);
+	volumeText.setPosition(volumeBarX - 150, volumeBarY - 5);
 }
 
 void MainMenu::update(sf::Time elapsed)
 {
+
 	playerAnimator->update(elapsed);
+
+
+	volumeBar.setFillColor(sf::Color(100, 100, 100, uiAlpha));
+	volumeBarWhite.setFillColor(sf::Color(255, 255, 255, uiAlpha));
+	volumeText.setFillColor(sf::Color(255, 255, 255, uiAlpha));
+	volumeBarWhite.setSize(sf::Vector2f(userVolume * volumeBarWidth, volumeBarHeight));
+	diving_music->setVolume(50 * currentVolume * userVolume);
+	sea_ambiant->setVolume(80 * currentVolume * userVolume);
+
 	if (state == MainMenuState::Wait)
 		return;
 	if (state == MainMenuState::Transition1 || state == MainMenuState::Transition2) {
@@ -72,11 +95,7 @@ void MainMenu::update(sf::Time elapsed)
 	if (state == MainMenuState::Transition3) {
 		transitionTime += elapsed.asSeconds();
 		currentVolume -= elapsed.asSeconds();
-		if (currentVolume > 0) {
-			diving_music->setVolume(50 * currentVolume);
-			sea_ambiant->setVolume(80 * currentVolume);
-		}
-		else
+		if (currentVolume <= 0)
 			state = MainMenuState::TransitionFinished;
 	}
 	
@@ -89,11 +108,17 @@ void MainMenu::display(sf::RenderWindow& window) const
 	playerAnimator->display(window);
 	window.draw(gameName);
 	window.draw(playText);
+	
+	window.draw(volumeBar);
+	window.draw(volumeBarWhite);
+	window.draw(volumeText);
 }
 
 void MainMenu::mousePressed(int x, int y)
 {
-	if (state == MainMenuState::Wait && playText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
+	if (!(state == MainMenuState::Wait))
+		return;
+	if (playText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
 		state = MainMenuState::Transition1;
 		diving_music->play();
 	}
@@ -102,6 +127,30 @@ void MainMenu::mousePressed(int x, int y)
 MainMenuState MainMenu::getState() const
 {
 	return state;
+}
+
+void MainMenu::updateVolume(sf::Vector2i pos)
+{
+	if (!(state == MainMenuState::Wait))
+		return;
+	if (volumeMouseBox.contains(sf::Vector2f(pos.x, pos.y))) {
+		if (pos.x < volumeBarX)
+			userVolume = 0;
+		else if (pos.x > volumeBarX + volumeBarWidth)
+			userVolume = 1;
+		else
+			userVolume = (pos.x - volumeBarX) / volumeBarWidth;
+	}
+}
+
+float MainMenu::getUserVolume()
+{
+	return userVolume;
+}
+
+void MainMenu::setUserVolume(float volume)
+{
+	userVolume = volume;
 }
 
 

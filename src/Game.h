@@ -67,4 +67,6 @@ private:
 	std::unique_ptr<EndScreen> endScreen;
 
 	GameState gameState = GameState::Playing;
+
+	float userVolume = 1;
 };
