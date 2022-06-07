@@ -12,6 +12,7 @@ public:
 	void playCoinSound();
 	void playChestSound();
 	void playFishSound();
+	void fadeOut();
 private:
 	std::unique_ptr<sf::Music> calm_music;
 	std::unique_ptr<sf::Music> frantic_music;
