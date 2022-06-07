@@ -1,8 +1,8 @@
 #include "EndScreen.h"
 #include "EndScreen.h"
 
-EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, float width, float height) :
-	fader(fader), backgroundTexture(backgroundTexture), width(width), height(height)
+EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float width, float height) :
+	fader(fader), backgroundTexture(backgroundTexture), soundHandler(soundHandler), width(width), height(height)
 {
 	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
 	{
@@ -56,8 +56,10 @@ void EndScreen::display(sf::RenderWindow& window) const
 
 void EndScreen::mousePressed(int x, int y)
 {
-	if (returnText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
+	if (state == EndScreenState::Wait && returnText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
 		fader->fadeOut();
+		if (soundHandler)
+			soundHandler->fadeOut();
 		state = EndScreenState::Transition;
 	}
 }

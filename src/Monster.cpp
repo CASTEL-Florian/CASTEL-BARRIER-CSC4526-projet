@@ -24,6 +24,11 @@ void Monster::display(sf::RenderWindow& window) const {
 
 
 void Monster::update(sf::Time elapsed) {
+	float distFromPlayer = distanceFromPlayer();
+	if (distFromPlayer < hitboxRadius) {
+		player->kill();
+	}
+
 	if (action == State::Flee) {
 		actionTime -= elapsed.asSeconds();
 		
@@ -36,7 +41,7 @@ void Monster::update(sf::Time elapsed) {
 		if (std::abs(x - targetX) < tileWidth && std::abs(y - targetY) < tileHeight) {
 			sleep(1);
 		}
-		if (distanceFromPlayer() <= playerDetectRange) {
+		if (distFromPlayer <= playerDetectRange && player->isAlive()) {
 			follow();
 		}
 	}
@@ -45,7 +50,7 @@ void Monster::update(sf::Time elapsed) {
 	}
 	if (action == State::Sleep) {
 		actionTime -= elapsed.asSeconds();
-		if (distanceFromPlayer() <= playerDetectRange) {
+		if (distFromPlayer <= playerDetectRange && player->isAlive()) {
 			follow();
 		}
 		if (actionTime <= 0) {
@@ -54,7 +59,7 @@ void Monster::update(sf::Time elapsed) {
 		return;
 	}
 	
-	if (action == State::Follow && distanceFromPlayer() <= attackRange) {
+	if (action == State::Follow && distFromPlayer <= attackRange) {
 		prepareAttack();
 	}
 	if (action == State::PrepareAttack) {
@@ -163,6 +168,10 @@ void Monster::dash()
 
 void Monster::follow()
 {
+	if (!player->isAlive()) {
+		explore();
+		return;
+	}
 	//std::cout << "Following\n";
 	soundHandler->switchToFrantic();
 	action = State::Follow;

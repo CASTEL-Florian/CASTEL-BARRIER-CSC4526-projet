@@ -20,7 +20,7 @@
 #include "EndScreen.h"
 
 
-enum class GameState {MainMenu, Playing, EndScreen};
+enum class GameState {MainMenu, Playing, EndScreen, TransitionToEndScreen};
 
 class Game
 {
