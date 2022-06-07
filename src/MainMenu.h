@@ -13,6 +13,9 @@ public:
 	void display(sf::RenderWindow& window) const;
 	void mousePressed(int x, int y);
 	MainMenuState getState() const;
+	void updateVolume(sf::Vector2i pos);
+	float getUserVolume();
+	void setUserVolume(float volume);
 private:
 	float easeInOutQuad(float x) const;
 	sf::Font font;
@@ -32,8 +35,18 @@ private:
 	float transitionTime = 0;
 	float width;
 	float height;
+	float userVolume = 1;
 	sf::IntRect backgroundSpriteRect;
 
 	std::unique_ptr<sf::Music> sea_ambiant;
 	std::unique_ptr<sf::Music> diving_music;
+
+	sf::RectangleShape volumeBar;
+	sf::RectangleShape volumeBarWhite;
+	sf::FloatRect volumeMouseBox;
+	sf::Text volumeText;
+	const float volumeBarX = 420;
+	const float volumeBarY = 650;
+	const float volumeBarWidth = 500;
+	const float volumeBarHeight = 10;
 };

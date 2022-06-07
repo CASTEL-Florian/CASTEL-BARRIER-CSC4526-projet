@@ -39,7 +39,7 @@ void SoundHandler::switchToFrantic() {
 void SoundHandler::update(sf::Time elapsed)
 {
 	if (volumeTarget < currentVolume) {
-		currentVolume = std::max(0.f, currentVolume - elapsed.asSeconds() * volume);
+		currentVolume = std::max(0.f, currentVolume - elapsed.asSeconds() * userVolume);
 	}
 	
 	if (calmVolume < calmTarget) {
@@ -49,8 +49,8 @@ void SoundHandler::update(sf::Time elapsed)
 		calmVolume = std::max(calmVolume - (elapsed.asSeconds() / transitionTimeToFrantic), calmTarget);
 	}
 	franticVolume = 1 - calmVolume;
-	calm_music->setVolume(calmVolume * 100 * currentVolume);
-	frantic_music->setVolume(franticVolume * 100 * currentVolume);
+	calm_music->setVolume(calmVolume * 100 * currentVolume * userVolume);
+	frantic_music->setVolume(franticVolume * 100 * currentVolume * userVolume);
 }
 
 void SoundHandler::fadeOut()
@@ -58,17 +58,25 @@ void SoundHandler::fadeOut()
 	volumeTarget = 0;
 }
 
-void SoundHandler::playCoinSound() {
+void SoundHandler::setUserVolume(float volume)
+{
+	userVolume = volume;
+}
+
+void SoundHandler::playCoinSound() const {
 	coin_sound->stop();
+	coin_sound->setVolume(25 * currentVolume * userVolume);
 	coin_sound->play();
 }
 
-void SoundHandler::playChestSound() {
+void SoundHandler::playChestSound() const {
 	chest_sound->stop();
+	chest_sound->setVolume(35 * currentVolume * userVolume);
 	chest_sound->play();
 }
 
-void SoundHandler::playFishSound() {
+void SoundHandler::playFishSound() const {
 	fish_sound->stop();
+	fish_sound->setVolume(15 * currentVolume * userVolume);
 	fish_sound->play();
 }
