@@ -4,7 +4,7 @@
 
 const int window_length = 1200;
 const int window_height = 900;
-const int nb_rooms = 2;
+const int nb_rooms = 20;
 const float gravity_down = -3.0f;
 const float engine_power = 750.0f;
 
@@ -149,8 +149,8 @@ void Game::initGameVariables() {
 	b2Vec2 gravity(0.0f, gravity_down);
 	world = std::make_unique<b2World>(gravity);
 
-	oxygenBar = std::make_unique<OxygenBar>(20, 130, 30);
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
+	oxygenBar = std::make_unique<OxygenBar>(20, 130, 180, player.get());
 	
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2)));
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 + tileHeight)));

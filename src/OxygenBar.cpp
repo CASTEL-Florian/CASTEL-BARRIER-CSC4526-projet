@@ -1,6 +1,6 @@
 #include "OxygenBar.h"
 
-OxygenBar::OxygenBar(float x, float y, float timeMax) : timeMax(timeMax), time(timeMax), x(x), y(y)
+OxygenBar::OxygenBar(float x, float y, float timeMax, Player* player) : timeMax(timeMax), time(timeMax), x(x), y(y), player(player)
 {
 }
 
@@ -8,8 +8,10 @@ void OxygenBar::update(sf::Time elapsed)
 {
 	if (time >= 0)
 		time -= elapsed.asSeconds();
-	else
+	else {
 		time = 0;
+		player->kill();
+	}
 }
 
 void OxygenBar::display(sf::RenderWindow& window) const
