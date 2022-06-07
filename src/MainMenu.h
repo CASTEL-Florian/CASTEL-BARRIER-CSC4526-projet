@@ -4,7 +4,7 @@
 #include "Animator.h"
 #include "Fader.h"
 
-enum class MainMenuState {Wait, Transition1, Transition2, TransitionFinished};
+enum class MainMenuState {Wait, Transition1, Transition2, Transition3, TransitionFinished};
 
 class MainMenu {
 public:
@@ -28,6 +28,7 @@ private:
 	const float playerRoationTime = 5;
 	const float backgroundHeightProportion = 0.5f;
 	const float startFadeTime = 4;
+	float currentVolume = 1;
 	float transitionTime = 0;
 	float width;
 	float height;

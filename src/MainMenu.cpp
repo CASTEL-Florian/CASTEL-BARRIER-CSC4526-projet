@@ -66,8 +66,18 @@ void MainMenu::update(sf::Time elapsed)
 		else
 		{
 			if (fader->getState() == FaderState::Sleep)
-				state = MainMenuState::TransitionFinished;
+				state = MainMenuState::Transition3;
 		}
+	}
+	if (state == MainMenuState::Transition3) {
+		transitionTime += elapsed.asSeconds();
+		currentVolume -= elapsed.asSeconds();
+		if (currentVolume > 0) {
+			diving_music->setVolume(50 * currentVolume);
+			sea_ambiant->setVolume(80 * currentVolume);
+		}
+		else
+			state = MainMenuState::TransitionFinished;
 	}
 	
 	
