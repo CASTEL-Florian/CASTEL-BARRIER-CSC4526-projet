@@ -25,7 +25,7 @@ void Fader::update(sf::Time elapsed)
 void Fader::display(sf::RenderWindow& window) const
 {
 	sf::RectangleShape rect;
-	rect.setFillColor(sf::Color(0, 0, 0, 255 * currentTime / fadeTime));
+	rect.setFillColor(sf::Color(fadeColor.r, fadeColor.g, fadeColor.b, 255 * currentTime / fadeTime));
 	rect.setSize(sf::Vector2f(width, height));
 	window.draw(rect);
 }
@@ -47,4 +47,9 @@ void Fader::fadeOut(float fadeDuration)
 FaderState Fader::getState() const
 {
 	return state;
+}
+
+void Fader::setFadeColor(sf::Color color)
+{
+	fadeColor = color;
 }

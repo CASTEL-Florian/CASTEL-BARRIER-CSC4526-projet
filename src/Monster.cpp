@@ -26,7 +26,7 @@ void Monster::display(sf::RenderWindow& window) const {
 void Monster::update(sf::Time elapsed) {
 	float distFromPlayer = distanceFromPlayer();
 	if (distFromPlayer < hitboxRadius) {
-		player->kill();
+		player->kill(sf::Color::Red);
 	}
 
 	if (action == State::Flee) {

@@ -102,7 +102,13 @@ bool Player::isAlive() const
 	return alive;
 }
 
-void Player::kill()
+void Player::kill(sf::Color transitionCol)
 {
 	alive = false;
+	transitionColor = transitionCol;
+}
+
+sf::Color Player::getTransitionColor()
+{
+	return transitionColor;
 }

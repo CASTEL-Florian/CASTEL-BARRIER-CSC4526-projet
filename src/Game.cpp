@@ -68,8 +68,11 @@ void Game::update()
 	fishSpawner->update(elapsed);
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 
-	if (!player->isAlive() && gameState == GameState::Playing) {
+	if ((!player->isAlive() || treasureManager->gameWon()) && gameState == GameState::Playing) {
+		fader->setFadeColor(player->getTransitionColor());
 		fader->fadeOut();
+		if (treasureManager->gameWon())
+			soundHandler->switchToCalm();
 		gameState = GameState::TransitionToEndScreen;
 	}
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));

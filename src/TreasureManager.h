@@ -15,6 +15,7 @@ public:
 	void createTreasures(std::vector<std::unique_ptr<Room>> const& rooms);
 	int getTreasuresFoundCount() const;
 	int getCoinFoundCount() const;
+	bool gameWon() const;
 private:
 	float x;
 	float y;

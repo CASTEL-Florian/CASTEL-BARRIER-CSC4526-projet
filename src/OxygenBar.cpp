@@ -10,7 +10,7 @@ void OxygenBar::update(sf::Time elapsed)
 		time -= elapsed.asSeconds();
 	else {
 		time = 0;
-		player->kill();
+		player->kill(sf::Color::Blue);
 	}
 }
 
