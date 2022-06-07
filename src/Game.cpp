@@ -13,8 +13,8 @@ Game::Game()
 {
 	initWindow();
 	loadTextures();
-	//loadMainMenu();
-	loadEndScreen();
+	loadMainMenu();
+	//loadEndScreen();
 }
 
 
