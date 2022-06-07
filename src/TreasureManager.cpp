@@ -1,11 +1,12 @@
 #include "TreasureManager.h"
 #include "Treasure.h"
+#include "myRandom.h"
 
 
 
 
-TreasureManager::TreasureManager(Player* player, RoomGenerator* roomGenerator, sf::Texture* coin_texture, sf::Texture* chest_texture) :
-	player(player), roomGenerator(roomGenerator), coin_texture(coin_texture), chest_texture(chest_texture)
+TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture) :
+	player(player), coin_texture(coin_texture), chest_texture(chest_texture)
 {
 	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
 	{
@@ -51,6 +52,16 @@ void TreasureManager::createTreasures(std::vector<std::unique_ptr<Room>> const& 
 			room->addObject(createTreasure(posX, posY, false));
 		}
 	}
+}
+
+int TreasureManager::getTreasuresFoundCount() const
+{
+	return treasuresFoundCount;
+}
+
+int TreasureManager::getCoinFoundCount() const
+{
+	return coinFoundCount;
 }
 
 std::unique_ptr<Treasure> TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)

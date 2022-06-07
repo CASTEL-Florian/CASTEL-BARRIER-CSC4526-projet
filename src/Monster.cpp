@@ -10,10 +10,6 @@ Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* text
 	y = (farthestRoomPos.second + 0.5f) * roomHeight * tileHeight;
 	explore();
 	animator = std::make_unique<Animator>(texture, scale, 256, 128, 0.1f, std::vector<int> { 8,10 });
-	auto bounds = animator->getLocalBounds();
-	float wi = bounds.width;
-	float hi = bounds.height;
-	animator->setOrigin(sf::Vector2f(wi, hi) / 2.f);
 }
 
 void Monster::display(sf::RenderWindow& window) const {

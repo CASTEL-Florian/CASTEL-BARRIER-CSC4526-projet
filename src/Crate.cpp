@@ -6,7 +6,6 @@ Crate::Crate(b2World* world, sf::Texture* texture, float scale, const b2Vec2& po
 	sf::FloatRect bounds = animator->getLocalBounds();
 	w = bounds.width * scale;
 	h = bounds.height * scale;
-	animator->setOrigin(sf::Vector2f(w / scale, h / scale) / 2.f);
 	initBox(world, position, b2_dynamicBody);
 }
 

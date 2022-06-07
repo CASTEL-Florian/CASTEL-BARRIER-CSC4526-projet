@@ -1,6 +1,7 @@
 #pragma once
 #include "Fish.h"
 #include <iostream>
+#include "myRandom.h"
 
 class FishSpawner {
 public:

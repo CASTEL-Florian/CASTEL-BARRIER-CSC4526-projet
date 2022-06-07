@@ -9,7 +9,6 @@ Player::Player(b2World* world, const float enginePower, sf::Texture* texture, fl
 	sf::FloatRect bounds = animator->getLocalBounds();
 	w = bounds.width * scale;
 	h = bounds.height * scale;
-	animator->setOrigin(sf::Vector2f(w / scale, h / scale) / 2.f);
 	initBox(world, b2Vec2(roomWidth * tileWidth / 2, roomHeight * tileHeight / 2), b2_dynamicBody);
 }
 

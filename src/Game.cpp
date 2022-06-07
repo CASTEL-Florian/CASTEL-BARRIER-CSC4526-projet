@@ -13,7 +13,8 @@ Game::Game()
 {
 	initWindow();
 	loadTextures();
-	loadMainMenu();
+	//loadMainMenu();
+	loadEndScreen();
 }
 
 
@@ -25,11 +26,22 @@ void Game::update()
 	pollEvents();
 	if (gameState == GameState::MainMenu) {
 		if (mainMenu->getState() == MainMenuState::TransitionFinished) {
+			mainMenu.reset();
 			gameState = GameState::Playing;
 			initGameVariables();
 			return;
 		}
 		mainMenu->update(elapsed);
+		return;
+	}
+	if (gameState == GameState::EndScreen) {
+		if (endScreen->getState() == EndScreenState::TransitionFinished) {
+			endScreen.reset();
+			resetGame();
+			loadMainMenu();
+			return;
+		}
+		endScreen->update(elapsed);
 		return;
 	}
 	oxygenBar->update(elapsed);
@@ -61,6 +73,12 @@ void Game::render() const
 	window->clear(sf::Color(20, 60, 100));
 	if (gameState == GameState::MainMenu) {
 		mainMenu->display(*window);
+		fader->display(*window);
+		window->display();
+		return;
+	}
+	if (gameState == GameState::EndScreen) {
+		endScreen->display(*window);
 		fader->display(*window);
 		window->display();
 		return;
@@ -103,6 +121,15 @@ void Game::loadMainMenu()
 	mainMenu = std::make_unique<MainMenu>(&textures[7], &textures[0], fader.get(), window_length, window_height);
 	gameState = GameState::MainMenu;
 	fader->fadeIn();
+	clock.restart();
+}
+
+void Game::loadEndScreen()
+{
+	endScreen = std::make_unique<EndScreen>(&textures[7], &textures[4], &textures[5], fader.get(), treasureManager.get(), window_length, window_height);
+	gameState = GameState::EndScreen;
+	fader->fadeIn();
+	clock.restart();
 }
 
 void Game::initGameVariables() {
@@ -125,19 +152,19 @@ void Game::initGameVariables() {
 
 	soundHandler = std::make_unique<SoundHandler>();
 	soundHandler->playMusic();
-
-	rooms = roomGenerator.generateMap(nb_rooms);
-	rooms = roomGenerator.buildRooms(world.get(), std::move(rooms));
+	roomGenerator = std::make_unique<RoomGenerator>();
+	rooms = roomGenerator->generateMap(nb_rooms);
+	rooms = roomGenerator->buildRooms(world.get(), std::move(rooms));
 	currentRoom = rooms[0].get();
-	monster = std::make_unique<Monster>(player.get(), &roomGenerator, &textures[3], 0.2f, soundHandler.get());
+	monster = std::make_unique<Monster>(player.get(), roomGenerator.get(), &textures[3], 0.2f, soundHandler.get());
 	rooms[0]->addObject(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth* tileWidth / 2 + 2 * tileWidth, roomHeight* tileHeight / 2)));
 
-	treasureManager = std::make_unique<TreasureManager>(player.get(), &roomGenerator, &textures[4], &textures[5]);
+	treasureManager = std::make_unique<TreasureManager>(player.get(), &textures[4], &textures[5]);
 	treasureManager->createTreasures(rooms);
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get());
-
-	fader->fadeIn(1, true);
+	clock.restart();
+	fader->fadeIn(1);
 }
 
 void Game::loadTextures()
@@ -168,6 +195,20 @@ void Game::loadTextures()
 	textures.push_back(background_texture);
 }
 
+void Game::resetGame()
+{
+	minimap.reset();
+	world.reset();
+	oxygenBar.reset();
+	player.reset();
+	objects.clear();
+	soundHandler.reset();
+	roomGenerator.reset();
+	monster.reset();
+	treasureManager.reset();
+	fishSpawner.reset();
+}
+
 bool Game::running() const {
 	return window->isOpen();
 }
@@ -177,13 +218,18 @@ void Game::pollEvents() {
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
-		if (event.type == sf::Event::MouseButtonPressed)
+		if (event.type == sf::Event::MouseButtonPressed) {
 			if (gameState == GameState::MainMenu && event.mouseButton.button == sf::Mouse::Left)
 				mainMenu->mousePressed(event.mouseButton.x, event.mouseButton.y);
+			if (gameState == GameState::EndScreen && event.mouseButton.button == sf::Mouse::Left)
+				endScreen->mousePressed(event.mouseButton.x, event.mouseButton.y);
+		}
 	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+	if (gameState == GameState::Playing) {
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) player->move(b2Vec2(0, 1));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+	}
 }
 

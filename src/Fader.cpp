@@ -14,12 +14,7 @@ void Fader::update(sf::Time elapsed)
 		}
 	}
 	if (state == FaderState::FadeIn) {
-		if (flag) {
-			flag = false;
-			currentTime -= 1 / 60.f;
-		}
-		else
-			currentTime -= elapsed.asSeconds();
+		currentTime -= elapsed.asSeconds();
 		if (currentTime < 0) {
 			currentTime = 0;
 			state = FaderState::Sleep;
@@ -35,9 +30,8 @@ void Fader::display(sf::RenderWindow& window) const
 	window.draw(rect);
 }
 
-void Fader::fadeIn(float fadeDuration, bool ignoreFirstFrame)
+void Fader::fadeIn(float fadeDuration)
 {
-	flag = ignoreFirstFrame;
 	fadeTime = fadeDuration;
 	currentTime = fadeTime;
 	state = FaderState::FadeIn;
@@ -50,7 +44,7 @@ void Fader::fadeOut(float fadeDuration)
 	state = FaderState::FadeOut;
 }
 
-FaderState Fader::getState()
+FaderState Fader::getState() const
 {
 	return state;
 }

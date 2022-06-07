@@ -6,8 +6,6 @@ Fish::Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player,float 
 {
 	animator = std::make_unique<Animator>(texture, scale, 32, 16, 0.1f, std::vector<int> {18, 18});
 	animator->playAnimation(random_1_to_n(2) - 1);
-	sf::FloatRect bounds = animator->getLocalBounds();
-	animator->setOrigin(sf::Vector2f(bounds.width, bounds.height) / 2.f);
 }
 
 void Fish::update(sf::Time elapsed)
