@@ -21,7 +21,7 @@ TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::
 
 void TreasureManager::update(sf::Time elapsed)
 {
-	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
+	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount) + "\nO2 :");
 	text.setPosition(10, 20);
 }
 
