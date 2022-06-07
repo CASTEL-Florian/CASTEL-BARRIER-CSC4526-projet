@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Animator.h"
 #include "Fader.h"
 
@@ -31,4 +32,7 @@ private:
 	float width;
 	float height;
 	sf::IntRect backgroundSpriteRect;
+
+	std::unique_ptr<sf::Music> sea_ambiant;
+	std::unique_ptr<sf::Music> diving_music;
 };

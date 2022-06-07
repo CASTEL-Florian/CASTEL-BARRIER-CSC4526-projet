@@ -170,10 +170,10 @@ void Game::initGameVariables() {
 	monster = std::make_unique<Monster>(player.get(), roomGenerator.get(), &textures[3], 0.2f, soundHandler.get());
 	rooms[0]->addObject(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth* tileWidth / 2 + 2 * tileWidth, roomHeight* tileHeight / 2)));
 
-	treasureManager = std::make_unique<TreasureManager>(player.get(), &textures[4], &textures[5]);
+	treasureManager = std::make_unique<TreasureManager>(player.get(), &textures[4], &textures[5], soundHandler.get());
 	treasureManager->createTreasures(rooms);
 
-	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get());
+	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get(), soundHandler.get());
 	clock.restart();
 	fader->fadeIn(1);
 }

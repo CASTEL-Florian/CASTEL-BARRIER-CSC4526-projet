@@ -9,12 +9,15 @@ public:
 	void switchToCalm();
 	void switchToFrantic();
 	void update(sf::Time elapsed);
-	void coinSound();
-	void chestSound();
-	void fadeOut();
+	void playCoinSound();
+	void playChestSound();
+	void playFishSound();
 private:
 	std::unique_ptr<sf::Music> calm_music;
 	std::unique_ptr<sf::Music> frantic_music;
+	std::unique_ptr<sf::Music> coin_sound;
+	std::unique_ptr<sf::Music> chest_sound;
+	std::unique_ptr<sf::Music> fish_sound;
 	sf::Clock timer;
 	const float transitionTimeToCalm = 3;
 	const float transitionTimeToFrantic = 1;

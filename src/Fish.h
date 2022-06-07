@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Animator.h"
 #include "Player.h"
+#include "SoundHandler.h"
 
 class FishSpawner;
 
@@ -9,7 +10,7 @@ enum class FishAction {Stop, MoveLeft, MoveRight, Flee};
 
 class Fish :public Object {
 public:
-	Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player, float scale, float x, float y);
+	Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player, float scale, float x, float y, SoundHandler* soundHandler);
 	void update(sf::Time elapsed) override;
 	void display(sf::RenderWindow& window) const override;
 	float get_x() const override;
@@ -33,4 +34,5 @@ private:
 	float actionTime = 0;
 	float speed = 0;
 	float angle = 0;
+	SoundHandler* soundHandler;
 };
