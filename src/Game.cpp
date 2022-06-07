@@ -70,7 +70,7 @@ void Game::update()
 
 void Game::render() const
 {
-	window->clear(sf::Color(20, 60, 100));
+	window->clear(sf::Color(30, 90, 150));
 	if (gameState == GameState::MainMenu) {
 		mainMenu->display(*window);
 		fader->display(*window);
@@ -84,7 +84,7 @@ void Game::render() const
 		return;
 	}
 	window->setView(view);
-
+	window->draw(depth);
 	currentRoom->display(*window);
 	currentRoom->displayObjects(*window);
 	for (auto& r : currentRoom->getAjacentRooms()) {
@@ -139,6 +139,21 @@ void Game::initGameVariables() {
 	world = std::make_unique<b2World>(gravity);
 
 	oxygenBar = std::make_unique<OxygenBar>(20, 130, 30);
+	depth.setPrimitiveType(sf::Quads);
+	depth.resize(6);
+	depth[0].position = sf::Vector2f(-1800.f, -500.f);
+	depth[1].position = sf::Vector2f(1800.f, -500.f);
+	depth[2].position = sf::Vector2f(1800.f, 500.f);
+	depth[3].position = sf::Vector2f(-1800.f, 500.f);
+	depth[4].position = sf::Vector2f(-1800.f, 1800.f);
+	depth[5].position = sf::Vector2f(-1800.f, 1800.f);
+	depth[0].color = sf::Color::Transparent;
+	depth[1].color = sf::Color::Transparent;
+	depth[2].color = sf::Color::Black;
+	depth[3].color = sf::Color::Black;
+	depth[4].color = sf::Color::Black;
+	depth[5].color = sf::Color::Black;
+
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
 	
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2)));
