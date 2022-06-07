@@ -13,8 +13,8 @@ Game::Game()
 {
 	initWindow();
 	loadTextures();
-	loadMainMenu();
-	//loadEndScreen();
+	//loadMainMenu();
+	loadEndScreen();
 }
 
 
@@ -169,7 +169,7 @@ void Game::initGameVariables() {
 	depth[5].color = sf::Color::Black;
 
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
-	oxygenBar = std::make_unique<OxygenBar>(20, 130, 180, player.get());
+	oxygenBar = std::make_unique<OxygenBar>(20, 130, 500, player.get());
 	
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2)));
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 + tileHeight)));

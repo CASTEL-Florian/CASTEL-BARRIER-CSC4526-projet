@@ -3,7 +3,7 @@
 EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float width, float height) :
 	fader(fader), backgroundTexture(backgroundTexture), soundHandler(soundHandler), width(width), height(height)
 {
-	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
+	if (!font.loadFromFile("resources/Pixeled.ttf"))
 	{
 		std::cout << "Erreur de chargement du fichier Roboto-Regular.ttf";
 	}
@@ -11,15 +11,15 @@ EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, s
 	int coinFoundCount = treasureManager ? treasureManager->getCoinFoundCount() : 42;
 	returnText.setFont(font);
 	returnText.setString("Retourner au menu principal");
-	returnText.setCharacterSize(50);
+	returnText.setCharacterSize(40);
 	treasureText.setFont(font);
 	treasureText.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount));
-	treasureText.setCharacterSize(50);
-	treasureText.setPosition(300, 300);
+	treasureText.setCharacterSize(30);
+	treasureText.setPosition(300, 320);
 	coinText.setFont(font);
 	coinText.setString("Pièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
-	coinText.setCharacterSize(50);
-	coinText.setPosition(300, 400);
+	coinText.setCharacterSize(30);
+	coinText.setPosition(300, 420);
 	sf::FloatRect returnTextBounds = returnText.getGlobalBounds();
 	returnText.setPosition((width - returnTextBounds.width) / 2, 700);
 
