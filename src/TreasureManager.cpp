@@ -8,12 +8,12 @@
 TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture, SoundHandler* soundHandler) :
 	player(player), coin_texture(coin_texture), chest_texture(chest_texture), soundHandler(soundHandler)
 {
-	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
+	if (!font.loadFromFile("resources/Pixeled.ttf"))
 	{
 		std::cout << "Erreur de chargement du fichier Roboto-Regular.ttf";
 	}
 	text.setFont(font);
-	text.setCharacterSize(30);
+	text.setCharacterSize(15);
 	text.setPosition(10, 10);
 	text.setString(std::to_string(treasuresFoundCount));
 }
@@ -22,6 +22,7 @@ TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::
 void TreasureManager::update(sf::Time elapsed)
 {
 	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
+	text.setPosition(10, 20);
 }
 
 void TreasureManager::display(sf::RenderWindow& window) const

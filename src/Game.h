@@ -56,9 +56,10 @@ private:
 
 	std::unique_ptr<TreasureManager> treasureManager;
 	std::unique_ptr<SoundHandler> soundHandler;
-
 	std::unique_ptr<FishSpawner> fishSpawner;
+
 	sf::View view;
+	sf::VertexArray depth;
 
 	Room* currentRoom;
 

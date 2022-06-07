@@ -4,7 +4,7 @@
 MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, Fader* fader, float width, float height) :
 	backgroundTexture(backgroundTexture), fader(fader), width(width), height(height)
 {
-	if (!font.loadFromFile("resources/Roboto-Regular.ttf"))
+	if (!font.loadFromFile("resources/Pixeled.ttf"))
 	{
 		std::cout << "Erreur de chargement du fichier Roboto-Regular.ttf";
 	}
@@ -12,13 +12,13 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 	gameName.setFont(font);
 	gameName.setCharacterSize(50);
 	sf::FloatRect gameNameBounds = gameName.getGlobalBounds();
-	gameName.setPosition((width - gameNameBounds.width) / 2, 10);
+	gameName.setPosition((width - gameNameBounds.width) / 2, 50);
 
 	playText.setString("Jouer");
 	playText.setFont(font);
-	playText.setCharacterSize(50);
+	playText.setCharacterSize(40);
 	sf::FloatRect playTextBounds = playText.getGlobalBounds();
-	playText.setPosition((width - playTextBounds.width)/2, 200);
+	playText.setPosition((width - playTextBounds.width)/2, 250);
 	playerAnimator = std::make_unique<Animator>(playerTexture, 3.f, 64, 32, 0.1f, std::vector<int> {14});
 	playerAnimator->setPosition(sf::Vector2f(width / 2, height / 2));
 
