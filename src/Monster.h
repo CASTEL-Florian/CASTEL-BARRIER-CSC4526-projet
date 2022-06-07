@@ -37,6 +37,7 @@ private:
 	float const prepareAttackDuration = 1.f;
 	float const attackDuration = 1;
 	float const playerDetectRange = 60;
+	float const hitboxRadius = 8;
 	State action = State::Sleep;
 	Player* player;
 	RoomGenerator* roomGenerator;

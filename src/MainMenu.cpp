@@ -73,7 +73,7 @@ void MainMenu::display(sf::RenderWindow& window) const
 
 void MainMenu::mousePressed(int x, int y)
 {
-	if (playText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
+	if (state == MainMenuState::Wait && playText.getGlobalBounds().contains(sf::Vector2f(x, y))) {
 		state = MainMenuState::Transition1;
 	}
 }

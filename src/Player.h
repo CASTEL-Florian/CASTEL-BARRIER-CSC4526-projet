@@ -16,10 +16,13 @@ public:
 	int getRoomY() const;
 	float get_x() const override;
 	float get_y() const override;
+	bool isAlive() const;
+	void kill();
 private:
 	float enginePower;
 	int roomX = 0;
 	int roomY = 0;
 	int rectOffset = 0;
+	bool alive = true;
 	std::unique_ptr<Animator> animator;
 };

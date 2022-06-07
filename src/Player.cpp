@@ -13,6 +13,8 @@ Player::Player(b2World* world, const float enginePower, sf::Texture* texture, fl
 }
 
 void Player::move(const b2Vec2& vec) {
+	if (!alive)
+		return;
 	body->ApplyForce(b2Vec2(vec.x * enginePower, vec.y * enginePower), 
 		body->GetPosition() + b2Vec2(w * std::cos(body->GetAngle()) / 5, w *std::sin(body->GetAngle()) / 5),
 		true);
@@ -93,4 +95,14 @@ float Player::get_x() const
 float Player::get_y() const
 {
 	return y;
+}
+
+bool Player::isAlive() const
+{
+	return alive;
+}
+
+void Player::kill()
+{
+	alive = false;
 }

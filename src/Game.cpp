@@ -4,7 +4,7 @@
 
 const int window_length = 1200;
 const int window_height = 900;
-const int nb_rooms = 20;
+const int nb_rooms = 2;
 const float gravity_down = -3.0f;
 const float engine_power = 750.0f;
 
@@ -13,8 +13,8 @@ Game::Game()
 {
 	initWindow();
 	loadTextures();
-	//loadMainMenu();
-	loadEndScreen();
+	loadMainMenu();
+	//loadEndScreen();
 }
 
 
@@ -23,6 +23,7 @@ void Game::update()
 {
 	sf::Time elapsed = clock.restart();
 	fader->update(elapsed);
+	soundHandler->update(elapsed);
 	pollEvents();
 	if (gameState == GameState::MainMenu) {
 		if (mainMenu->getState() == MainMenuState::TransitionFinished) {
@@ -44,8 +45,12 @@ void Game::update()
 		endScreen->update(elapsed);
 		return;
 	}
+	if (gameState == GameState::TransitionToEndScreen) {
+		if (fader->getState() == FaderState::Sleep) {
+			loadEndScreen();
+		}
+	}
 	oxygenBar->update(elapsed);
-	soundHandler->update(elapsed);
 	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics
 	for (auto const& o : objects) o->update(elapsed);
 	player->update(elapsed);
@@ -62,6 +67,11 @@ void Game::update()
 	treasureManager->update(elapsed);
 	fishSpawner->update(elapsed);
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
+
+	if (!player->isAlive() && gameState == GameState::Playing) {
+		fader->fadeOut();
+		gameState = GameState::TransitionToEndScreen;
+	}
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
 	
@@ -114,6 +124,7 @@ void Game::initWindow()
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "4526 lieues sous les mers");
 	window->setFramerateLimit(60);
 	fader = std::make_unique<Fader>(window_length, window_height);
+	soundHandler = std::make_unique<SoundHandler>();
 }
 
 void Game::loadMainMenu()
@@ -126,7 +137,7 @@ void Game::loadMainMenu()
 
 void Game::loadEndScreen()
 {
-	endScreen = std::make_unique<EndScreen>(&textures[7], &textures[4], &textures[5], fader.get(), treasureManager.get(), window_length, window_height);
+	endScreen = std::make_unique<EndScreen>(&textures[7], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
 	gameState = GameState::EndScreen;
 	fader->fadeIn();
 	clock.restart();
@@ -150,7 +161,7 @@ void Game::initGameVariables() {
 	objects.push_back(std::make_unique<Crab>(world.get(), &textures[2], 0.2f, b2Vec2(roomWidth * tileWidth / 2 + 4 * tileWidth, roomHeight * tileHeight / 2 - tileHeight)));
 		
 
-	soundHandler = std::make_unique<SoundHandler>();
+	
 	soundHandler->playMusic();
 	roomGenerator = std::make_unique<RoomGenerator>();
 	rooms = roomGenerator->generateMap(nb_rooms);
@@ -207,6 +218,7 @@ void Game::resetGame()
 	monster.reset();
 	treasureManager.reset();
 	fishSpawner.reset();
+	soundHandler = std::make_unique<SoundHandler>();
 }
 
 bool Game::running() const {

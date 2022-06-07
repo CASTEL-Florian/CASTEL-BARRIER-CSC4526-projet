@@ -18,21 +18,31 @@ void SoundHandler::playMusic() {
 }
 
 void SoundHandler::switchToCalm() {
-	calmTarget = 100;
+	calmTarget = 1;
 }
 
 void SoundHandler::switchToFrantic() {
 	calmTarget = 0;
 }
 
-void SoundHandler::update(sf::Time elapsed) const
+void SoundHandler::update(sf::Time elapsed)
 {
-	if (calm_music->getVolume() < calmTarget) {
-		calm_music->setVolume(std::min(calm_music->getVolume() + (100 * elapsed.asSeconds() / transitionTimeToCalm), calmTarget));
-		frantic_music->setVolume(100 - calm_music->getVolume());
+	if (volumeTarget < currentVolume) {
+		currentVolume = std::max(0.f, currentVolume - elapsed.asSeconds() * volume);
 	}
-	if (calm_music->getVolume() > calmTarget) {
-		calm_music->setVolume(std::max(calm_music->getVolume() - (100 * elapsed.asSeconds() / transitionTimeToFrantic), calmTarget));
-		frantic_music->setVolume(100 - calm_music->getVolume());
+	
+	if (calmVolume < calmTarget) {
+		calmVolume = std::min(calmVolume + (elapsed.asSeconds() / transitionTimeToCalm), calmTarget);
 	}
+	if (calmVolume > calmTarget) {
+		calmVolume = std::max(calmVolume - (elapsed.asSeconds() / transitionTimeToFrantic), calmTarget);
+	}
+	franticVolume = 1 - calmVolume;
+	calm_music->setVolume(calmVolume * 100 * currentVolume);
+	frantic_music->setVolume(franticVolume * 100 * currentVolume);
+}
+
+void SoundHandler::fadeOut()
+{
+	volumeTarget = 0;
 }
