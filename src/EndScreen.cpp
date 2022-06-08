@@ -1,7 +1,7 @@
 #include "EndScreen.h"
 
 EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float width, float height) :
-	fader(fader), backgroundTexture(backgroundTexture), soundHandler(soundHandler), width(width), height(height)
+	fader(fader), soundHandler(soundHandler), backgroundTexture(backgroundTexture), width(width), height(height)
 {
 	if (!font.loadFromFile("resources/Pixeled.ttf"))
 	{
@@ -28,6 +28,11 @@ EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, s
 	coinAnimator = std::make_unique<Animator>(coinTexture, 3.f, 16, 16, 0.1f, std::vector<int> {14});
 	coinAnimator->setPosition(sf::Vector2f(225, 425));
 
+	sf::Vector2u backgroundSize = backgroundTexture->getSize();
+	background.setTexture(*backgroundTexture);
+	float backgroundScale = std::max(width / (float)backgroundSize.x, height / (float)backgroundSize.y);
+	background.setScale(sf::Vector2f(backgroundScale, backgroundScale));
+
 }
 
 EndScreenState EndScreen::getState() const
@@ -46,6 +51,7 @@ void EndScreen::update(sf::Time elapsed)
 
 void EndScreen::display(sf::RenderWindow& window) const
 {
+	window.draw(background);
 	coinAnimator->display(window);
 	treasureAnimator->display(window);
 	window.draw(coinText);

@@ -26,6 +26,6 @@ private:
 	std::unique_ptr<Animator> treasureAnimator;;
 	float width;
 	float height;
-	sf::IntRect backgroundSpriteRect;
 	EndScreenState state = EndScreenState::Wait;
+	sf::Sprite background;
 };

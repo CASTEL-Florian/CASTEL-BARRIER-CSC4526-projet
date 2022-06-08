@@ -152,7 +152,12 @@ void Game::loadMainMenu()
 
 void Game::loadEndScreen()
 {
-	endScreen = std::make_unique<EndScreen>(&textures[7], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
+	if (endType == EndType::DeathByMonster) 
+		endScreen = std::make_unique<EndScreen>(&textures[8], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
+	else if (endType == EndType::Drowning) 
+		endScreen = std::make_unique<EndScreen>(&textures[9], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
+	else
+		endScreen = std::make_unique<EndScreen>(&textures[10], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
 	gameState = GameState::EndScreen;
 	fader->fadeIn();
 	clock.restart();
@@ -236,6 +241,15 @@ void Game::loadTextures()
 	sf::Texture background_texture; // 7
 	background_texture.loadFromFile("resources/background.png");
 	textures.push_back(background_texture);
+	sf::Texture kalmar_background_texture; // 8
+	kalmar_background_texture.loadFromFile("resources/death_kalmar.png");
+	textures.push_back(kalmar_background_texture);
+	sf::Texture oxygen_background_texture; // 9
+	oxygen_background_texture.loadFromFile("resources/death_oxygen.png");
+	textures.push_back(oxygen_background_texture);
+	sf::Texture victory_background_texture; // 10
+	victory_background_texture.loadFromFile("resources/victory_treasure.png");
+	textures.push_back(victory_background_texture);
 }
 
 void Game::resetGame()
