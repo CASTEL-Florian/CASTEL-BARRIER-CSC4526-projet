@@ -13,30 +13,12 @@ RoomGenerator::RoomGenerator()
         return;
     }
         
-
-    for (int i = 0; i < roomFiles.size(); i++) {
-        roomTileMaps.push_back(std::vector<int> {});
-        pugi::xml_document doc;
-        pugi::xml_parse_result result = doc.load_file(roomFiles[i].c_str());
-
-        if (!result)
-        {
-            std::cerr << "Could not open map file because " << result.description() << std::endl;
-            return;
-        }
-        std::string csv = doc.child("map").child("layer").child("data").text().get();
-        std::string delimiter = ",";
-        std::string token;
-        std::erase(csv, '\n');
-        size_t pos = 0;
-        while ((pos = csv.find(delimiter)) != std::string::npos) {
-            token = csv.substr(0, pos);
-            roomTileMaps[i].push_back(stoi(token));
-            csv.erase(0, pos + delimiter.length());
-        }
-        roomTileMaps[i].push_back(stoi(csv));
-
-    }
+    emptyRoomTilemap = loadXMLroom(emptyRoomFile);
+    for (auto file : treasureRoomFiles)
+        treasureRoomTilemaps.push_back(loadXMLroom(file));
+    for (auto file : standardRoomFiles)
+        standardRoomTilemaps.push_back(loadXMLroom(file));
+    
 }
 
 std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(int nb_rooms) 
@@ -119,20 +101,21 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
             normalRooms.erase(it);
         }
     }
-    rooms[0]->build(world, m_tileset.get(), roomTileMaps[0], std::vector<int> {});
+    rooms[0]->build(world, m_tileset.get(), emptyRoomTilemap, std::vector<int> {});
     for (int i = 1; i < rooms.size(); i++) {
         if (treasureRooms[i]) {
-            rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], std::vector<int> {});
-            rooms[i]->generateObjects(world, roomTileMaps[1], textures);
+            int roomType = random_1_to_n(treasureRoomTilemaps.size()) - 1;
+            rooms[i]->build(world, m_tileset.get(), emptyRoomTilemap, treasureRoomTilemaps[roomType]);
+            rooms[i]->generateObjects(world, treasureRoomTilemaps[roomType], textures);
         }
         else
         {
-            if (roomTileMaps.size() <= 2 || random_1_to_n(100) < (int)(emptyRoomProportion * 100))
-                rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], std::vector<int> {});
+            if (standardRoomTilemaps.empty() || random_1_to_n(100) < (int)(emptyRoomProportion * 100))
+                rooms[i]->build(world, m_tileset.get(), emptyRoomTilemap, std::vector<int> {});
             else {
-                int roomType = random_1_to_n(roomTileMaps.size() - 2) + 1;
-                rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], roomTileMaps[roomType]);
-                rooms[i]->generateObjects(world, roomTileMaps[roomType], textures);
+                int roomType = random_1_to_n(standardRoomTilemaps.size()) - 1;
+                rooms[i]->build(world, m_tileset.get(), emptyRoomTilemap, standardRoomTilemaps[roomType]);
+                rooms[i]->generateObjects(world, standardRoomTilemaps[roomType], textures);
             }
         }
     }
@@ -150,4 +133,30 @@ std::pair<int, int> RoomGenerator::getRandomRoomPos() const
     auto it = std::begin(roomPositions);
     std::advance(it, random_1_to_n(roomPositions.size()) - 1);
     return *it;
+}
+
+std::vector<int> RoomGenerator::loadXMLroom(std::string file) const
+{
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_file(file.c_str());
+    
+    std::vector<int> data;
+
+    if (!result)
+    {
+        std::cerr << "Could not open map file because " << result.description() << std::endl;
+        return std::vector<int> {};
+    }
+    std::string csv = doc.child("map").child("layer").child("data").text().get();
+    std::string delimiter = ",";
+    std::string token;
+    std::erase(csv, '\n');
+    size_t pos = 0;
+    while ((pos = csv.find(delimiter)) != std::string::npos) {
+        token = csv.substr(0, pos);
+        data.push_back(stoi(token));
+        csv.erase(0, pos + delimiter.length());
+    }
+    data.push_back(stoi(csv));
+    return data;
 }

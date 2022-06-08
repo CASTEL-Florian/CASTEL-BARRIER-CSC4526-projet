@@ -7,7 +7,9 @@
 #include <memory>
 #include "pugixml.hpp"
 
-const std::vector<std::string> roomFiles = { "resources/emptyRoom.xml", "resources/treasureRoom1.xml" };
+const std::string emptyRoomFile = "resources/emptyRoom.xml";
+const std::vector<std::string> treasureRoomFiles = { "resources/treasureRoom1.xml", "resources/treasureRoom2.xml" };
+const std::vector<std::string> standardRoomFiles = { "resources/standardRoom1.xml", "resources/standardRoom2.xml" , "resources/standardRoom3.xml" , "resources/standardRoom4.xml" , "resources/standardRoom5.xml" };
 const std::string tileset = "resources/room_spritesheet.png";
 int random_1_to_n(int const nbMax);
 const int corridorWidth = 5;
@@ -22,10 +24,13 @@ public:
 	std::pair<int, int> getFarthestRoomPos() const;
 	std::pair<int, int> getRandomRoomPos() const;
 private:
+	std::vector<int> loadXMLroom(std::string file) const;
 	std::pair<int, int> farthestRoomPos{ 0,0 };
 	std::unique_ptr<sf::Texture> m_tileset;
 
-	std::vector<std::vector<int>> roomTileMaps;
+	std::vector<int> emptyRoomTilemap;
+	std::vector<std::vector<int>> treasureRoomTilemaps;
+	std::vector<std::vector<int>> standardRoomTilemaps;
 	std::set<std::pair<int, int>> roomPositions;
 };
 
