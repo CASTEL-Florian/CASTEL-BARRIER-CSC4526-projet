@@ -70,9 +70,19 @@ void Game::update()
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 
 	if ((!player->isAlive() || treasureManager->gameWon()) && gameState == GameState::Playing) {
-		fader->setFadeColor(player->getTransitionColor());
+		endType = player->getEndType();
+		if (endType == EndType::Drowning) {
+			fader->setFadeColor(sf::Color::Blue);
+		}
+		if (endType == EndType::Victory) {
+			fader->setFadeColor(sf::Color::Yellow);
+		}
+		if (endType == EndType::DeathByMonster) {
+			fader->setFadeColor(sf::Color::Red);
+		}
+		
 		fader->fadeOut();
-		if (treasureManager->gameWon())
+		if (treasureManager->gameWon() || endType == EndType::Drowning)
 			soundHandler->switchToCalm();
 		gameState = GameState::TransitionToEndScreen;
 	}

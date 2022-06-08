@@ -69,4 +69,6 @@ private:
 	GameState gameState = GameState::Playing;
 
 	float userVolume = 1;
+
+	EndType endType = EndType::Victory;
 };
