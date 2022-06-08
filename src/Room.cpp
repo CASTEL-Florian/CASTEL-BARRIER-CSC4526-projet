@@ -342,8 +342,8 @@ std::pair<float, float> Room::findAvailableCoinPosition()
     int dy = random_1_to_n(roomHeight - 2);
     if (!objectsTilemap.empty()) {
         while (objectsTilemap[dx + dy * roomHeight] != 0) {
-            int dx = random_1_to_n(roomWidth - 2);
-            int dy = random_1_to_n(roomHeight - 2);
+            dx = random_1_to_n(roomWidth - 2);
+            dy = random_1_to_n(roomHeight - 2);
         }
     }
     pos.first += (dx + 0.5f) * tileWidth;

@@ -203,6 +203,7 @@ void Game::initGameVariables() {
 	rooms = roomGenerator->generateMap(nb_rooms);
 	rooms = roomGenerator->buildRooms(world.get(), std::move(rooms), &textures);
 	currentRoom = rooms[0].get();
+	
 	monster = std::make_unique<Monster>(player.get(), roomGenerator.get(), &textures[3], 0.2f, soundHandler.get());
 	rooms[0]->addObject(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth* tileWidth / 2 + 2 * tileWidth, roomHeight* tileHeight / 2)));
 
