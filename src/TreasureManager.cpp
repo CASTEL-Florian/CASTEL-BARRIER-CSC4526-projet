@@ -50,10 +50,8 @@ void TreasureManager::createTreasures(std::vector<std::unique_ptr<Room>> const& 
 {
 	for (int i = 0; i < coinCount; i++) {
 		int randomId = random_1_to_n(rooms.size()) - 1;
-		std::pair<float, float> pos(rooms[randomId]->get_x() * roomWidth * tileWidth, rooms[randomId]->get_y() * roomHeight * tileHeight);
-		pos.first += (random_1_to_n(roomWidth - 2) + 0.5f) * tileWidth;
-		pos.second += (random_1_to_n(roomHeight - 2) + 0.5f) * tileHeight;
-		rooms[randomId]->addObject(createTreasure(pos.first, pos.second, true));
+		auto [posX, posY] = rooms[randomId]->findAvailableCoinPosition();
+		rooms[randomId]->addObject(createTreasure(posX, posY, true));
 	}
 	for (auto const& room : rooms) {
 		for (auto const& [posX, posY] : room->getTreasurePos()) {
