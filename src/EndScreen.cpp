@@ -12,14 +12,17 @@ EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, s
 	returnText.setFont(font);
 	returnText.setString("Retourner au menu principal");
 	returnText.setCharacterSize(40);
+	returnText.setOutlineThickness(3.f);
 	treasureText.setFont(font);
 	treasureText.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount));
 	treasureText.setCharacterSize(30);
 	treasureText.setPosition(300, 320);
+	treasureText.setOutlineThickness(3.f);
 	coinText.setFont(font);
 	coinText.setString("Pièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount));
 	coinText.setCharacterSize(30);
 	coinText.setPosition(300, 420);
+	coinText.setOutlineThickness(3.f);
 	sf::FloatRect returnTextBounds = returnText.getGlobalBounds();
 	returnText.setPosition((width - returnTextBounds.width) / 2, 700);
 

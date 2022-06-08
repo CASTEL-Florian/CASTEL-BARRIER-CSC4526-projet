@@ -17,6 +17,7 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 	playText.setString("Jouer");
 	playText.setFont(font);
 	playText.setCharacterSize(40);
+	playText.setOutlineThickness(3.f);
 	sf::FloatRect playTextBounds = playText.getGlobalBounds();
 	playText.setPosition((width - playTextBounds.width)/2, 250);
 	playerAnimator = std::make_unique<Animator>(playerTexture, 3.f, 64, 32, 0.1f, std::vector<int> {14});
@@ -77,6 +78,7 @@ void MainMenu::update(sf::Time elapsed)
 		if (uiAlpha < 0)
 			uiAlpha = 0;
 		playText.setFillColor(sf::Color(255, 255, 255, uiAlpha));
+		playText.setOutlineColor(sf::Color(0, 0, 0, uiAlpha));
 		playerAnimator->setRotation(70 * easeInOutQuad(transitionTime / playerRoationTime));
 		backgroundSpriteRect.top = (int)((backgroundSpriteRect.height - backgroundHeightProportion) * (transitionTime / playerRoationTime) * (transitionTime / playerRoationTime));
 		background.setTextureRect(backgroundSpriteRect);
