@@ -57,6 +57,11 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 	volumeText.setPosition(volumeBarX - 150, volumeBarY - 5);
 }
 
+float easeInOutQuad(float x) {
+	return x < 0.5 ? 2 * x * x : 1 - std::powf(-2 * x + 2, 2) / 2;
+}
+
+
 void MainMenu::update(sf::Time elapsed)
 {
 
@@ -79,13 +84,13 @@ void MainMenu::update(sf::Time elapsed)
 			uiAlpha = 0;
 		playText.setFillColor(sf::Color(255, 255, 255, uiAlpha));
 		playText.setOutlineColor(sf::Color(0, 0, 0, uiAlpha));
-		playerAnimator->setRotation(70 * easeInOutQuad(transitionTime / playerRoationTime));
-		backgroundSpriteRect.top = (int)((backgroundSpriteRect.height - backgroundHeightProportion) * (transitionTime / playerRoationTime) * (transitionTime / playerRoationTime));
+		playerAnimator->setRotation(70 * easeInOutQuad(transitionTime / transitionDuration));
+		backgroundSpriteRect.top = (int)((backgroundSpriteRect.height - backgroundHeightProportion) * (transitionTime / transitionDuration) * (transitionTime / transitionDuration));
 		background.setTextureRect(backgroundSpriteRect);
 		if (state == MainMenuState::Transition1) {
 			if (transitionTime >= startFadeTime) {
 				state = MainMenuState::Transition2;
-				fader->fadeOut(playerRoationTime - startFadeTime);
+				fader->fadeOut(transitionDuration - startFadeTime);
 			}
 		}
 		else
@@ -156,6 +161,3 @@ void MainMenu::setUserVolume(float volume)
 }
 
 
-float MainMenu::easeInOutQuad(float x) const{
-	return x < 0.5 ? 2 * x * x : 1 - std::powf(-2 * x + 2, 2) / 2;
-}

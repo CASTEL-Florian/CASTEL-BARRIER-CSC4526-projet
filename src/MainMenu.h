@@ -17,7 +17,6 @@ public:
 	float getUserVolume();
 	void setUserVolume(float volume);
 private:
-	float easeInOutQuad(float x) const;
 	sf::Font font;
 	sf::Text gameName;
 	sf::Text playText;
@@ -28,7 +27,7 @@ private:
 	MainMenuState state = MainMenuState::Wait;
 	float uiAlpha = 255;
 	const float uiFadeTime = 1;
-	const float playerRoationTime = 5;
+	const float transitionDuration = 5;
 	const float backgroundHeightProportion = 0.5f;
 	const float startFadeTime = 4;
 	float currentVolume = 1;
