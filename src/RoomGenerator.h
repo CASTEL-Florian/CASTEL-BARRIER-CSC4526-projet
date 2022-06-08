@@ -7,17 +7,18 @@
 #include <memory>
 #include "pugixml.hpp"
 
-const std::vector<std::string> roomFiles = { "resources/room1.xml", "resources/treasureRoom1.xml" };
+const std::vector<std::string> roomFiles = { "resources/emptyRoom.xml", "resources/treasureRoom1.xml" };
 const std::string tileset = "resources/room_spritesheet.png";
 int random_1_to_n(int const nbMax);
 const int corridorWidth = 5;
+const float emptyRoomProportion = 0.5f;
 
 class RoomGenerator
 {
 public:
 	RoomGenerator();
 	std::vector<std::unique_ptr<Room>> generateMap(int nb_rooms);
-	std::vector<std::unique_ptr<Room>> buildRooms(b2World* world, std::vector<std::unique_ptr<Room>> rooms);
+	std::vector<std::unique_ptr<Room>> buildRooms(b2World* world, std::vector<std::unique_ptr<Room>> rooms, std::vector<sf::Texture>* textures);
 	std::pair<int, int> getFarthestRoomPos() const;
 	std::pair<int, int> getRandomRoomPos() const;
 private:

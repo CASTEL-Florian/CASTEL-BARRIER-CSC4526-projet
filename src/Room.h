@@ -27,8 +27,8 @@ public:
 	bool isExplored() const;
 	bool isDeadEnd() const;
 	void linkToRoom(Room* room);
-	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles);
-	void generateObjects(std::vector<int> const& objects);
+	void build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, std::vector<int> objects);
+	void generateObjects(b2World* world, std::vector<int> const& objects, std::vector<sf::Texture>* textures);
 	void displayObjects(sf::RenderWindow& window) const;
 	void updateObjects(sf::Time elapsed);
 	void addObject(std::unique_ptr<Object> object);

@@ -83,12 +83,12 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(int nb_rooms)
     return rooms;
 }
 
-std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std::vector<std::unique_ptr<Room>> rooms)
+std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std::vector<std::unique_ptr<Room>> rooms, std::vector<sf::Texture>* textures)
 {
     std::vector<int> deadEnds;
     std::vector<int> normalRooms;
+    std::vector<bool> treasureRooms(rooms.size(), false);
     for (int i = 0; i < rooms.size(); i++) {
-        rooms[i]->build(world, m_tileset.get(), roomTileMaps[0]);
         if (i > 0) {
             if (rooms[i]->isDeadEnd())
                 deadEnds.push_back(i);
@@ -100,14 +100,14 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
         for (int i = 0; i < treasuresCount; i++) {
             int randomIndex = random_1_to_n(deadEnds.size()) - 1;
             auto it = deadEnds.begin() + randomIndex;
-            rooms[*it]->generateObjects(roomTileMaps[1]);
+            treasureRooms[*it] = true;
             deadEnds.erase(it);
         }
 
     }
     else {
         for (auto const& id : deadEnds) {
-            rooms[id]->generateObjects(roomTileMaps[1]);
+            treasureRooms[id] = true;
         }
         for (int i = 0; i < treasuresCount - deadEnds.size(); i++) {
             if (normalRooms.size() <= 0) {
@@ -115,10 +115,28 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
             }
             int randomIndex = random_1_to_n(normalRooms.size()) - 1;
             auto it = normalRooms.begin() + randomIndex;
-            rooms[*it]->generateObjects(roomTileMaps[1]);
+            treasureRooms[*it] = true;
             normalRooms.erase(it);
         }
     }
+    rooms[0]->build(world, m_tileset.get(), roomTileMaps[0], std::vector<int> {});
+    for (int i = 1; i < rooms.size(); i++) {
+        if (treasureRooms[i]) {
+            rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], std::vector<int> {});
+            rooms[i]->generateObjects(world, roomTileMaps[1], textures);
+        }
+        else
+        {
+            if (roomTileMaps.size() <= 2 || random_1_to_n(100) < (int)(emptyRoomProportion * 100))
+                rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], std::vector<int> {});
+            else {
+                int roomType = random_1_to_n(roomTileMaps.size() - 2) + 1;
+                rooms[i]->build(world, m_tileset.get(), roomTileMaps[0], roomTileMaps[roomType]);
+                rooms[i]->generateObjects(world, roomTileMaps[roomType], textures);
+            }
+        }
+    }
+
     return rooms;
 }
 

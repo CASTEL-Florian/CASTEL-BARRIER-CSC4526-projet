@@ -4,8 +4,10 @@
 #include <map>
 #include <random>
 #include "RoomGenerator.h"
+#include "Crab.h"
+#include "Crate.h"
 
-enum class ObjectType{Empty, Treasure};
+enum class ObjectType{Empty, Treasure, Crab, Crate, Wall};
 
 Room::Room(int x, int y) :
     x(x), y(y)
@@ -189,7 +191,7 @@ void Room::linkToRoom(Room* room)
     }
 }
 
-void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles)
+void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, std::vector<int> objectsMap)
 {
     int halfWidth = int(roomWidth / 2);
     int halfHeight = int(roomHeight / 2);
@@ -220,6 +222,9 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles)
     }
     for (int i = 0; i < roomWidth; i++) {
         for (int j = 0; j < roomHeight; j++) {
+            if (!objectsMap.empty() && objectsMap[i + j * roomWidth] == (int)ObjectType::Wall) {
+                tiles[i + j * roomWidth] = 1;
+            }
             int choice = random_1_to_n(numberOfTilesChoices);
             if (tiles[i + j * roomWidth] != emptyTile) {
                 Box newBox;
@@ -239,16 +244,24 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles)
     map.setScale(sf::Vector2f((float)tileWidth / (float)spriteWidth,(float)tileHeight / (float)spriteHeight));
 }
 
-void Room::generateObjects(std::vector<int> const& objects)
+void Room::generateObjects(b2World* world, std::vector<int> const& objectsMap, std::vector<sf::Texture>* textures)
 {
-    if (objects.size() > 0) {
+    if (!objectsMap.empty()) {
         for (int i = 0; i < roomWidth; i++) {
             for (int j = 0; j < roomHeight; j++) {
-                if (objects[i + j * roomWidth] == int(ObjectType::Treasure)) {
+                float posX = x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth);
+                float posY = y * tileHeight * roomHeight + j * tileHeight + (0.5f * tileHeight);
+                if (objectsMap[i + j * roomWidth] == int(ObjectType::Treasure)) {
                     treasurePos.push_back(std::pair(
-                        x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth),
-                        y * tileHeight * roomHeight + j * tileHeight + (0.5f * tileHeight)
+                        posX,
+                        posY
                     ));
+                }
+                else if (objectsMap[i + j * roomWidth] == int(ObjectType::Crab)) {
+                    addObject(std::make_unique<Crab>(world, &(*textures)[2], 0.2f, b2Vec2(posX, posY)));
+                }
+                else if (objectsMap[i + j * roomWidth] == int(ObjectType::Crate)) {
+                    addObject(std::make_unique<Crate>(world, &(*textures)[1], 0.2f, b2Vec2(posX, posY)));
                 }
             }
         }
