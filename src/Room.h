@@ -35,6 +35,7 @@ public:
 	Room* updateCurrentRoom(int roomX, int roomY);
 	std::vector<Room*> getAjacentRooms();
 	std::vector<std::pair<int, int>> getTreasurePos();
+	std::pair<float,float> findAvailableCoinPosition();
 private:
 	
 	const int spriteWidth = 16;
@@ -58,5 +59,6 @@ private:
 	std::vector<sf::Transform> fogTransforms;
 	std::vector<std::pair<int, int>> treasurePos;
 	std::vector<std::unique_ptr<Object>> objects;
+	std::vector<int> objectsTilemap;
 };
 

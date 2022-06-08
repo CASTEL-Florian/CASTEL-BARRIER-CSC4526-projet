@@ -1,7 +1,6 @@
 #pragma once
 #include <Player.h>
 #include "Treasure.h"
-#include "RoomGenerator.h"
 #include "SoundHandler.h"
 
 const int coinCount = 20;

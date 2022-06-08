@@ -1,4 +1,5 @@
 #include "Room.h"
+#include "Room.h"
 #include <vector>
 #include <set>
 #include <map>
@@ -246,6 +247,7 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
 
 void Room::generateObjects(b2World* world, std::vector<int> const& objectsMap, std::vector<sf::Texture>* textures)
 {
+    objectsTilemap = objectsMap;
     if (!objectsMap.empty()) {
         for (int i = 0; i < roomWidth; i++) {
             for (int j = 0; j < roomHeight; j++) {
@@ -331,4 +333,20 @@ std::vector<Room*> Room::getAjacentRooms()
 std::vector<std::pair<int, int>> Room::getTreasurePos()
 {
     return treasurePos;
+}
+
+std::pair<float, float> Room::findAvailableCoinPosition()
+{
+    std::pair<float, float> pos(x * roomWidth * tileWidth, y * roomHeight * tileHeight);
+    int dx = random_1_to_n(roomWidth - 2);
+    int dy = random_1_to_n(roomHeight - 2);
+    if (!objectsTilemap.empty()) {
+        while (objectsTilemap[dx + dy * roomHeight] != 0) {
+            int dx = random_1_to_n(roomWidth - 2);
+            int dy = random_1_to_n(roomHeight - 2);
+        }
+    }
+    pos.first += (dx + 0.5f) * tileWidth;
+    pos.second += (dy + 0.5f) * tileHeight;
+    return pos;
 }
