@@ -9,11 +9,11 @@
 
 const std::string emptyRoomFile = "resources/emptyRoom.xml";
 const std::vector<std::string> treasureRoomFiles = { "resources/treasureRoom1.xml", "resources/treasureRoom2.xml" };
-const std::vector<std::string> standardRoomFiles = { "resources/standardRoom1.xml", "resources/standardRoom2.xml" , "resources/standardRoom3.xml" , "resources/standardRoom4.xml" , "resources/standardRoom5.xml" };
+const std::vector<std::string> standardRoomFiles = { "resources/standardRoom1.xml", "resources/standardRoom2.xml" , "resources/standardRoom3.xml" , "resources/standardRoom4.xml" , "resources/standardRoom5.xml" , "resources/standardRoom6.xml" , "resources/crabRoom.xml" , "resources/crateRoom.xml"};
 const std::string tileset = "resources/room_spritesheet.png";
 int random_1_to_n(int const nbMax);
 const int corridorWidth = 5;
-const float emptyRoomProportion = 0.5f;
+const float emptyRoomProportion = 0.1f; //0.5f
 
 class RoomGenerator
 {
