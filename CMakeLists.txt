@@ -97,3 +97,19 @@ target_link_libraries(unitTests gtest_main)
 target_link_libraries(unitTests src pugixml)
 add_test(NAME that-test-I-made COMMAND unitTests)
 
+if(WIN32)
+   file(GLOB_RECURSE DYNAMIC_LIBS CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/lib_openal32/${ARCH}/*.dll)
+   file(COPY ${DYNAMIC_LIBS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
+add_custom_target(copy-resources-unitTest ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/resources)
+# "COMMAND ${CMAKE_COMMAND} -E copy_directory" triggers a generation error with Visual Studio
+# So we need to do  the following solution
+file(GLOB RESOURCES_UNITTESTS CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/resources/*.*)
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/resources
+                   DEPENDS ${CMAKE_SOURCE_DIR}/resources
+                   COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/resources
+                   COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                           ${RESOURCES_UNITTESTS}
+                           ${CMAKE_CURRENT_BINARY_DIR}/resources)
+add_dependencies(unitTests copy-resources-unitTest)

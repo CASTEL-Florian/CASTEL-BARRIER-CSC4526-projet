@@ -401,6 +401,15 @@ void Room::addObject(std::unique_ptr<Object> object)
 }
 
 /**
+ * Get the object vector.
+ *
+ * @param pointer to the object vector.
+ */
+std::vector<std::unique_ptr<Object>>* Room::getObjects() {
+    return &objects;
+}
+
+/**
  * Get the new room an object is in.
  *
  * @param roomX new room x position.

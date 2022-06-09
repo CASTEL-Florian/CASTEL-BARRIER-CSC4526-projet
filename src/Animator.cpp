@@ -3,6 +3,8 @@
 Animator::Animator(sf::Texture* textur, const float scal, int spriteWidth, int spriteHeight, float animationTimestep, std::vector<int> imagesNumber) :
 	texture(textur), imagesNumber(imagesNumber), spriteWidth(spriteWidth), spriteHeight(spriteHeight), animationTimestep(animationTimestep)
 {
+	if (!texture)
+		return;
 	sprite.setTexture(*texture);
 	sprite.setScale(sf::Vector2(scal, scal));
 	spriteRect.left = 0;

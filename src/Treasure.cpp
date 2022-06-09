@@ -2,7 +2,7 @@
 #include "TreasureManager.h"
 
 Treasure::Treasure(float x, float y, Player* player, TreasureManager* treasureManager, bool isCoin, sf::Texture* texture) : 
-	x(x), y(y), player(player), treasureManager(treasureManager), isCoin(isCoin)
+	x(x), y(y), isCoin(isCoin), player(player), treasureManager(treasureManager)
 {
 	int spriteLength = 32;
 	int numberOfImages = 12;
@@ -59,8 +59,18 @@ float Treasure::get_y() const
 }
 
 /**
+ * Treasure.isCoin getter.
+ *
+ */
+bool Treasure::getIsCoin() const
+{
+	return isCoin;
+}
+
+/**
  * Calculate distance between treasure and player.
  *
+ * @return distance from player.
  */
 float Treasure::distanceFromPlayer() const
 {

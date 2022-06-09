@@ -209,7 +209,7 @@ void Game::initGameVariables() {
 	depth[5].color = sf::Color::Black;
 
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
-	oxygenBar = std::make_unique<OxygenBar>(20, 130, 500, player.get());
+	oxygenBar = std::make_unique<OxygenBar>(20, 130, 360, player.get());
 		
 
 	

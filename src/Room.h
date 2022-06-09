@@ -35,6 +35,7 @@ public:
 	void displayObjects(sf::RenderWindow& window) const;
 	void updateObjects(sf::Time elapsed);
 	void addObject(std::unique_ptr<Object> object);
+	std::vector<std::unique_ptr<Object>>* getObjects();
 	Room* updateCurrentRoom(int roomX, int roomY);
 	std::vector<Room*> getAjacentRooms();
 	std::vector<std::pair<int, int>> getTreasurePos();

@@ -14,6 +14,7 @@ public:
 	void display(sf::RenderWindow& window) const override;
 	float get_x() const override;
 	float get_y() const override;
+	bool getIsCoin() const;
 private:
 	float distanceFromPlayer() const;
 	float x;
