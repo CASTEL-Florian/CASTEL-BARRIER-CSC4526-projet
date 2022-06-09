@@ -77,6 +77,11 @@ Room::Room(int x, int y) :
     fogTransforms.push_back(transform);
 }
 
+/**
+ * Open a path in the room toward an adjacent room postion.
+ *
+ * @param target position of the adjacent room.
+ */
 void Room::open_path(std::pair<int, int> const& target) {
        
     if (target.first - x == 0) {
@@ -97,11 +102,20 @@ void Room::open_path(std::pair<int, int> const& target) {
 
 
 
-
+/**
+ * Display the room tilemap.
+ *
+ * @param window on which the room has to be drawn.
+ */
 void Room::display(sf::RenderWindow& window) const {
     window.draw(map);
 }
 
+/**
+ * Display the fog around the room.
+ *
+ * @param window on which the fog has to be drawn.
+ */
 void Room::display_fog(sf::RenderWindow& window) const{
     if(left)
         window.draw(fogOpen, fogTransforms[0]);
@@ -121,10 +135,21 @@ void Room::display_fog(sf::RenderWindow& window) const{
         window.draw(fogClose, fogTransforms[3]);
 }
 
+/**
+ * Get the position of the room.
+ *
+ * @return pair of integers representing the position of the room.
+ */
 std::pair<int, int> Room::get_position() const {
     return std::pair(x, y);
 }
 
+/**
+ * Get whether a path is opened in the room in a certain direction.
+ *
+ * @param direction 0 for up, 1 for down, 2 for left, 3 for right.
+ * @return true if the path is open, false if the path is closed.
+ */
 bool Room::is_opened(int direction)
 {
     if (direction == 0)
@@ -138,26 +163,48 @@ bool Room::is_opened(int direction)
     return false;
 }
 
+/**
+ * Get the x position of the room.
+ *
+ * @return x position of the room.
+ */
 int Room::get_x() const
 {
     return x;
 }
 
+/**
+ * Get the y position of the room.
+ *
+ * @return y position of the room.
+ */
 int Room::get_y() const
 {
     return y;
 }
+
+/**
+ * Tell the room that the player visited it.
+ */
 
 void Room::enter()
 {
     explored = true;
 }
 
+/**
+ * @return true if the player already visited the room.
+ */
 bool Room::isExplored() const
 {
     return explored;
 }
 
+/**
+ * Get whether the room is a dead end (if it is opened in only one direction).
+ *
+ * @return true if the room is a dead end.
+ */
 bool Room::isDeadEnd() const
 {
     if (up)
@@ -171,6 +218,11 @@ bool Room::isDeadEnd() const
     return false;
 }
 
+/**
+ * Register an adjacent room.
+ *
+ * @param room adjacent room.
+ */
 void Room::linkToRoom(Room* room)
 {
     if (room->get_x() > x) {
@@ -191,6 +243,14 @@ void Room::linkToRoom(Room* room)
     }
 }
 
+/**
+ * Get the x position of the room.
+ *
+ * @param world box2d world.
+ * @param m_tileset tileset texture.
+ * @param tiles vector of integer representing the tiles.
+ * @param objectsMap vector of integer representing objects and blocs to add in the room.
+ */
 void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles, std::vector<int> objectsMap)
 {
     int halfWidth = int(roomWidth / 2);
@@ -244,6 +304,13 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
     map.setScale(sf::Vector2f((float)tileWidth / (float)spriteWidth,(float)tileHeight / (float)spriteHeight));
 }
 
+/**
+ * Generate objects in the room.
+ *
+ * @param world box2d world.
+ * @param objectsMap vector of integer representing objects and blocs to add in the room.
+ * @param textures vector of textures.
+ */
 void Room::generateObjects(b2World* world, std::vector<int> const& objectsMap, std::vector<sf::Texture>* textures)
 {
     objectsTilemap = objectsMap;
@@ -269,12 +336,22 @@ void Room::generateObjects(b2World* world, std::vector<int> const& objectsMap, s
     }
 }
 
+/**
+ * Display objects in the room.
+ *
+ * @param window on which objects will be drawn.
+ */
 void Room::displayObjects(sf::RenderWindow& window) const
 {
     for (auto const& o : objects)
         o->display(window);
 }
 
+/**
+ * Update objects in the room. If the objects gets out of the room, it is moved the the new room object list.
+ *
+ * @param elapsed time since last frame.
+ */
 void Room::updateObjects(sf::Time elapsed)
 {
     for (auto it = objects.begin(); it != objects.end();) {
@@ -302,11 +379,23 @@ void Room::updateObjects(sf::Time elapsed)
     }
 }
 
+/**
+ * Add an object to the room.
+ *
+ * @param object to add.
+ */
 void Room::addObject(std::unique_ptr<Object> object)
 {
     objects.push_back(std::move(object));
 }
 
+/**
+ * Get the new room an object is in.
+ *
+ * @param roomX new room x position.
+ * @param roomY new room y position.
+ * @return the room the object is in.
+ */
 Room* Room::updateCurrentRoom(int roomX, int roomY) 
 {
     if (roomX > x) {
@@ -324,16 +413,31 @@ Room* Room::updateCurrentRoom(int roomX, int roomY)
     return this;
 }
 
+/**
+ * Get the adjacent rooms.
+ *
+ * @return pointers to adjacent rooms.
+ */
 std::vector<Room*> Room::getAjacentRooms()
 {
     return std::vector<Room*>{upRoom, downRoom, leftRoom, rightRoom};
 }
 
+/**
+ * Get the positions of the treasures in the room.
+ *
+ * @return positions of the treasures in the room.
+ */
 std::vector<std::pair<int, int>> Room::getTreasurePos()
 {
     return treasurePos;
 }
 
+/**
+ * Find an available position in the room (not in a solid object).
+ *
+ * @return the available position coordinates.
+ */
 std::pair<float, float> Room::findAvailableCoinPosition()
 {
     std::pair<float, float> pos(x * roomWidth * tileWidth, y * roomHeight * tileHeight);

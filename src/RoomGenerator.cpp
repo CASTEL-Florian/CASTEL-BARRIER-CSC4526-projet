@@ -21,6 +21,16 @@ RoomGenerator::RoomGenerator()
     
 }
 
+/**
+ * Generate the rooms.
+ * 
+ * Starting from an initial room at position (0,0), the algorithm adds a room next to a previously
+ * generated one until the total room count is nb_rooms.
+ *
+ * @param nb_rooms number of rooms to generate.
+ * @return vector of rooms.
+ */
+
 std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(int nb_rooms) 
 {
     float farthestRoomDistance = 0;
@@ -65,6 +75,17 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(int nb_rooms)
     return rooms;
 }
 
+/**
+ * Build the rooms.
+ * 
+ * Select a type for rooms (standard room or treasure room) and a random variant before building
+ * the rooms and generating objets in them.
+ *
+ * @param world box2d world.
+ * @param rooms vector of rooms.
+ * @param textures vector of textures.
+ * @return the vector of rooms built.
+ */
 std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std::vector<std::unique_ptr<Room>> rooms, std::vector<sf::Texture>* textures)
 {
     std::vector<int> deadEnds;
@@ -123,17 +144,34 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
     return rooms;
 }
 
+/**
+ * Get the position of the farthest room from player spawn position.
+ *
+ * @return farthest room position.
+ */
 std::pair<int, int> RoomGenerator::getFarthestRoomPos() const
 {
     return farthestRoomPos;
 }
 
+/**
+ * Get a random position of a room.
+ *
+ * @return pair of integers representing the room position.
+ */
 std::pair<int, int> RoomGenerator::getRandomRoomPos() const
 {
     auto it = std::begin(roomPositions);
     std::advance(it, random_1_to_n(roomPositions.size()) - 1);
     return *it;
 }
+
+/**
+ * Load an xml room file.
+ *
+ * @param file name of the file to open.
+ * @return data in the form of an integer vector.
+ */
 
 std::vector<int> RoomGenerator::loadXMLroom(std::string file) const
 {

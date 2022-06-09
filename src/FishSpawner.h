@@ -3,6 +3,9 @@
 #include <iostream>
 #include "myRandom.h"
 
+/**
+ * Class dealing with Fish creation and object pooling
+ */
 class FishSpawner {
 public:
 	FishSpawner(sf::Texture* fishTexture, Player* player, SoundHandler* soundHandler);

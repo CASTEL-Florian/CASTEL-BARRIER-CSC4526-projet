@@ -2,6 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 #include "Animator.h"
+
+/**
+ * Abstract class representing any object somewhere on the map that can be displayed, updated or animated.
+ */
 class Object
 {
 public:

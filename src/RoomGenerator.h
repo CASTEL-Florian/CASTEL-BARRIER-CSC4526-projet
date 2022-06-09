@@ -15,6 +15,9 @@ int random_1_to_n(int const nbMax);
 const int corridorWidth = 5;
 const float emptyRoomProportion = 0.1f; //0.5f
 
+/**
+ * Class that generate the map.
+ */
 class RoomGenerator
 {
 public:

@@ -14,11 +14,12 @@ Game::Game()
 	initWindow();
 	loadTextures();
 	loadMainMenu();
-	//loadEndScreen();
 }
 
 
-
+/**
+ * Update every object that need to be updated and manage transitions between the different states of the game.
+ */
 void Game::update()
 {
 	sf::Time elapsed = clock.restart();
@@ -53,7 +54,6 @@ void Game::update()
 	}
 	oxygenBar->update(elapsed);
 	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics
-	for (auto const& o : objects) o->update(elapsed);
 	player->update(elapsed);
 	player->updateRoomPosition();
 	currentRoom = currentRoom->updateCurrentRoom(player->getRoomX(), player->getRoomY());
@@ -92,6 +92,9 @@ void Game::update()
 	//std::cout << 1 / elapsed.asSeconds() << " fps" << std::endl;
 }
 
+/**
+ * Render every object that need to be rendered.
+ */
 void Game::render() const
 {
 	window->clear(sf::Color(30, 90, 150));
@@ -118,8 +121,6 @@ void Game::render() const
 		}
 	}
 
-	for (auto& o : objects)
-		o->display(*window);
 	fishSpawner->display(*window);
 	monster->display(*window);
 	player->renderLight(*window);
@@ -132,7 +133,9 @@ void Game::render() const
 	fader->display(*window);
 	window->display();
 }
-
+/**
+ * Initialize window and objects active in every game state.
+ */
 void Game::initWindow()
 {
 	window = std::make_unique<sf::RenderWindow>(sf::VideoMode(window_length, window_height), "4526 lieues sous les mers");
@@ -141,6 +144,9 @@ void Game::initWindow()
 	soundHandler = std::make_unique<SoundHandler>();
 }
 
+/**
+ * Initialize main menu.
+ */
 void Game::loadMainMenu()
 {
 	mainMenu = std::make_unique<MainMenu>(&textures[7], &textures[0], fader.get(), window_length, window_height);
@@ -150,6 +156,9 @@ void Game::loadMainMenu()
 	clock.restart();
 }
 
+/**
+ * Initialize end screen.
+ */
 void Game::loadEndScreen()
 {
 	if (endType == EndType::DeathByMonster) 
@@ -163,6 +172,9 @@ void Game::loadEndScreen()
 	clock.restart();
 }
 
+/**
+ * Initialize game variable juste before the player starts playing.
+ */
 void Game::initGameVariables() {
 	minimap = std::make_unique<Minimap>("resources/minimap.png");
 	//box2d world
@@ -197,8 +209,6 @@ void Game::initGameVariables() {
 	currentRoom = rooms[0].get();
 	
 	monster = std::make_unique<Monster>(player.get(), roomGenerator.get(), &textures[3], 0.2f, soundHandler.get());
-	rooms[0]->addObject(std::make_unique<Crate>(world.get(), &textures[1], 0.2f, b2Vec2(roomWidth* tileWidth / 2 + 4 * tileWidth, roomHeight* tileHeight / 2 - 4 * tileWidth)));
-
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &textures[4], &textures[5], soundHandler.get());
 	treasureManager->createTreasures(rooms);
 
@@ -208,6 +218,9 @@ void Game::initGameVariables() {
 	clock.restart();
 }
 
+/**
+ * Load game textures in the textures vector.
+ */
 void Game::loadTextures()
 {
 	sf::Texture nauti_texture;//0
@@ -245,13 +258,15 @@ void Game::loadTextures()
 	textures.push_back(victory_background_texture);
 }
 
+/**
+ * Reset game variables.
+ */
 void Game::resetGame()
 {
 	minimap.reset();
 	world.reset();
 	oxygenBar.reset();
 	player.reset();
-	objects.clear();
 	soundHandler.reset();
 	roomGenerator.reset();
 	monster.reset();
@@ -260,10 +275,18 @@ void Game::resetGame()
 	soundHandler = std::make_unique<SoundHandler>();
 }
 
+/**
+ * Check if the window is opened.
+ * 
+ * @return true if the window is opened, false if the window is closed.
+ */
 bool Game::running() const {
 	return window->isOpen();
 }
 
+/**
+ * Getting user inputs.
+ */
 void Game::pollEvents() {
 	while (window->pollEvent(event))
 	{

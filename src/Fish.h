@@ -8,6 +8,9 @@ class FishSpawner;
 
 enum class FishAction {Stop, MoveLeft, MoveRight, Flee};
 
+/**
+ * A fish that moves randomly from left to right and flees when the player approaches it.
+ */
 class Fish :public Object {
 public:
 	Fish(sf::Texture* texture, Player* player, float scale, float x, float y, SoundHandler* soundHandler);

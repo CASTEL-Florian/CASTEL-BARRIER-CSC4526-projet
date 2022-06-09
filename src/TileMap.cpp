@@ -2,7 +2,16 @@
 #include <random>
 #include "myRandom.h"
 
-bool TileMap::load(sf::Texture* tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height)
+/**
+ * Load the tilemap. Each tile has a random rotation.
+ *
+ * @param tileset textures of the tiles.
+ * @param tileSize size of the sprite of a tile in pixels.
+ * @param tiles vector of integers representing the tiles in the room.
+ * @param width of the tilemap
+ * @param height of the tilemap
+ */
+void TileMap::load(sf::Texture* tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height)
 {
 
     m_tileset = tileset;
@@ -38,9 +47,11 @@ bool TileMap::load(sf::Texture* tileset, sf::Vector2u tileSize, std::vector<int>
             for (int k = 0; k < 4; k++) 
                 quad[k].texCoords = corners[(rotation + k) % 4];
         }
-    return true;
 }
 
+/**
+ * Draw the tilemap.
+ */
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the transform

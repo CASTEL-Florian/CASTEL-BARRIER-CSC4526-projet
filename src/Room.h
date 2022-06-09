@@ -12,6 +12,9 @@ const int tileWidth = 3;
 const int tileHeight = 3;
 const int emptyBackgroundTilePercentage = 15;
 
+/**
+ * Class representing a room.
+ */
 class Room
 {
 public:

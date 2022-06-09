@@ -8,6 +8,11 @@ Minimap::Minimap(const std::string filename)
 	}
 }
 
+/**
+ * Display the monster on the window.
+ *
+ * @param window on which the minimap is drawn.
+ */
 void Minimap::display(sf::RenderWindow& window, std::vector<std::unique_ptr<Room>> const& rooms) const
 {
 	sf::Sprite sprite;
@@ -33,6 +38,12 @@ void Minimap::display(sf::RenderWindow& window, std::vector<std::unique_ptr<Room
 	window.draw(playerIndicator);
 }
 
+/**
+ * Update player poistion on the minimap.
+ *
+ * @param playerX x position of the player.
+ * @param playerY y position of the player.
+ */
 void Minimap::updatePlayerPosition(float playerX, float playerY)
 {
 	px = playerX / (roomWidth * tileWidth);

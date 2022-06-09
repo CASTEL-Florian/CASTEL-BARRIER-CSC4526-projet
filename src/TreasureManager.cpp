@@ -18,7 +18,11 @@ TreasureManager::TreasureManager(Player* player, sf::Texture* coin_texture, sf::
 	text.setString(std::to_string(treasuresFoundCount));
 }
 
-
+/**
+ * Update the text with the numbers of treasure found.
+ *
+ * @param elapsed time spent since last frame.
+ */
 void TreasureManager::update(sf::Time elapsed)
 {
 	text.setString("Trésors : " + std::to_string(treasuresFoundCount) + "/" + std::to_string(treasuresCount)+ "\nPièces : " + std::to_string(coinFoundCount) + "/" + std::to_string(coinCount) + "\nO2 :");
@@ -28,11 +32,21 @@ void TreasureManager::update(sf::Time elapsed)
 	}
 }
 
+/**
+ * Display the text with treasure counts on the window.
+ *
+ * @param window on which the text is displayed.
+ */
 void TreasureManager::display(sf::RenderWindow& window) const
 {
 	window.draw(text);
 }
 
+/**
+ * Tell the TreasureManager that a coin has been found.
+ *
+ * @param isCoin whether the treasure is a coin or not.
+ */
 void TreasureManager::findTreasure(bool isCoin)
 {
 	if (isCoin) {
@@ -45,7 +59,11 @@ void TreasureManager::findTreasure(bool isCoin)
 	}
 }
 
-
+/**
+ * Generate treasures in rooms.
+ *
+ * @param rooms vector of rooms.
+ */
 void TreasureManager::createTreasures(std::vector<std::unique_ptr<Room>> const& rooms)
 {
 	for (int i = 0; i < coinCount; i++) {
@@ -60,21 +78,43 @@ void TreasureManager::createTreasures(std::vector<std::unique_ptr<Room>> const& 
 	}
 }
 
+/**
+ * Return the number of treasures other than coins that have been found.
+ * 
+ * @return number of treasures.
+ */
 int TreasureManager::getTreasuresFoundCount() const
 {
 	return treasuresFoundCount;
 }
-
+/**
+ * Return the number of coins have been found.
+ * 
+ * @return number of coins.
+ */
 int TreasureManager::getCoinFoundCount() const
 {
 	return coinFoundCount;
 }
 
+/**
+ * Return true if all treasures other than coins have been found.
+ * 
+ * @return true if all treasures other than coins have been found.
+ */
 bool TreasureManager::gameWon() const
 {
 	return treasuresFoundCount == treasuresCount;
 }
 
+/**
+ * Create a treasure.
+ * 
+ * @param treasureX x position of the treasure.
+ * @param treasureY y position of the treasure.
+ * @param isCoin true if the treasure to create is a coin.
+ * @return the treasure created.
+ */
 std::unique_ptr<Treasure> TreasureManager::createTreasure(float treasureX, float treasureY, bool isCoin)
 {
 	if (isCoin) return std::make_unique<Treasure>(treasureX, treasureY, player, this, isCoin, coin_texture);

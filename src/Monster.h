@@ -5,6 +5,10 @@
 
 enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
 
+/**
+ * The monster explores the map. When it encounters the player, the monster attacks it for
+ * a moment before exploring again.
+ */
 class Monster : public Object{
 public:
 	Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale, SoundHandler* soundHandler);
@@ -14,7 +18,7 @@ public:
 	float get_y() const override;
 private:
 	void rotateToward(float x1, float y1);
-	void moveForward();
+	void moveForward(sf::Time elapsed);
 	float distanceFromPlayer() const;
 	std::pair<float,float> getRandomMapPosition();
 	void explore();

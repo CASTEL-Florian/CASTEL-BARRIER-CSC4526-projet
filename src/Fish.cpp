@@ -9,6 +9,14 @@ Fish::Fish(sf::Texture* texture, Player* player,float scale, float x, float y, S
 	animator->playAnimation(random_1_to_n(2) - 1);
 }
 
+/**
+ * Update the fish.
+ * 
+ * Every actionTime seconds, the fish chooses randomly a new FishAction. Either the fish moves left
+ * or right or it stops. If the player is too close, the fish flees in the opposite direction.
+ *
+ * @param elapsed time since last frame.
+ */
 void Fish::update(sf::Time elapsed)
 {
 	actionTime -= elapsed.asSeconds();
@@ -53,6 +61,11 @@ void Fish::update(sf::Time elapsed)
 	animator->update(elapsed);
 }
 
+/**
+ * Display the fish on the window.
+ *
+ * @param window on which the fish is drawn.
+ */
 void Fish::display(sf::RenderWindow& window) const
 {
 	if (angle > 90 && angle < 270)
@@ -66,16 +79,32 @@ void Fish::display(sf::RenderWindow& window) const
 	animator->display(window);
 }
 
+/**
+ * Get the x position of the fish.
+ *
+ * @return x position of the fish.
+ */
 float Fish::get_x() const
 {
 	return x;
 }
 
+/**
+ * Get the y position of the fish.
+ *
+ * @return y position of the fish.
+ */
 float Fish::get_y() const
 {
 	return y;
 }
 
+/**
+ * Initialize the position of the fish.
+ *
+ * @param posX x position of the fish.
+ * @param posY y position of the fish.
+ */
 void Fish::init(float posX, float posY)
 {
 	x = posX;
@@ -86,11 +115,23 @@ void Fish::init(float posX, float posY)
 	animator->playAnimation(random_1_to_n(2) - 1);
 }
 
+/**
+ * Get the distance between the fish and the player.
+ *
+ * @return distance from the player.
+ */
 float Fish::distanceFromPlayer() const
 {
 	sf::Vector2f dir(player->get_x() - x, player->get_y() - y);
 	return std::sqrt(dir.x * dir.x + dir.y * dir.y);
 }
+
+/**
+ * Rotate the fish toward a certain point.
+ *
+ * @param x1 x position of the point.
+ * @param y1 y position of the point.
+ */
 
 void Fish::rotateToward(float x1, float y1)
 {

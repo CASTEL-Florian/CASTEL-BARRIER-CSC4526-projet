@@ -6,6 +6,10 @@
 
 enum class MainMenuState {Wait, Transition1, Transition2, Transition3, TransitionFinished};
 
+/**
+ * Class dealing with everything happening in the main menu.
+ */
+
 class MainMenu {
 public:
 	MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, Fader* fader, float width, float height);

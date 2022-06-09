@@ -108,7 +108,7 @@ void Animator::setMirrored(bool mirrored, bool verticalAxis, bool bothAxis)
 /**
  * Update the sprite.
  *
- * @elapsed time spent since last frame.
+ * @param elapsed time spent since last frame.
  */
 void Animator::update(sf::Time elapsed)
 {

@@ -3,6 +3,9 @@
 #include <iostream>
 #include <Room.h>
 
+/**
+ * Minimap showning on the window the layout of the rooms and the position of the player on the map.
+ */
 class Minimap
 {
 public:

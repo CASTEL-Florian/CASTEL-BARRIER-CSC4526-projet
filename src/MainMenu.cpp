@@ -57,11 +57,18 @@ MainMenu::MainMenu(sf::Texture* backgroundTexture, sf::Texture* playerTexture, F
 	volumeText.setPosition(volumeBarX - 150, volumeBarY - 5);
 }
 
+/**
+ * Easing function for player rotation during the transition.
+ */
 float easeInOutQuad(float x) {
 	return x < 0.5 ? 2 * x * x : 1 - std::powf(-2 * x + 2, 2) / 2;
 }
 
-
+/**
+ * Update the main menu.
+ *
+ * @param elapsed time since last frame.
+ */
 void MainMenu::update(sf::Time elapsed)
 {
 
@@ -109,6 +116,11 @@ void MainMenu::update(sf::Time elapsed)
 	
 }
 
+/**
+ * Display the main menu.
+ *
+ * @param window on which the main menu is drawn.
+ */
 void MainMenu::display(sf::RenderWindow& window) const
 {
 	window.draw(background);
@@ -121,6 +133,13 @@ void MainMenu::display(sf::RenderWindow& window) const
 	window.draw(volumeText);
 }
 
+/**
+ * Function handling clics on the main menu, starting the transition to the game when the user clics on play.
+ *
+ * @param x position of the clic.
+ * @param y position of the clic.
+ */
+
 void MainMenu::mousePressed(int x, int y)
 {
 	if (!(state == MainMenuState::Wait))
@@ -131,11 +150,22 @@ void MainMenu::mousePressed(int x, int y)
 	}
 }
 
+
+/**
+ * Get the state of the main menu.
+ * 
+ * @return state of the main menu
+ */
 MainMenuState MainMenu::getState() const
 {
 	return state;
 }
 
+/**
+ * Update the music volume when the user's left mouse button is held.
+ *
+ * @param pos positioin of the mouse on the window.
+ */
 void MainMenu::updateVolume(sf::Vector2i pos)
 {
 	if (!(state == MainMenuState::Wait))
@@ -150,11 +180,21 @@ void MainMenu::updateVolume(sf::Vector2i pos)
 	}
 }
 
+/**
+ * Get the volume of the music the user chose.
+ *
+ * @return volume of the music.
+ */
 float MainMenu::getUserVolume()
 {
 	return userVolume;
 }
 
+/**
+ * Set the value of the user volume.
+ *
+ * @param volume of the music.
+ */
 void MainMenu::setUserVolume(float volume)
 {
 	userVolume = volume;

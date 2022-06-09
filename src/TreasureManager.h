@@ -5,6 +5,10 @@
 
 const int coinCount = 20;
 const int treasuresCount = 5;
+
+/**
+ * Class that create treasures and coin and displays the counts on the screen.
+ */
 class TreasureManager {
 public:
 	TreasureManager(Player* player, sf::Texture* coin_texture, sf::Texture* chest_texture, SoundHandler* soundHandler);

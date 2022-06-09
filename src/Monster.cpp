@@ -12,6 +12,12 @@ Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* text
 	animator = std::make_unique<Animator>(texture, scale, 256, 128, 0.1f, std::vector<int> { 8,10 });
 }
 
+/**
+ * Display the monster on the window.
+ *
+ * @param nbMax maximum integer that can be generated.
+ * @return the numer generated.
+ */
 void Monster::display(sf::RenderWindow& window) const {
 	animator->setPosition(sf::Vector2f(x, y));
 	animator->setRotation(angle + 180);
@@ -22,7 +28,16 @@ void Monster::display(sf::RenderWindow& window) const {
 	animator->display(window);
 }
 
-
+/**
+ * Update the state and the position of the monster.
+ *
+ * The monster goes to random locations on the map, then sleeps and starts again.
+ * When it encounters the player, the monster follows the player and attacks with a
+ * dash when the player is close enough. During the dash, the monster can't change direction.
+ * After a few seconds, the monster swims away from the player and goes back to it's exploration state.
+ * 
+ * @param elapsed time since last frame.
+ */
 void Monster::update(sf::Time elapsed) {
 	float distFromPlayer = distanceFromPlayer();
 	if (distFromPlayer < hitboxRadius) {
@@ -81,7 +96,7 @@ void Monster::update(sf::Time elapsed) {
 		chaseTime -= elapsed.asSeconds();
 		rotateToward(player->get_x(), player->get_y());
 	}
-	moveForward();
+	moveForward(elapsed);
 	if (action == State::Attack) 
 		animator->playAnimation(1);
 	else
@@ -89,16 +104,32 @@ void Monster::update(sf::Time elapsed) {
 	animator->update(elapsed);
 }
 
+/**
+ * Get the monster x position.
+ *
+ * @return x position of the monster.
+ */
 float Monster::get_x() const
 {
 	return x;
 }
 
+/**
+ * Get the monster y position.
+ *
+ * @return y position of the monster.
+ */
 float Monster::get_y() const
 {
 	return y;
 }
 
+/**
+ * Rotate the monster toward a certain point.
+ *
+ * @param x1 x position of the point.
+ * @param y1 y position of the point.
+ */
 void Monster::rotateToward(float x1, float y1)
 {
 	sf::Vector2f dir(x1 - x, y1 - y);
@@ -118,18 +149,31 @@ void Monster::rotateToward(float x1, float y1)
 	}
 }
 
-void Monster::moveForward()
+/**
+ * Move the monster forward.
+ */
+void Monster::moveForward(sf::Time elapsed)
 {
-	x += std::cos(angle * b2_pi / 180) * speed / 60;
-	y += std::sin(angle * b2_pi / 180) * speed / 60;
+	x += std::cos(angle * b2_pi / 180) * speed * elapsed.asSeconds();
+	y += std::sin(angle * b2_pi / 180) * speed * elapsed.asSeconds();
 }
 
+/**
+ * Get the distance between the monster and the player.
+ *
+ * @return the distance from the player.
+ */
 float Monster::distanceFromPlayer() const
 {
 	sf::Vector2f dir(player->get_x() - x, player->get_y() - y);
 	return std::sqrt(dir.x*dir.x + dir.y * dir.y);
 }
 
+/**
+ * Get a random position on the map.
+ *
+ * @return the random position on the map.
+ */
 std::pair<float, float> Monster::getRandomMapPosition()
 {
 	auto roomPos = roomGenerator->getRandomRoomPos();
@@ -139,6 +183,9 @@ std::pair<float, float> Monster::getRandomMapPosition()
 	return pos;
 }
 
+/**
+ * Start exploring.
+ */
 void Monster::explore()
 {
 	//std::cout << "Exploring\n";
@@ -149,6 +196,11 @@ void Monster::explore()
 	speed = followSpeed;
 }
 
+/**
+ * Start sleeping (not moving).
+ * 
+ * @param duration of the sleeping state.
+ */
 void Monster::sleep(float duration)
 {
 	//std::cout << "Sleeping\n";
@@ -157,6 +209,9 @@ void Monster::sleep(float duration)
 	actionTime = duration;
 }
 
+/**
+ * Start dashing forward.
+ */
 void Monster::dash()
 {
 	//std::cout << "Dashing\n";
@@ -165,6 +220,9 @@ void Monster::dash()
 	actionTime = attackDuration;
 }
 
+/**
+ * Start following the player.
+ */
 void Monster::follow()
 {
 	if (!player->isAlive()) {
@@ -177,6 +235,9 @@ void Monster::follow()
 	speed = followSpeed;
 }
 
+/**
+ * Stop moving and start preparing an attack.
+ */
 void Monster::prepareAttack()
 {
 	//std::cout << "Preparing attack\n";
@@ -185,6 +246,9 @@ void Monster::prepareAttack()
 	speed = 0;
 }
 
+/**
+ * Start moving away from the player.
+ */
 void Monster::flee()
 {
 	//std::cout << "Fleeing\n";
