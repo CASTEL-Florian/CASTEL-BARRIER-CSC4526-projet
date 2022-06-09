@@ -4,6 +4,11 @@ Fader::Fader(float width, float height) : width(width), height(height)
 {
 }
 
+/**
+ * Update the values of the fader.
+ *
+ * @param elapsed time elapsed since last frame
+ */
 void Fader::update(sf::Time elapsed)
 {
 	if (state == FaderState::FadeOut) {
@@ -22,6 +27,11 @@ void Fader::update(sf::Time elapsed)
 	}
 }
 
+/**
+ * Display the fader.
+ *
+ * @param window window in which to render
+ */
 void Fader::display(sf::RenderWindow& window) const
 {
 	sf::RectangleShape rect;
@@ -30,6 +40,11 @@ void Fader::display(sf::RenderWindow& window) const
 	window.draw(rect);
 }
 
+/**
+ * Fade in.
+ *
+ * @param fadeDuration duration of the fade
+ */
 void Fader::fadeIn(float fadeDuration)
 {
 	fadeTime = fadeDuration;
@@ -37,6 +52,11 @@ void Fader::fadeIn(float fadeDuration)
 	state = FaderState::FadeIn;
 }
 
+/**
+ * Fade out.
+ *
+ * @param fadeDuration duration of the fade
+ */
 void Fader::fadeOut(float fadeDuration)
 {
 	fadeTime = fadeDuration;
@@ -44,11 +64,20 @@ void Fader::fadeOut(float fadeDuration)
 	state = FaderState::FadeOut;
 }
 
+/**
+ * Fader.state getter.
+ *
+ */
 FaderState Fader::getState() const
 {
 	return state;
 }
 
+/**
+ * Set the color of the fade.
+ *
+ * @param color color of the fade
+ */
 void Fader::setFadeColor(sf::Color color)
 {
 	fadeColor = color;

@@ -38,11 +38,20 @@ EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, s
 
 }
 
+/**
+ * EndScreen.state getter
+ *
+ */
 EndScreenState EndScreen::getState() const
 {
 	return state;
 }
 
+/**
+ * Update the values of the end screen, calls the updates of rendered sprites.
+ *
+ * @param elapsed time elapsed since last frame
+ */
 void EndScreen::update(sf::Time elapsed)
 {
 	if (state == EndScreenState::Transition && fader->getState() == FaderState::Sleep) {
@@ -52,6 +61,11 @@ void EndScreen::update(sf::Time elapsed)
 	treasureAnimator->update(elapsed);
 }
 
+/**
+ * Display the end screen.
+ *
+ * @param window window in which to render
+ */
 void EndScreen::display(sf::RenderWindow& window) const
 {
 	window.draw(background);
@@ -62,6 +76,12 @@ void EndScreen::display(sf::RenderWindow& window) const
 	window.draw(returnText);
 }
 
+/**
+ * Check if mouse is pressed on return text and if so transition to main menu.
+ *
+ * @param x x coordinate of the mouse when pressed
+ * @param y y coordinate of the mouse when pressed
+ */
 void EndScreen::mousePressed(int x, int y)
 {
 	if (state == EndScreenState::Wait && returnText.getGlobalBounds().contains(sf::Vector2f(x, y))) {

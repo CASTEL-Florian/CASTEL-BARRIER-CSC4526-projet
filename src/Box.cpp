@@ -1,7 +1,14 @@
 #include "Box.h"
 #include "Box.h"
 
-
+/**
+ * Initialize the box with dimensions, calling initializer initBox.
+ *
+ * @param world b2World in which physical interactions take place
+ * @param position position of the box in the b2World
+ * @param bodyType type of the bodyDef (static of dynamic)
+ * @param dimensions dimensions of the box
+ */
 void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, const b2Vec2& dimensions)
 {
 	w = dimensions.x;
@@ -9,7 +16,13 @@ void Box::init(b2World* world, const b2Vec2& position, b2BodyType bodyType, cons
 	initBox(world, position, bodyType);
 }
 
-
+/**
+ * Initialize the box2d box.
+ *
+ * @param world b2World in which physical interactions take place
+ * @param position position of the box in the b2World
+ * @param bodyType type of the bodyDef (static of dynamic)
+ */
 void Box::initBox(b2World* world, const b2Vec2& position, b2BodyType bodyType) {
 	b2BodyDef bodyDef;
 	bodyDef.type = bodyType;
@@ -29,12 +42,22 @@ void Box::initBox(b2World* world, const b2Vec2& position, b2BodyType bodyType) {
 	rota = 0;
 }
 
+/**
+ * Update the values of the box.
+ *
+ * @param elapsed time elapsed since last frame
+ */
 void Box::update(sf::Time elapsed) {
 	x = body->GetPosition().x;
 	y = -body->GetPosition().y;
 	rota = -body->GetAngle();
 }
 
+/**
+ * Render the box as a colored rectangle.
+ *
+ * @param window window in which the box is rendered
+ */
 void Box::renderRectangle(sf::RenderWindow& window) const {
 	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2(1 * w, 1 * h));
