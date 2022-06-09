@@ -4,6 +4,11 @@ OxygenBar::OxygenBar(float x, float y, float timeMax, Player* player) : timeMax(
 {
 }
 
+/**
+ * Update time value of the oxygen bar and kills player if 0.
+ *
+ * @param elapsed time elapsed since last frame
+ */
 void OxygenBar::update(sf::Time elapsed)
 {
 	if (time >= 0)
@@ -14,6 +19,11 @@ void OxygenBar::update(sf::Time elapsed)
 	}
 }
 
+/**
+ * Display the oxygen bar emptying.
+ *
+ * @param window window in which to render
+ */
 void OxygenBar::display(sf::RenderWindow& window) const
 {
 	sf::RectangleShape rectangle;

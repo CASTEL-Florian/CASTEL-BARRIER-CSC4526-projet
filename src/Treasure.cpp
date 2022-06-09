@@ -13,8 +13,11 @@ Treasure::Treasure(float x, float y, Player* player, TreasureManager* treasureMa
 	animator = std::make_unique<Animator>(texture, 0.2f, spriteLength, spriteLength, 0.1f, std::vector<int> {numberOfImages});
 }
 
-
-
+/**
+ * Update found value and call update of animator.
+ *
+ * @param elapsed time elapsed since last frame
+ */
 void Treasure::update(sf::Time elapsed)
 {
 	if (!found && distanceFromPlayer() < playerCatchRange) {
@@ -24,33 +27,41 @@ void Treasure::update(sf::Time elapsed)
 	animator->update(elapsed);
 }
 
+/**
+ * Display the treasure if not yet found.
+ *
+ * @param window window in which to render
+ */
 void Treasure::display(sf::RenderWindow& window) const
 {
 	if (found)
 		return;
-	/*sf::RectangleShape rect;
-	if (isCoin)
-		rect.setSize(sf::Vector2f(2, 2));
-	else
-		rect.setSize(sf::Vector2f(6, 6));
-	rect.setOrigin(rect.getSize() / 2.f);
-	rect.setFillColor(sf::Color::Yellow);
-	rect.setPosition(x, y);
-	window.draw(rect);*/
-	
 	animator->setPosition(sf::Vector2f(x, y));
 	animator->display(window);
 }
+
+/**
+ * Treasure.x getter.
+ *
+ */
 float Treasure::get_x() const
 {
 	return x;
 }
 
+/**
+ * Treasure.y getter.
+ *
+ */
 float Treasure::get_y() const
 {
 	return y;
 }
 
+/**
+ * Calculate distance between treasure and player.
+ *
+ */
 float Treasure::distanceFromPlayer() const
 {
 	sf::Vector2f dir(player->get_x() - x, player->get_y() - y);

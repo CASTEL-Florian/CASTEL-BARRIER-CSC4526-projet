@@ -12,6 +12,11 @@ Player::Player(b2World* world, const float enginePower, sf::Texture* texture, fl
 	initBox(world, b2Vec2(roomWidth * tileWidth / 2, roomHeight * tileHeight / 2), b2_dynamicBody);
 }
 
+/**
+ * Move the player.
+ *
+ * @param vec vector of the force to apply
+ */
 void Player::move(const b2Vec2& vec) {
 	if (!alive)
 		return;
@@ -20,6 +25,11 @@ void Player::move(const b2Vec2& vec) {
 		true);
 }
 
+/**
+ * Update values of player.
+ *
+ * @param elapsed time elapsed since last frame
+ */
 void Player::update(sf::Time elapsed) {
 	x = body->GetPosition().x;
 	y = -body->GetPosition().y;
@@ -27,6 +37,11 @@ void Player::update(sf::Time elapsed) {
 	animator->update(elapsed);
 }
 
+/**
+ * Display the player.
+ *
+ * @param window window in which to render
+ */
 void Player::display(sf::RenderWindow& window) const{
 	animator->setPosition(sf::Vector2f(x, y));
 	animator->setRotation(rota * 180.0f / b2_pi);
@@ -38,6 +53,11 @@ void Player::display(sf::RenderWindow& window) const{
 	animator->display(window);
 }
 
+/**
+ * Display a darkness filter around the "torch" of the player.
+ *
+ * @param window window in which to render
+ */
 void Player::renderLight(sf::RenderWindow& window) const {
 	sf::ConvexShape polygon1;
 	polygon1.setPointCount(7);
@@ -70,44 +90,76 @@ void Player::renderLight(sf::RenderWindow& window) const {
 	window.draw(polygon2);
 }
 
-
+/**
+ * Updates the room in which the player roams.
+ *
+ */
 void Player::updateRoomPosition()
 {
 	roomX = std::floor(x / (roomWidth * tileWidth));
 	roomY = std::floor(y / (roomHeight * tileHeight));
 }
 
+/**
+ * Player.roomX getter.
+ *
+ */
 int Player::getRoomX() const
 {
 	return roomX;
 }
 
+/**
+ * Player.roomY getter.
+ *
+ */
 int Player::getRoomY() const
 {
 	return roomY;
 }
 
+/**
+ * Player.x getter.
+ *
+ */
 float Player::get_x() const
 {
 	return x;
 }
 
+/**
+ * Player.y getter.
+ *
+ */
 float Player::get_y() const
 {
 	return y;
 }
 
+/**
+ * Tell if player is alive or not.
+ *
+ */
 bool Player::isAlive() const
 {
 	return alive;
 }
 
+/**
+ * Kill the player.
+ *
+ * @param end type of ending (DeathByMonster or Drawning)
+ */
 void Player::kill(EndType end)
 {
 	alive = false;
 	endType = end;
 }
 
+/**
+ * Player.endType getter.
+ *
+ */
 EndType Player::getEndType() const
 {
 	return endType;
