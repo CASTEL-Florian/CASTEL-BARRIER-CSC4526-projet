@@ -2,8 +2,8 @@
 #include "FishSpawner.h"
 #include "RoomGenerator.h"
 
-Fish::Fish(sf::Texture* texture, FishSpawner* fishSpawner, Player* player,float scale, float x, float y, SoundHandler* soundHandler) : 
-	fishSpawner(fishSpawner), player(player), x(x), y(y), soundHandler(soundHandler)
+Fish::Fish(sf::Texture* texture, Player* player,float scale, float x, float y, SoundHandler* soundHandler) : 
+	player(player), x(x), y(y), soundHandler(soundHandler)
 {
 	animator = std::make_unique<Animator>(texture, scale, 32, 16, 0.1f, std::vector<int> {18, 18});
 	animator->playAnimation(random_1_to_n(2) - 1);

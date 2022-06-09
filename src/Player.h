@@ -25,8 +25,6 @@ private:
 	float enginePower;
 	int roomX = 0;
 	int roomY = 0;
-	int rectOffset = 0;
 	bool alive = true;
-	std::unique_ptr<Animator> animator;
 	EndType endType = EndType::Victory;
 };
