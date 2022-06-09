@@ -58,7 +58,6 @@ void Monster::update(sf::Time elapsed) {
 		}
 		return;
 	}
-	std::cout << chaseTime << "\n";
 	if (action == State::Follow && distFromPlayer <= attackRange) {
 		prepareAttack();
 	}

@@ -13,42 +13,84 @@ Animator::Animator(sf::Texture* textur, const float scal, int spriteWidth, int s
 	sprite.setOrigin(sf::Vector2f((float)spriteWidth / 2, (float)spriteHeight / 2));
 }
 
+/**
+ * Display the sprite on the window.
+ *
+ * @param window on which the sprite is displayed.
+ */
 void Animator::display(sf::RenderWindow& window) const
 {
 	window.draw(sprite);
 }
 
+/**
+ * Choose the animation to play.
+ *
+ * @param id index of the animation.
+ */
 void Animator::playAnimation(int id)
 {
 	animationNumber = id;
 	spriteRect.top = id * spriteHeight;
 }
 
+/**
+ * Set the origin of the sprite.
+ *
+ * @param origin of the sprite.
+ */
 void Animator::setOrigin(sf::Vector2f origin)
 {
 	sprite.setOrigin(origin);
 }
 
+/**
+ * Set the rotation of the sprite.
+ *
+ * @param angle angle of rotation of the sprite.
+ */
 void Animator::setRotation(float angle)
 {
 	sprite.setRotation(angle);
 }
 
+/**
+ * Set the position of the sprite.
+ *
+ * @param position new position of the sprite.
+ */
 void Animator::setPosition(sf::Vector2f pos)
 {
 	sprite.setPosition(pos);
 }
 
+/**
+ * Set the scale of the sprite.
+ *
+ * @param scale new scale of the sprite.
+ */
 void Animator::setScale(sf::Vector2f s)
 {
 	sprite.setScale(s);
 }
 
+/**
+ * Set the scale of the sprite.
+ *
+ * @return sprite local bounds.
+ */
 sf::FloatRect Animator::getLocalBounds()
 {
 	return sprite.getLocalBounds();
 }
 
+/**
+ * Set the scale of the sprite.
+ *
+ * @param mirrored whether the sprite should be mirrored or not.
+ * @param verticalAxis whether the sprite should be mirrored around the vertical axis.
+ * @param verticalAxis whether the sprite should be mirrored around both axis.
+ */
 void Animator::setMirrored(bool mirrored, bool verticalAxis, bool bothAxis)
 {
 	sf::Vector2f scale = sprite.getScale();
@@ -63,6 +105,11 @@ void Animator::setMirrored(bool mirrored, bool verticalAxis, bool bothAxis)
 		sprite.setScale(std::abs(scale.x), mirrored ? -std::abs(scale.y) : std::abs(scale.y));
 }
 
+/**
+ * Update the sprite.
+ *
+ * @elapsed time spent since last frame.
+ */
 void Animator::update(sf::Time elapsed)
 {
 	animTimer += elapsed.asSeconds();
