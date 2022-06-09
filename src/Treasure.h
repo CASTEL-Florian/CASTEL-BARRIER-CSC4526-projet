@@ -20,5 +20,5 @@ private:
 	TreasureManager* treasureManager;
 	float playerCatchRange = 7;
 
-	std::unique_ptr<Animator> animator;
+	
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "Animator.h"
 class Object
 {
 public:
@@ -10,4 +11,6 @@ public:
 	virtual float get_x() const = 0;
 	virtual float get_y() const = 0;
 	virtual ~Object() = default;
+protected:
+	std::unique_ptr<Animator> animator;
 };

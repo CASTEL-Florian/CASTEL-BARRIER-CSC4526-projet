@@ -28,7 +28,8 @@ private:
 	float angle = 0;
 	float speed = 10;
 	float actionTime = 0;
-	float chaseTime = 20;// 10;
+	const float chaseDuration = 13;
+	float chaseTime = 13;
 	float targetX = 0;
 	float targetY = 0;
 	float const attackRange = 20;
@@ -42,6 +43,5 @@ private:
 	Player* player;
 	RoomGenerator* roomGenerator;
 
-	std::unique_ptr<Animator> animator;
 	SoundHandler* soundHandler;
 };

@@ -58,7 +58,6 @@ void Monster::update(sf::Time elapsed) {
 		}
 		return;
 	}
-	
 	if (action == State::Follow && distFromPlayer <= attackRange) {
 		prepareAttack();
 	}
@@ -154,7 +153,7 @@ void Monster::sleep(float duration)
 {
 	//std::cout << "Sleeping\n";
 	action = State::Sleep;
-	chaseTime = 10;
+	chaseTime = chaseDuration;
 	actionTime = duration;
 }
 

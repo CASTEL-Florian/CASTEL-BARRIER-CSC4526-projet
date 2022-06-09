@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+/**
+ * Class that manages a sprite and its animation
+ */
 class Animator {
 public:
 	Animator(sf::Texture* textur, const float scal, int spriteWidth, int spriteHeight, float animationTimestep, std::vector<int> imagesNumber);
