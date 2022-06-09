@@ -3,6 +3,9 @@
 #include "Animator.h"
 #include "Object.h"
 
+/**
+ * Solid crab bouncing on everything.
+ */
 class Crab : public Box, public Object {
 public:
 	Crab(b2World* world, sf::Texture *texture, float scal, const b2Vec2& position);

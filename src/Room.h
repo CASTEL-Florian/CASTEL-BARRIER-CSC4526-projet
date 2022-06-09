@@ -23,7 +23,7 @@ public:
 	void display(sf::RenderWindow &window) const;
 	void display_fog(sf::RenderWindow &window) const;
 	std::pair<int,int> get_position() const;
-	bool is_opened(int direction);
+	bool is_opened(int direction) const;
 	int get_x() const;
 	int get_y() const;
 	void enter();
@@ -57,8 +57,8 @@ private:
 	Room* leftRoom = nullptr;
 	Room* rightRoom = nullptr;
 	bool explored = false;
-	sf::VertexArray fogOpen;
-	sf::VertexArray fogClose;
+	sf::VertexArray fogOpen; // Fog to display on the sides that are open.
+	sf::VertexArray fogClose; // Fog to display on the sides that are close.
 	std::vector<sf::Transform> fogTransforms;
 	std::vector<std::pair<int, int>> treasurePos;
 	std::vector<std::unique_ptr<Object>> objects;

@@ -28,6 +28,7 @@ void Game::update()
 	pollEvents();
 	if (gameState == GameState::MainMenu) {
 		if (mainMenu->getState() == MainMenuState::TransitionFinished) {
+			// When the main menu transition is finished, change the game state.
 			userVolume = mainMenu->getUserVolume();
 			mainMenu.reset();
 			gameState = GameState::Playing;
@@ -39,6 +40,7 @@ void Game::update()
 	}
 	if (gameState == GameState::EndScreen) {
 		if (endScreen->getState() == EndScreenState::TransitionFinished) {
+			// When the end screen transition is finished, load main menu.
 			endScreen.reset();
 			resetGame();
 			loadMainMenu();
@@ -48,6 +50,7 @@ void Game::update()
 		return;
 	}
 	if (gameState == GameState::TransitionToEndScreen) {
+		// Player is dead or the game is finished. Waiting for the fade out to be finished.
 		if (fader->getState() == FaderState::Sleep) {
 			loadEndScreen();
 		}
@@ -56,9 +59,13 @@ void Game::update()
 	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics
 	player->update(elapsed);
 	player->updateRoomPosition();
+
+	// Update currentRoom in case the player changed room.
 	currentRoom = currentRoom->updateCurrentRoom(player->getRoomX(), player->getRoomY());
 	currentRoom->enter();
 	currentRoom->updateObjects(elapsed);
+
+	// Only update the current room and adjacent rooms.
 	for (auto& r : currentRoom->getAjacentRooms()) {
 		if (r) {
 			r->updateObjects(elapsed);
@@ -70,6 +77,7 @@ void Game::update()
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
 
 	if ((!player->isAlive() || treasureManager->gameWon()) && gameState == GameState::Playing) {
+		// The game is finished. Start a fade out and transition before the end screen.
 		endType = player->getEndType();
 		if (endType == EndType::Drowning) {
 			fader->setFadeColor(sf::Color::Blue);
@@ -114,6 +122,8 @@ void Game::render() const
 	window->draw(depth);
 	currentRoom->display(*window);
 	currentRoom->displayObjects(*window);
+
+	// Only display the current room and adjacent rooms.
 	for (auto& r : currentRoom->getAjacentRooms()) {
 		if (r) {
 			r->display(*window);
@@ -161,6 +171,7 @@ void Game::loadMainMenu()
  */
 void Game::loadEndScreen()
 {
+	// Load a different end screen background depending on the way the game ended.
 	if (endType == EndType::DeathByMonster) 
 		endScreen = std::make_unique<EndScreen>(&textures[8], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
 	else if (endType == EndType::Drowning) 

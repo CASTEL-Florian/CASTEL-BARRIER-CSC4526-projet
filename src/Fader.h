@@ -3,6 +3,9 @@
 
 enum class FaderState {Sleep, FadeIn, FadeOut};
 
+/**
+ * Fader allowing for fade in and fade out between scenes.
+ */
 class Fader {
 public:
 	Fader(float width, float height);

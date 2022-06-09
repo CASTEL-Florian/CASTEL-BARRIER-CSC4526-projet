@@ -5,8 +5,14 @@
 #include "TreasureManager.h"
 #include "SoundHandler.h"
 
+/**
+ * The different states of the end screen.
+ */
 enum class EndScreenState {Wait, Transition, TransitionFinished};
 
+/**
+ * Class dealing with everything happening in the end screen.
+ */
 class EndScreen {
 public:
 	EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float width, float height);

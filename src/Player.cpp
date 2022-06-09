@@ -18,8 +18,10 @@ Player::Player(b2World* world, const float enginePower, sf::Texture* texture, fl
  * @param vec vector of the force to apply
  */
 void Player::move(const b2Vec2& vec) {
+	// Can't control the player when not alive.
 	if (!alive)
 		return;
+	// Apply a force not exactly at the center of the player to make it rotate.
 	body->ApplyForce(b2Vec2(vec.x * enginePower, vec.y * enginePower), 
 		body->GetPosition() + b2Vec2(w * std::cos(body->GetAngle()) / 5, w *std::sin(body->GetAngle()) / 5),
 		true);
@@ -45,6 +47,8 @@ void Player::update(sf::Time elapsed) {
 void Player::display(sf::RenderWindow& window) const{
 	animator->setPosition(sf::Vector2f(x, y));
 	animator->setRotation(rota * 180.0f / b2_pi);
+
+	// Mirror the sprite of the player when facing to the left.
 	float rotaDegree = rota * 180 / b2_pi;
 	if (float rota360 = rotaDegree - std::floor(rotaDegree / 360) * 360; rota360 > 90 && rota360 < 270)
 		animator->setMirrored(true);
@@ -146,7 +150,7 @@ bool Player::isAlive() const
 }
 
 /**
- * Kill the player.
+ * Kill the player. The player can no longer be controled by the player.
  *
  * @param end type of ending (DeathByMonster or Drawning)
  */

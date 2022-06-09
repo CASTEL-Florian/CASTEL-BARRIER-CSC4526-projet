@@ -4,6 +4,11 @@
 #include "Animator.h"
 #include "Fader.h"
 
+/**
+ * States of the main menu.
+ * 
+ * Before the user clics on the play button, the state is Wait. It then go through the different transition states.
+ */
 enum class MainMenuState {Wait, Transition1, Transition2, Transition3, TransitionFinished};
 
 /**

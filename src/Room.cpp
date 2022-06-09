@@ -150,7 +150,7 @@ std::pair<int, int> Room::get_position() const {
  * @param direction 0 for up, 1 for down, 2 for left, 3 for right.
  * @return true if the path is open, false if the path is closed.
  */
-bool Room::is_opened(int direction)
+bool Room::is_opened(int direction) const
 {
     if (direction == 0)
         return up;
@@ -255,6 +255,8 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
 {
     int halfWidth = int(roomWidth / 2);
     int halfHeight = int(roomHeight / 2);
+
+    // Open a path in the tilemap in directions the room is opened. 
     if (up)
         tiles[halfWidth] = emptyTile;
     if (down)
@@ -263,7 +265,7 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
         tiles[halfHeight * roomWidth] = emptyTile;
     if (right)
         tiles[(halfHeight + 1) * roomWidth - 1] = emptyTile;
-    for (int j = 1; j <= (int)(corridorWidth / 2) && j < halfWidth; j++) {
+    for (int j = 1; j <= (corridorWidth / 2) && j < halfWidth; j++) {
         if (up) {
             tiles[halfWidth + j] = emptyTile;
             tiles[halfWidth - j] = emptyTile;
@@ -280,18 +282,25 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
             tiles[(halfHeight + 1 - j) * roomWidth - 1] = emptyTile;
         }
     }
+
+
     for (int i = 0; i < roomWidth; i++) {
         for (int j = 0; j < roomHeight; j++) {
+            // If there are walls in the object map, add them to the tilemap.
             if (!objectsMap.empty() && objectsMap[i + j * roomWidth] == (int)ObjectType::Wall) {
                 tiles[i + j * roomWidth] = 1;
             }
+
+            // Randomize the tiles.
             int choice = random_1_to_n(numberOfTilesChoices);
             if (tiles[i + j * roomWidth] != emptyTile) {
+                // Create a solid box an choose a random texture for the solid bloc.
                 Box newBox;
                 newBox.init(world, b2Vec2(x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth), (y * tileHeight * roomHeight) + j * tileHeight + (0.5f * tileHeight)), b2_staticBody, b2Vec2(tileWidth, tileHeight));
                 tiles[i + j * roomWidth] = choice;
             }
             else{
+                // Select a random texture for the "empty" bloc.
                 if (random_1_to_n(100)>emptyBackgroundTilePercentage)
                     tiles[i + j * roomWidth] = numberOfTilesChoices + 1 + choice;
             }
@@ -300,7 +309,7 @@ void Room::build(b2World* world, sf::Texture* m_tileset, std::vector<int> tiles,
     }
     
     map.load(m_tileset, sf::Vector2u(spriteWidth, spriteHeight), tiles, roomWidth, roomHeight);
-    map.setPosition(x * tileWidth * roomWidth, y * tileHeight * roomHeight);
+    map.setPosition((float)(x * tileWidth * roomWidth), (float)(y * tileHeight * roomHeight));
     map.setScale(sf::Vector2f((float)tileWidth / (float)spriteWidth,(float)tileHeight / (float)spriteHeight));
 }
 
@@ -317,8 +326,8 @@ void Room::generateObjects(b2World* world, std::vector<int> const& objectsMap, s
     if (!objectsMap.empty()) {
         for (int i = 0; i < roomWidth; i++) {
             for (int j = 0; j < roomHeight; j++) {
-                float posX = x * tileWidth * roomWidth + i * tileWidth + (0.5f * tileWidth);
-                float posY = y * tileHeight * roomHeight + j * tileHeight + (0.5f * tileHeight);
+                float posX = (float)(x * tileWidth * roomWidth + i * tileWidth) + (0.5f * tileWidth);
+                float posY = (float)(y * tileHeight * roomHeight + j * tileHeight) + (0.5f * tileHeight);
                 if (objectsMap[i + j * roomWidth] == int(ObjectType::Treasure)) {
                     treasurePos.push_back(std::pair(
                         posX,
@@ -356,8 +365,10 @@ void Room::updateObjects(sf::Time elapsed)
 {
     for (auto it = objects.begin(); it != objects.end();) {
         it->get()->update(elapsed);
-        int roomX = std::floor(it->get()->get_x() / (roomWidth * tileWidth));
-        int roomY = std::floor(it->get()->get_y() / (roomHeight * tileHeight));
+        int roomX = (int)(std::floor(it->get()->get_x() / (roomWidth * tileWidth)));
+        int roomY = (int)(std::floor(it->get()->get_y() / (roomHeight * tileHeight)));
+
+        // Move the object in an adjacent room if it left the current one.
         if (roomX > x) {
             rightRoom->addObject(std::move(*it));
             it = objects.erase(it);
@@ -441,10 +452,13 @@ std::vector<std::pair<int, int>> Room::getTreasurePos()
 std::pair<float, float> Room::findAvailableCoinPosition()
 {
     std::pair<float, float> pos(x * roomWidth * tileWidth, y * roomHeight * tileHeight);
+
+    // Get a random position in the room.
     int dx = random_1_to_n(roomWidth - 2);
     int dy = random_1_to_n(roomHeight - 2);
     if (!objectsTilemap.empty()) {
         while (objectsTilemap[dx + dy * roomHeight] != 0) {
+            // Try again if the coin was about to be created on another object.
             dx = random_1_to_n(roomWidth - 2);
             dy = random_1_to_n(roomHeight - 2);
         }

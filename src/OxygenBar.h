@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 
+/**
+ * Oxygen bar that gradually empties before killing the player.
+ */
 class OxygenBar
 {
 public:

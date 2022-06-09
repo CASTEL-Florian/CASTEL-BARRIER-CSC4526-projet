@@ -18,8 +18,19 @@
 #include "MainMenu.h"
 #include "EndScreen.h"
 
-
-enum class GameState {MainMenu, Playing, EndScreen, TransitionToEndScreen};
+/**
+ * The different states of the game.
+ */
+enum class GameState {
+	// the main menu is open.
+	MainMenu, 
+	// the game is playing.
+	Playing, 
+	// the end screen is open.
+	EndScreen, 
+	// the player is dead, the fader fades out and the end screen is about to open.
+	TransitionToEndScreen
+};
 
 /**
  * Game class centralizing the differents objects of the game.

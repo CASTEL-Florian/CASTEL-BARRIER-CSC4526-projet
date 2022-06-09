@@ -3,6 +3,9 @@
 #include "Object.h"
 #include "Animator.h"
 
+/**
+ * Solid box slowly falling down.
+ */
 class Crate : public Box, public Object {
 public:
 	Crate(b2World* world, sf::Texture* texture, float scal, const b2Vec2& position);

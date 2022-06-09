@@ -4,7 +4,9 @@
 #include "SFML/Graphics.hpp"
 #include <iostream>
 
-
+/**
+ * Solid rectangle that can be interacted with in a box2d world.
+ */
 class Box
 {
 public:

@@ -6,7 +6,7 @@ Fish::Fish(sf::Texture* texture, Player* player,float scale, float x, float y, S
 	player(player), x(x), y(y), soundHandler(soundHandler)
 {
 	animator = std::make_unique<Animator>(texture, scale, 32, 16, 0.1f, std::vector<int> {18, 18});
-	animator->playAnimation(random_1_to_n(2) - 1);
+	animator->playAnimation(random_1_to_n(2) - 1); // Animation 0 and 1 correspond to two types of fish.
 }
 
 /**
@@ -21,9 +21,10 @@ void Fish::update(sf::Time elapsed)
 {
 	actionTime -= elapsed.asSeconds();
 	if (action != FishAction::Flee && distanceFromPlayer() < fleeDistance) {
+		// The player is close enough for the fish to start fleeing.
 		action = FishAction::Flee;
 		soundHandler->playFishSound();
-		rotateToward(2 * x - player->get_x(), 2 * y - player->get_y());
+		rotateToward(2 * x - player->get_x(), 2 * y - player->get_y()); // Rotate the fish away from the player.
 		speed = fleeSpeed;
 	}
 	if (action == FishAction::Flee) {
@@ -32,10 +33,12 @@ void Fish::update(sf::Time elapsed)
 		return;
 	}
 	if (actionTime <= 0) {
+		// The fish is not fleeing and the previous action is finished. Choose a new action.
 		actionTime = actionDuration;
 		action = (FishAction)(random_1_to_n(3) - 1);
 	}
 	if (action == FishAction::Stop) {
+		// The fish stops. It decelerates until it's speed reaches 0.
 		if (speed > 0) {
 			speed -= acceleration;
 			if (speed < 0)

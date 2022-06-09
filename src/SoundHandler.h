@@ -2,6 +2,9 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 
+/**
+ * Class managing music and sounds.
+ */
 class SoundHandler {
 public:
 	SoundHandler();

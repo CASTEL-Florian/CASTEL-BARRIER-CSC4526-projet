@@ -18,8 +18,9 @@ void FishSpawner::update(sf::Time elapsed) {
     for (auto it = fishVector.begin(); it != fishVector.end();) {
         it->get()->update(elapsed);
         if (!closeToPlayer(it->get()->get_x(), it->get()->get_y())) {
+            // The fish is far from the player. It becomes inactive 
             inactiveFish.push_back(std::move(*it));
-                it = fishVector.erase(it);
+            it = fishVector.erase(it);
         }
         else {
             it++;
@@ -28,6 +29,7 @@ void FishSpawner::update(sf::Time elapsed) {
     int newPlayerX = player->getRoomX();
     int newPlayerY = player->getRoomY();
     if (oldPlayerX != newPlayerX || oldPlayerY != newPlayerY) {
+        // The player changed room. Spawn fish in the three new rooms that are loaded.
         spawnFishRoom(newPlayerX - oldPlayerX, newPlayerY - oldPlayerY);
         if (oldPlayerX != newPlayerX) {
             spawnFishRoom(0, 1);
@@ -65,11 +67,13 @@ void FishSpawner::display(sf::RenderWindow& window) const {
 void FishSpawner::spawnFish(float x, float y)
 {
     if (!inactiveFish.empty()) {
+        // There is at least one inactive fish. Use one of them instead of creating a new one.
         inactiveFish[inactiveFish.size() - 1]->init(x, y);
         fishVector.push_back(std::move(inactiveFish[inactiveFish.size() - 1]));
         inactiveFish.pop_back();
     }
     else {
+        // There are no inactive fish. Create a new one.
         fishVector.push_back(std::make_unique<Fish>(fishTexture, player, 0.2f, x, y, soundHandler));
     }
 }

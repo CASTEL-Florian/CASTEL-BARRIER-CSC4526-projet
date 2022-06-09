@@ -3,7 +3,23 @@
 #include "RoomGenerator.h"
 #include "SoundHandler.h"
 
-enum class State{Sleep, Follow, Attack, Flee, PrepareAttack, Explore};
+/**
+ * State of the monster. The behaviour of the monster is different depending on the state it is in.
+ */
+enum class State{
+	/// The monster doesn't move. The monster waits for the player to get closer or the end of the state.
+	Sleep,
+	/// The monster follows the player.
+	Follow,
+	/// The monster dashes forward.
+	Attack,
+	/// The monster follows the player.
+	Flee,
+	/// The monster moves forward (after turning away from the player).
+	PrepareAttack,
+	/// The monster moves toward a random point on the map.
+	Explore
+};
 
 /**
  * The monster explores the map. When it encounters the player, the monster attacks it for

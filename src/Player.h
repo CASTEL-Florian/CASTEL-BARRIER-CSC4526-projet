@@ -6,6 +6,9 @@
 
 enum class EndType {Victory, DeathByMonster, Drowning};
 
+/**
+ * Player that can move in every directions with a light at the front.
+ */
 class Player : public Box, public Object {
 public:
 	Player(b2World* world, const float enginePower, sf::Texture* texture, float scale);

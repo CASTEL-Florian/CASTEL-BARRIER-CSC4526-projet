@@ -41,6 +41,7 @@ void Monster::display(sf::RenderWindow& window) const {
 void Monster::update(sf::Time elapsed) {
 	float distFromPlayer = distanceFromPlayer();
 	if (distFromPlayer < hitboxRadius) {
+		// The player was too close to the monster and died.
 		player->kill(EndType::DeathByMonster);
 	}
 
@@ -57,15 +58,18 @@ void Monster::update(sf::Time elapsed) {
 			sleep(1);
 		}
 		if (distFromPlayer <= playerDetectRange && player->isAlive()) {
+			// The player is close enough for the monster to detect and follow the player.
 			follow();
 		}
 	}
 	if (chaseTime <= 0 && action == State::Follow) {
+		// The monster stops chasing the player. 
 		flee();
 	}
 	if (action == State::Sleep) {
 		actionTime -= elapsed.asSeconds();
 		if (distFromPlayer <= playerDetectRange && player->isAlive()) {
+			// The player is close enough for the monster to detect and follow the player.
 			follow();
 		}
 		if (actionTime <= 0) {
@@ -74,6 +78,7 @@ void Monster::update(sf::Time elapsed) {
 		return;
 	}
 	if (action == State::Follow && distFromPlayer <= attackRange) {
+		// The player is close enough for the monster prepare an attack.
 		prepareAttack();
 	}
 	if (action == State::PrepareAttack) {
@@ -188,7 +193,6 @@ std::pair<float, float> Monster::getRandomMapPosition()
  */
 void Monster::explore()
 {
-	//std::cout << "Exploring\n";
 	action = State::Explore;
 	auto pos = getRandomMapPosition();
 	targetX = pos.first;
@@ -203,7 +207,6 @@ void Monster::explore()
  */
 void Monster::sleep(float duration)
 {
-	//std::cout << "Sleeping\n";
 	action = State::Sleep;
 	chaseTime = chaseDuration;
 	actionTime = duration;
@@ -214,7 +217,6 @@ void Monster::sleep(float duration)
  */
 void Monster::dash()
 {
-	//std::cout << "Dashing\n";
 	action = State::Attack;
 	speed = dashSpeed;
 	actionTime = attackDuration;
@@ -229,7 +231,6 @@ void Monster::follow()
 		explore();
 		return;
 	}
-	//std::cout << "Following\n";
 	soundHandler->switchToFrantic();
 	action = State::Follow;
 	speed = followSpeed;
@@ -240,7 +241,6 @@ void Monster::follow()
  */
 void Monster::prepareAttack()
 {
-	//std::cout << "Preparing attack\n";
 	action = State::PrepareAttack;
 	actionTime = prepareAttackDuration;
 	speed = 0;
@@ -251,10 +251,9 @@ void Monster::prepareAttack()
  */
 void Monster::flee()
 {
-	//std::cout << "Fleeing\n";
 	action = State::Flee;
 	actionTime = 5;
 	speed = followSpeed/2;
-	rotateToward(2 * x - player->get_x(), 2 * y - player->get_y());
+	rotateToward(2 * x - player->get_x(), 2 * y - player->get_y()); // Rotate away from the player.
 	soundHandler->switchToCalm();
 }

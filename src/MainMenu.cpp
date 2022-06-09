@@ -86,27 +86,35 @@ void MainMenu::update(sf::Time elapsed)
 		return;
 	if (state == MainMenuState::Transition1 || state == MainMenuState::Transition2) {
 		transitionTime += elapsed.asSeconds();
+
+		// Decrease slowly the alpha of the UI to make it disappear.
 		uiAlpha -= elapsed.asSeconds() * 255 / uiFadeTime;
 		if (uiAlpha < 0)
 			uiAlpha = 0;
 		playText.setFillColor(sf::Color(255, 255, 255, uiAlpha));
 		playText.setOutlineColor(sf::Color(0, 0, 0, uiAlpha));
-		playerAnimator->setRotation(70 * easeInOutQuad(transitionTime / transitionDuration));
+
+		playerAnimator->setRotation(70 * easeInOutQuad(transitionTime / transitionDuration)); // Rotate the player sprite.
+
+		// Make the background scroll down.
 		backgroundSpriteRect.top = (int)((backgroundSpriteRect.height - backgroundHeightProportion) * (transitionTime / transitionDuration) * (transitionTime / transitionDuration));
 		background.setTextureRect(backgroundSpriteRect);
 		if (state == MainMenuState::Transition1) {
 			if (transitionTime >= startFadeTime) {
+				// Start fading out at the beginning of state Transition2.
 				state = MainMenuState::Transition2;
 				fader->fadeOut(transitionDuration - startFadeTime);
 			}
 		}
 		else
 		{
+			// Start Transition3 when the fade out is finished.
 			if (fader->getState() == FaderState::Sleep)
 				state = MainMenuState::Transition3;
 		}
 	}
 	if (state == MainMenuState::Transition3) {
+		// Make the music fade out.
 		transitionTime += elapsed.asSeconds();
 		currentVolume -= elapsed.asSeconds();
 		if (currentVolume <= 0)

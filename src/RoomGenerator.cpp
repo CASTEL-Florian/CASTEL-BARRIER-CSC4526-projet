@@ -47,23 +47,32 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::generateMap(int nb_rooms)
         available_positions[pos] = 0;
     int cur_index = 1;
     for (int i = 0; i < nb_rooms - 1; i++) {
+        // Select a random position for a room, adjacent to a room already created.
         int new_room_index = random_1_to_n((int)available_positions.size()) - 1;
         auto it = std::begin(available_positions);
         std::advance(it, new_room_index);
         auto [new_x, new_y] = it->first;
-        auto new_room = std::make_unique<Room>(new_x, new_y);
+
+        auto new_room = std::make_unique<Room>(new_x, new_y); // Create the new room.
+
+        // Open a path between the two adjacent rooms
         new_room->open_path(rooms[it->second]->get_position());
+        rooms[it->second]->open_path(new_room->get_position());
+
         new_room->linkToRoom(rooms[it->second].get());
         rooms[it->second]->linkToRoom(new_room.get());
-        rooms[it->second]->open_path(new_room->get_position());
         rooms.push_back(std::move(new_room));
         roomPositions.insert(std::pair(new_x, new_y));
         available_positions.erase(it);
+
+        // Add the rooms adjacent to the one just created to the available position set.
         for (auto const& [adj_x, adj_y] : adjacent_positions) {
             if (!roomPositions.contains(std::pair(adj_x + new_x, adj_y + new_y)))
                 available_positions[std::pair(adj_x + new_x, adj_y + new_y)] = cur_index;
         }
         cur_index++;
+
+        // Update farthest room.
         float roomDistance = new_x * new_x + new_y * new_y;
         if (roomDistance > farthestRoomDistance) {
             farthestRoomDistance = roomDistance;
@@ -91,6 +100,8 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
     std::vector<int> deadEnds;
     std::vector<int> normalRooms;
     std::vector<bool> treasureRooms(rooms.size(), false);
+
+    // Find rooms that are dead ends and those that are not.
     for (int i = 0; i < rooms.size(); i++) {
         if (i > 0) {
             if (rooms[i]->isDeadEnd())
@@ -99,7 +110,9 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
                 normalRooms.push_back(i);
         }
     }
+
     if (deadEnds.size() >= treasuresCount) {
+        // Create treasure rooms in random dead ends.
         for (int i = 0; i < treasuresCount; i++) {
             int randomIndex = random_1_to_n(deadEnds.size()) - 1;
             auto it = deadEnds.begin() + randomIndex;
@@ -109,9 +122,11 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
 
     }
     else {
+        // Create treasure rooms in all dead ends.
         for (auto const& id : deadEnds) {
             treasureRooms[id] = true;
         }
+        // Create remaining treasure rooms in random other rooms.
         for (int i = 0; i < treasuresCount - deadEnds.size(); i++) {
             if (normalRooms.size() <= 0) {
                 break;
@@ -122,15 +137,19 @@ std::vector<std::unique_ptr<Room>> RoomGenerator::buildRooms(b2World* world, std
             normalRooms.erase(it);
         }
     }
+
     rooms[0]->build(world, m_tileset.get(), emptyRoomTilemap, std::vector<int> {});
+
     for (int i = 1; i < rooms.size(); i++) {
         if (treasureRooms[i]) {
+            // Use a treasure room tilemap for treasure rooms.
             int roomType = random_1_to_n(treasureRoomTilemaps.size()) - 1;
             rooms[i]->build(world, m_tileset.get(), emptyRoomTilemap, treasureRoomTilemaps[roomType]);
             rooms[i]->generateObjects(world, treasureRoomTilemaps[roomType], textures);
         }
         else
         {
+            // Use a standard room tilemap for others rooms.
             if (standardRoomTilemaps.empty() || random_1_to_n(100) < (int)(emptyRoomProportion * 100))
                 rooms[i]->build(world, m_tileset.get(), emptyRoomTilemap, std::vector<int> {});
             else {
