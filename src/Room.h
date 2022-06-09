@@ -38,7 +38,7 @@ public:
 	std::vector<std::unique_ptr<Object>>* getObjects();
 	Room* updateCurrentRoom(int roomX, int roomY);
 	std::vector<Room*> getAjacentRooms();
-	std::vector<std::pair<int, int>> getTreasurePos();
+	std::vector<std::pair<float, float>> getTreasurePos() const;
 	std::pair<float,float> findAvailableCoinPosition();
 private:
 	
@@ -61,7 +61,7 @@ private:
 	sf::VertexArray fogOpen; // Fog to display on the sides that are open.
 	sf::VertexArray fogClose; // Fog to display on the sides that are close.
 	std::vector<sf::Transform> fogTransforms;
-	std::vector<std::pair<int, int>> treasurePos;
+	std::vector<std::pair<float, float>> treasurePos;
 	std::vector<std::unique_ptr<Object>> objects;
 	std::vector<int> objectsTilemap;
 };

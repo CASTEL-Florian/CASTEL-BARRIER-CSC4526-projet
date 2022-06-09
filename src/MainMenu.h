@@ -23,7 +23,7 @@ public:
 	void mousePressed(int x, int y);
 	MainMenuState getState() const;
 	void updateVolume(sf::Vector2i pos);
-	float getUserVolume();
+	float getUserVolume() const;
 	void setUserVolume(float volume);
 private:
 	sf::Font font;

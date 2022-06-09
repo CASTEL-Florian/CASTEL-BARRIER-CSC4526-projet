@@ -14,9 +14,9 @@ RoomGenerator::RoomGenerator()
     }
         
     emptyRoomTilemap = loadXMLroom(emptyRoomFile);
-    for (auto file : treasureRoomFiles)
+    for (auto const& file : treasureRoomFiles)
         treasureRoomTilemaps.push_back(loadXMLroom(file));
-    for (auto file : standardRoomFiles)
+    for (auto const& file : standardRoomFiles)
         standardRoomTilemaps.push_back(loadXMLroom(file));
     
 }
@@ -192,7 +192,7 @@ std::pair<int, int> RoomGenerator::getRandomRoomPos() const
  * @return data in the form of an integer vector.
  */
 
-std::vector<int> RoomGenerator::loadXMLroom(std::string file) const
+std::vector<int> RoomGenerator::loadXMLroom(std::string const& file) const
 {
     pugi::xml_document doc;
     pugi::xml_parse_result result = doc.load_file(file.c_str());

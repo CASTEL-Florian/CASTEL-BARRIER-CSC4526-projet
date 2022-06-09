@@ -27,7 +27,7 @@ public:
 	std::pair<int, int> getFarthestRoomPos() const;
 	std::pair<int, int> getRandomRoomPos() const;
 private:
-	std::vector<int> loadXMLroom(std::string file) const;
+	std::vector<int> loadXMLroom(std::string const& file) const;
 	std::pair<int, int> farthestRoomPos{ 0,0 };
 	std::unique_ptr<sf::Texture> m_tileset;
 

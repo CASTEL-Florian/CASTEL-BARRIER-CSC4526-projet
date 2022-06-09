@@ -1,14 +1,14 @@
 #include "Crab.h"
 
 
-Crab::Crab(b2World* world, sf::Texture* texture, float scal, const b2Vec2& position)
+Crab::Crab(b2World* world, sf::Texture* texture, float scale, const b2Vec2& position)
 {
-	animator = std::make_unique<Animator>(texture,scal,32,16, 0.1f,std::vector<int> {6});
+	animator = std::make_unique<Animator>(texture,scale,32,16, 0.1f,std::vector<int> {6});
 	sf::FloatRect bounds = animator->getLocalBounds();
-	w = bounds.width * scal;
-	h = bounds.height * scal;
+	w = bounds.width * scale;
+	h = bounds.height * scale;
 	initCrabBox(world, position, b2_dynamicBody);
-	animator->setOrigin(sf::Vector2f(w / scal, h / scal) / 2.f);
+	animator->setOrigin(sf::Vector2f(w / scale, h / scale) / 2.f);
 }
 
 /**

@@ -7,7 +7,7 @@
  */
 class Animator {
 public:
-	Animator(sf::Texture* textur, const float scal, int spriteWidth, int spriteHeight, float animationTimestep, std::vector<int> imagesNumber);
+	Animator(sf::Texture* texture, const float scale, int spriteWidth, int spriteHeight, float animationTimestep, std::vector<int> const& imagesNumber);
 	void display(sf::RenderWindow& window) const;
 	void update(sf::Time elapsed);
 	void playAnimation(int id);
@@ -15,7 +15,7 @@ public:
 	void setRotation(float angle);
 	void setPosition(sf::Vector2f pos);
 	void setScale(sf::Vector2f s);
-	sf::FloatRect getLocalBounds();
+	sf::FloatRect getLocalBounds() const;
 	void setMirrored(bool mirrored, bool verticalAxis = false, bool bothAxis = false);
 private:
 	float animTimer = 0;

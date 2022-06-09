@@ -1,12 +1,12 @@
 #include "Animator.h"
 
-Animator::Animator(sf::Texture* textur, const float scal, int spriteWidth, int spriteHeight, float animationTimestep, std::vector<int> imagesNumber) :
-	texture(textur), imagesNumber(imagesNumber), spriteWidth(spriteWidth), spriteHeight(spriteHeight), animationTimestep(animationTimestep)
+Animator::Animator(sf::Texture* texture, const float scale, int spriteWidth, int spriteHeight, float animationTimestep, std::vector<int> const& imagesNumber) :
+	texture(texture), imagesNumber(imagesNumber), spriteWidth(spriteWidth), spriteHeight(spriteHeight), animationTimestep(animationTimestep)
 {
 	if (!texture)
 		return;
 	sprite.setTexture(*texture);
-	sprite.setScale(sf::Vector2(scal, scal));
+	sprite.setScale(sf::Vector2(scale, scale));
 	spriteRect.left = 0;
 	spriteRect.top = 0;
 	spriteRect.width = spriteWidth;
@@ -81,7 +81,7 @@ void Animator::setScale(sf::Vector2f s)
  *
  * @return sprite local bounds.
  */
-sf::FloatRect Animator::getLocalBounds()
+sf::FloatRect Animator::getLocalBounds() const
 {
 	return sprite.getLocalBounds();
 }

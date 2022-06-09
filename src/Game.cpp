@@ -49,11 +49,10 @@ void Game::update()
 		endScreen->update(elapsed);
 		return;
 	}
-	if (gameState == GameState::TransitionToEndScreen) {
-		// Player is dead or the game is finished. Waiting for the fade out to be finished.
-		if (fader->getState() == FaderState::Sleep) {
-			loadEndScreen();
-		}
+
+	// Player is dead or the game is finished. Waiting for the fade out to be finished.
+	if (gameState == GameState::TransitionToEndScreen && fader->getState() == FaderState::Sleep) {
+		loadEndScreen();
 	}
 	oxygenBar->update(elapsed);
 	world->Step(1.0f / 60.0f, 6, 2); //update box2d physics

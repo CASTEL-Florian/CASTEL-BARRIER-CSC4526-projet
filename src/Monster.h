@@ -36,7 +36,7 @@ private:
 	void rotateToward(float x1, float y1);
 	void moveForward(sf::Time elapsed);
 	float distanceFromPlayer() const;
-	std::pair<float,float> getRandomMapPosition();
+	std::pair<float,float> getRandomMapPosition() const;
 	void explore();
 	void sleep(float duration);
 	void dash();

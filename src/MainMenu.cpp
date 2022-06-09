@@ -193,7 +193,7 @@ void MainMenu::updateVolume(sf::Vector2i pos)
  *
  * @return volume of the music.
  */
-float MainMenu::getUserVolume()
+float MainMenu::getUserVolume() const
 {
 	return userVolume;
 }

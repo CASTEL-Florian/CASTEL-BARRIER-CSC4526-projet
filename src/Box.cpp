@@ -1,5 +1,4 @@
 #include "Box.h"
-#include "Box.h"
 
 /**
  * Initialize the box with dimensions, calling initializer initBox.

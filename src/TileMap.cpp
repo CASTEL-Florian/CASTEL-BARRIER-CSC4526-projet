@@ -1,5 +1,4 @@
 #include "TileMap.h"
-#include <random>
 #include "myRandom.h"
 
 /**
@@ -13,7 +12,6 @@
  */
 void TileMap::load(sf::Texture* tileset, sf::Vector2u tileSize, std::vector<int> tiles, unsigned int width, unsigned int height)
 {
-
     m_tileset = tileset;
     // resize the vertex array to fit the level size
     m_vertices.setPrimitiveType(sf::Quads);

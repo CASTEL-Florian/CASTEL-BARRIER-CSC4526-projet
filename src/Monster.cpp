@@ -4,10 +4,10 @@
 Monster::Monster(Player* player, RoomGenerator* roomGenerator, sf::Texture* texture, float scale, SoundHandler* soundHandler) :
 	player(player), roomGenerator(roomGenerator), soundHandler(soundHandler)
 {
-	std::pair<int, int> farthestRoomPos = roomGenerator->getFarthestRoomPos();
+	auto [farthestRoomX, farthestRoomY] = roomGenerator->getFarthestRoomPos();
 	
-	x = (farthestRoomPos.first + 0.5f) * roomWidth* tileWidth;
-	y = (farthestRoomPos.second + 0.5f) * roomHeight * tileHeight;
+	x = ((float)farthestRoomX + 0.5f) * roomWidth* tileWidth;
+	y = ((float)farthestRoomY + 0.5f) * roomHeight * tileHeight;
 	explore();
 	animator = std::make_unique<Animator>(texture, scale, 256, 128, 0.1f, std::vector<int> { 8,10 });
 }
@@ -179,7 +179,7 @@ float Monster::distanceFromPlayer() const
  *
  * @return the random position on the map.
  */
-std::pair<float, float> Monster::getRandomMapPosition()
+std::pair<float, float> Monster::getRandomMapPosition() const
 {
 	auto roomPos = roomGenerator->getRandomRoomPos();
 	std::pair<float, float> pos(roomPos.first * roomWidth* tileWidth, roomPos.second * roomHeight * tileHeight);

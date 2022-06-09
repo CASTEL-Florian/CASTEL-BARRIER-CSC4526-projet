@@ -365,8 +365,8 @@ void Room::updateObjects(sf::Time elapsed)
 {
     for (auto it = objects.begin(); it != objects.end();) {
         it->get()->update(elapsed);
-        int roomX = (int)(std::floor(it->get()->get_x() / (roomWidth * tileWidth)));
-        int roomY = (int)(std::floor(it->get()->get_y() / (roomHeight * tileHeight)));
+        auto roomX = (int)(std::floor(it->get()->get_x() / (roomWidth * tileWidth)));
+        auto roomY = (int)(std::floor(it->get()->get_y() / (roomHeight * tileHeight)));
 
         // Move the object in an adjacent room if it left the current one.
         if (roomX > x) {
@@ -448,7 +448,7 @@ std::vector<Room*> Room::getAjacentRooms()
  *
  * @return positions of the treasures in the room.
  */
-std::vector<std::pair<int, int>> Room::getTreasurePos()
+std::vector<std::pair<float, float>> Room::getTreasurePos() const
 {
     return treasurePos;
 }

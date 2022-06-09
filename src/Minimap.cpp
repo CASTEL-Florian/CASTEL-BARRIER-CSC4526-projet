@@ -1,7 +1,7 @@
 #include "Minimap.h"
 
 
-Minimap::Minimap(const std::string filename)
+Minimap::Minimap(const std::string& filename)
 {
 	if (!minimapTextures.loadFromFile(filename)) {
 		std::cout << "Erreur de chargement de la texture : " << filename << "\n";

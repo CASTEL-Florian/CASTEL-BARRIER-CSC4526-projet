@@ -28,7 +28,7 @@ SoundHandler::SoundHandler()
  * Play music.
  *
  */
-void SoundHandler::playMusic() {
+void SoundHandler::playMusic() const{
 	calm_music->play();
 	frantic_music->play();
 }

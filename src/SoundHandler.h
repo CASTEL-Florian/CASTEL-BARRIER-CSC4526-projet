@@ -8,7 +8,7 @@
 class SoundHandler {
 public:
 	SoundHandler();
-	void playMusic();
+	void playMusic() const;
 	void switchToCalm();
 	void switchToFrantic();
 	void update(sf::Time elapsed);

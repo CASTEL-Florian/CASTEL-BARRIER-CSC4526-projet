@@ -9,7 +9,7 @@
 class Minimap
 {
 public:
-	explicit Minimap(const std::string filename);
+	explicit Minimap(const std::string& filename);
 	void display(sf::RenderWindow& window, std::vector<std::unique_ptr<Room>> const& rooms) const;
 	void updatePlayerPosition(float playerX, float playerY);
 private:
