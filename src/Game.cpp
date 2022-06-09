@@ -210,8 +210,7 @@ void Game::initGameVariables() {
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
 	oxygenBar = std::make_unique<OxygenBar>(20, 130, 360, player.get());
 		
-
-	
+	soundHandler->setUserVolume(userVolume);
 	soundHandler->playMusic();
 	roomGenerator = std::make_unique<RoomGenerator>();
 	rooms = roomGenerator->generateMap(nb_rooms);
@@ -223,7 +222,7 @@ void Game::initGameVariables() {
 	treasureManager->createTreasures(rooms);
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get(), soundHandler.get());
-	soundHandler->setUserVolume(userVolume);
+	
 	fader->fadeIn(1);
 	clock.restart();
 }
