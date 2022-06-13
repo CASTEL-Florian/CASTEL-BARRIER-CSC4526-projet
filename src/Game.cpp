@@ -7,6 +7,7 @@ const int window_height = 900;
 const int nb_rooms = 20;
 const float gravity_down = -3.0f;
 const float engine_power = 750.0f;
+const float oxygenTime = 360;
 
 
 Game::Game()
@@ -208,7 +209,7 @@ void Game::initGameVariables() {
 	depth[5].color = sf::Color::Black;
 
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
-	oxygenBar = std::make_unique<OxygenBar>(20, 130, 360, player.get());
+	oxygenBar = std::make_unique<OxygenBar>(20, 130, oxygenTime, player.get());
 		
 	soundHandler->setUserVolume(userVolume);
 	soundHandler->playMusic();
