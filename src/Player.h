@@ -13,6 +13,7 @@ class Player : public Box, public Object {
 public:
 	Player(b2World* world, const float enginePower, sf::Texture* texture, float scale);
 	void move(const b2Vec2& vec);
+	void boost();
 	void update(sf::Time elapsed) override;
 	void renderLight(sf::RenderWindow& window) const;
 	void display(sf::RenderWindow& window) const override;

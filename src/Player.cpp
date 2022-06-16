@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Player.h"
 #include <cmath>
 
 
@@ -23,8 +24,13 @@ void Player::move(const b2Vec2& vec) {
 		return;
 	// Apply a force not exactly at the center of the player to make it rotate.
 	body->ApplyForce(b2Vec2(vec.x * enginePower, vec.y * enginePower), 
-		body->GetPosition() + b2Vec2(w * std::cos(body->GetAngle()) / 5, w *std::sin(body->GetAngle()) / 5),
+		body->GetPosition() + b2Vec2(w * std::cos(body->GetAngle()) / 5, w * std::sin(body->GetAngle()) / 5),
 		true);
+}
+
+void Player::boost()
+{
+	body->ApplyForce(b2Vec2(std::cos(body->GetAngle()) * enginePower, std::sin(body->GetAngle()) * enginePower), body->GetPosition(), true);
 }
 
 /**

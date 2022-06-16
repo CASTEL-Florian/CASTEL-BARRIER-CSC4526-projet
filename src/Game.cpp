@@ -314,6 +314,8 @@ void Game::pollEvents() {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) player->move(b2Vec2(0, -1));
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right)) player->move(b2Vec2(1, 0));
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)) player->move(b2Vec2(-1, 0));
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) player->boost();
 	}
 	if (gameState == GameState::MainMenu) {
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
