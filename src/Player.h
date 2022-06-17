@@ -3,6 +3,7 @@
 #include "Room.h"
 #include "Animator.h"
 #include "Object.h"
+#include "ParticleSystem.h"
 
 enum class EndType {Victory, DeathByMonster, Drowning};
 
@@ -31,4 +32,5 @@ private:
 	int roomY = 0;
 	bool alive = true;
 	EndType endType = EndType::Victory;
+	std::unique_ptr<ParticleSystem> particleSystem;
 };

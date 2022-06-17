@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "Player.h"
 #include <cmath>
 
 
@@ -11,6 +10,7 @@ Player::Player(b2World* world, const float enginePower, sf::Texture* texture, fl
 	w = bounds.width * scale;
 	h = bounds.height * scale;
 	initBox(world, b2Vec2(roomWidth * tileWidth / 2, roomHeight * tileHeight / 2), b2_dynamicBody);
+	particleSystem = std::make_unique<ParticleSystem>(texture, 0);
 }
 
 /**
@@ -43,6 +43,13 @@ void Player::update(sf::Time elapsed) {
 	y = -body->GetPosition().y;
 	rota = -body->GetAngle();
 	animator->update(elapsed);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+		particleSystem->setActive(true);
+		particleSystem->setPosition(sf::Vector2f(x - w * std::cos(rota) / 2, y - w * std::sin(rota) / 2));
+		particleSystem->setRotation(rota + b2_pi);
+	}else
+		particleSystem->setActive(false);
+	particleSystem->update(elapsed);
 }
 
 /**
@@ -61,6 +68,7 @@ void Player::display(sf::RenderWindow& window) const{
 	else
 		animator->setMirrored(false);
 	animator->display(window);
+	particleSystem->display(window);
 }
 
 /**

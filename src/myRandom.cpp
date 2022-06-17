@@ -13,3 +13,11 @@ int random_1_to_n(int const nbMax)
     std::uniform_int_distribution<> distribution(1, nbMax);
     return distribution(engine);
 }
+
+float random_0_to_1()
+{
+    static std::random_device rd;
+    static std::default_random_engine engine(rd());
+    std::uniform_real_distribution<float> distribution(0, 1);
+    return distribution(engine);
+}
