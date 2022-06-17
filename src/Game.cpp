@@ -302,6 +302,10 @@ void Game::pollEvents() {
 	{
 		if (event.type == sf::Event::Closed)
 			window->close();
+		if (event.type == sf::Event::KeyPressed) {
+			if (gameState == GameState::Playing && event.key.code == sf::Keyboard::L)
+				player->changeLight();
+		}
 		if (event.type == sf::Event::MouseButtonPressed) {
 			if (gameState == GameState::MainMenu && event.mouseButton.button == sf::Mouse::Left)
 				mainMenu->mousePressed(event.mouseButton.x, event.mouseButton.y);

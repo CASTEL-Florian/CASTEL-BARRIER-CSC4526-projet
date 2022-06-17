@@ -1,5 +1,4 @@
 #include "ParticleSystem.h"
-#include "ParticleSystem.h"
 #include "myRandom.h"
 
 ParticleSystem::ParticleSystem(sf::Texture* texture, float scale) : texture(texture)

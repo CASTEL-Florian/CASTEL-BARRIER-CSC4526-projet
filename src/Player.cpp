@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Player.h"
 #include <cmath>
 
 
@@ -77,6 +78,9 @@ void Player::display(sf::RenderWindow& window) const{
  * @param window window in which to render
  */
 void Player::renderLight(sf::RenderWindow& window) const {
+	if (!lightOn) {
+		return;
+	}
 	sf::ConvexShape polygon1;
 	polygon1.setPointCount(7);
 	polygon1.setPoint(0, sf::Vector2f(0, 0));
@@ -172,6 +176,11 @@ void Player::kill(EndType end)
 {
 	alive = false;
 	endType = end;
+}
+
+void Player::changeLight()
+{
+	lightOn = !lightOn;
 }
 
 /**

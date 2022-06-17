@@ -1,9 +1,5 @@
 #include "Particle.h"
 
-Particle::Particle()
-{
-}
-
 float Particle::get_x() const
 {
 	return x;

@@ -25,12 +25,14 @@ public:
 	float get_y() const override;
 	bool isAlive() const;
 	void kill(EndType end);
+	void changeLight();
 	EndType getEndType() const;
 private:
 	float enginePower;
 	int roomX = 0;
 	int roomY = 0;
 	bool alive = true;
+	bool lightOn = true;
 	EndType endType = EndType::Victory;
 	std::unique_ptr<ParticleSystem> particleSystem;
 };

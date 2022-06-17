@@ -3,7 +3,7 @@
 
 class Particle {
 public:
-	Particle();
+	Particle() = default;
 	float get_x() const;
 	float get_y() const;
 	void init(float x_, float y_, float velocity, float velocityAngle, float lifeTime);
