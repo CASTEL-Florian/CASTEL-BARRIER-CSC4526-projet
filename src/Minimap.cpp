@@ -9,7 +9,7 @@ Minimap::Minimap(const std::string& filename)
 }
 
 /**
- * Display the monster on the window.
+ * Display the minimap on the window.
  *
  * @param window on which the minimap is drawn.
  */

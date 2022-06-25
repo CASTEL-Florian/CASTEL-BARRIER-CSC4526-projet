@@ -21,6 +21,7 @@ public:
 	Room(int x, int y);
 	void open_path(std::pair<int, int> const& target);
 	void display(sf::RenderWindow &window) const;
+	void updateFog(float px, float py);
 	void display_fog(sf::RenderWindow &window) const;
 	std::pair<int,int> get_position() const;
 	bool is_opened(int direction) const;
@@ -41,7 +42,6 @@ public:
 	std::vector<std::pair<float, float>> getTreasurePos() const;
 	std::pair<float,float> findAvailableCoinPosition();
 private:
-	
 	const int spriteWidth = 16;
 	const int spriteHeight = 16;
 	const int numberOfTilesChoices = 6;
@@ -58,7 +58,10 @@ private:
 	Room* leftRoom = nullptr;
 	Room* rightRoom = nullptr;
 	bool explored = false;
-	sf::VertexArray fogOpen; // Fog to display on the sides that are open.
+	sf::VertexArray fogOpenL; // Fog to display on the sides that are open.
+	sf::VertexArray fogOpenD; 
+	sf::VertexArray fogOpenR; 
+	sf::VertexArray fogOpenU; 
 	sf::VertexArray fogClose; // Fog to display on the sides that are close.
 	std::vector<sf::Transform> fogTransforms;
 	std::vector<std::pair<float, float>> treasurePos;

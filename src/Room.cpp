@@ -12,35 +12,50 @@ enum class ObjectType{Empty, Treasure, Crab, Crate, Wall};
 Room::Room(int x, int y) :
     x(x), y(y)
 {
-    fogOpen.setPrimitiveType(sf::Quads);
-    fogOpen.resize(12);
+    fogOpenL.setPrimitiveType(sf::Quads);
+    fogOpenL.resize(12);
 
     int offset = (roomWidth - 1) / 2 - (corridorWidth - 1)/2;
-    fogOpen[0].position = sf::Vector2f(-tileWidth * roomWidth, -tileHeight);
-    fogOpen[1].position = sf::Vector2f(-tileWidth, -tileHeight);
-    fogOpen[2].position = sf::Vector2f(-tileWidth, offset * tileWidth);
-    fogOpen[3].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 4) * tileWidth);
-    fogOpen[4].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 4) * tileWidth);
-    fogOpen[5].position = sf::Vector2f(-tileWidth, offset * tileWidth);
-    fogOpen[6].position = sf::Vector2f(-tileWidth, (offset + corridorWidth) * tileWidth);
-    fogOpen[7].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 4) * tileWidth);
-    fogOpen[8].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 4) * tileWidth);
-    fogOpen[9].position = sf::Vector2f(-tileWidth, (offset + corridorWidth) * tileWidth);
-    fogOpen[10].position = sf::Vector2f(-tileWidth, 2 * tileHeight * roomHeight);
-    fogOpen[11].position = sf::Vector2f(-tileWidth * roomWidth, 2 * tileHeight * roomHeight);
+    fogOpenL[0].position = sf::Vector2f(-tileWidth * roomWidth, -tileHeight);
+    fogOpenL[1].position = sf::Vector2f(-tileWidth, -tileHeight);
+    fogOpenL[2].position = sf::Vector2f(-tileWidth, offset * tileWidth);
+    fogOpenL[3].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 4) * tileWidth);
+    fogOpenL[4].position = sf::Vector2f(-tileWidth * roomWidth, (offset - 4) * tileWidth);
+    fogOpenL[5].position = sf::Vector2f(-tileWidth, offset * tileWidth);
+    fogOpenL[6].position = sf::Vector2f(-tileWidth, (offset + corridorWidth) * tileWidth);
+    fogOpenL[7].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 4) * tileWidth);
+    fogOpenL[8].position = sf::Vector2f(-tileWidth * roomWidth, (offset + corridorWidth + 4) * tileWidth);
+    fogOpenL[9].position = sf::Vector2f(-tileWidth, (offset + corridorWidth) * tileWidth);
+    fogOpenL[10].position = sf::Vector2f(-tileWidth, 2 * tileHeight * roomHeight);
+    fogOpenL[11].position = sf::Vector2f(-tileWidth * roomWidth, 2 * tileHeight * roomHeight);
 
-    fogOpen[0].color = sf::Color::Black;
-    fogOpen[1].color = sf::Color::Black;
-    fogOpen[2].color = sf::Color::Black;
-    fogOpen[3].color = sf::Color::Black;
-    fogOpen[4].color = sf::Color::Black;
-    fogOpen[5].color = sf::Color::Transparent;
-    fogOpen[6].color = sf::Color::Transparent;
-    fogOpen[7].color = sf::Color::Black;
-    fogOpen[8].color = sf::Color::Black;
-    fogOpen[9].color = sf::Color::Black;
-    fogOpen[10].color = sf::Color::Black;
-    fogOpen[11].color = sf::Color::Black;
+    fogOpenL[0].color = sf::Color::Black;
+    fogOpenL[1].color = sf::Color::Black;
+    fogOpenL[2].color = sf::Color::Black;
+    fogOpenL[3].color = sf::Color::Black;
+    fogOpenL[4].color = sf::Color::Black;
+    fogOpenL[5].color = sf::Color::Transparent;
+    fogOpenL[6].color = sf::Color::Transparent;
+    fogOpenL[7].color = sf::Color::Black;
+    fogOpenL[8].color = sf::Color::Black;
+    fogOpenL[9].color = sf::Color::Black;
+    fogOpenL[10].color = sf::Color::Black;
+    fogOpenL[11].color = sf::Color::Black;
+
+    fogOpenD.setPrimitiveType(sf::Quads);
+    fogOpenD.resize(12);
+    fogOpenR.setPrimitiveType(sf::Quads);    
+    fogOpenR.resize(12);
+    fogOpenU.setPrimitiveType(sf::Quads);
+    fogOpenU.resize(12);
+    for (int i = 0; i < 12; i++) {
+        fogOpenD[i].position = fogOpenL[i].position;
+        fogOpenR[i].position = fogOpenL[i].position;
+        fogOpenU[i].position = fogOpenL[i].position;
+        fogOpenD[i].color = fogOpenL[i].color;
+        fogOpenR[i].color = fogOpenL[i].color;
+        fogOpenU[i].color = fogOpenL[i].color;
+    }
 
     fogClose.setPrimitiveType(sf::Quads);
     fogClose.resize(8);
@@ -99,9 +114,6 @@ void Room::open_path(std::pair<int, int> const& target) {
     }
 }
 
-
-
-
 /**
  * Display the room tilemap.
  *
@@ -111,6 +123,30 @@ void Room::display(sf::RenderWindow& window) const {
     window.draw(map);
 }
 
+void Room::updateFog(float px, float py) {
+    int offset = (roomWidth - 1) / 2 - (corridorWidth - 1) / 2;
+    //left array of light
+    fogOpenL[3].position.y = (offset - 4) * tileWidth - ((py - y) / (roomWidth * tileWidth) - y -0.5) * 400;
+    fogOpenL[4].position.y = (offset - 4) * tileWidth - ((py - y) / (roomWidth * tileWidth) - y -0.5) * 400;
+    fogOpenL[7].position.y = (offset + corridorWidth + 4) * tileWidth - ((py - y) / (roomWidth * tileWidth) - y -0.5) * 400;
+    fogOpenL[8].position.y = (offset + corridorWidth + 4) * tileWidth - ((py - y) / (roomWidth * tileWidth) - y -0.5) * 400;
+    //down array of light
+    fogOpenD[3].position.y = (offset - 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenD[4].position.y = (offset - 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenD[7].position.y = (offset + corridorWidth + 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenD[8].position.y = (offset + corridorWidth + 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    //right array of light
+    fogOpenR[3].position.y = (offset - 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenR[4].position.y = (offset - 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenR[7].position.y = (offset + corridorWidth + 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenR[8].position.y = (offset + corridorWidth + 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    //up array of light
+    fogOpenU[3].position.y = (offset - 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenU[4].position.y = (offset - 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenU[7].position.y = (offset + corridorWidth + 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenU[8].position.y = (offset + corridorWidth + 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+}
+
 /**
  * Display the fog around the room.
  *
@@ -118,19 +154,19 @@ void Room::display(sf::RenderWindow& window) const {
  */
 void Room::display_fog(sf::RenderWindow& window) const{
     if(left)
-        window.draw(fogOpen, fogTransforms[0]);
+        window.draw(fogOpenL, fogTransforms[0]);
     else
         window.draw(fogClose, fogTransforms[0]);
     if(up)
-        window.draw(fogOpen, fogTransforms[1]);
+        window.draw(fogOpenU, fogTransforms[1]);
     else
         window.draw(fogClose, fogTransforms[1]);
     if(right)
-        window.draw(fogOpen, fogTransforms[2]);
+        window.draw(fogOpenR, fogTransforms[2]);
     else
         window.draw(fogClose, fogTransforms[2]);
     if(down)
-        window.draw(fogOpen, fogTransforms[3]);
+        window.draw(fogOpenD, fogTransforms[3]);
     else
         window.draw(fogClose, fogTransforms[3]);
 }
