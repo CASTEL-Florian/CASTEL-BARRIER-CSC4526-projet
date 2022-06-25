@@ -18,6 +18,7 @@ public:
 	void update(sf::Time elapsed) override;
 	void renderLight(sf::RenderWindow& window) const;
 	void display(sf::RenderWindow& window) const override;
+	void display_particles(sf::RenderWindow& window) const;
 	void updateRoomPosition();
 	int getRoomX() const;
 	int getRoomY() const;

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Player.h"
 #include <cmath>
 
 
@@ -68,6 +69,10 @@ void Player::display(sf::RenderWindow& window) const{
 	else
 		animator->setMirrored(false);
 	animator->display(window);
+}
+
+void Player::display_particles(sf::RenderWindow& window) const
+{
 	particleSystem->display(window);
 }
 

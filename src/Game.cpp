@@ -133,6 +133,7 @@ void Game::render() const
 
 	fishSpawner->display(*window);
 	monster->display(*window);
+	player->display_particles(*window);
 	player->renderLight(*window);
 	player->display(*window);
 	currentRoom->display_fog(*window);
