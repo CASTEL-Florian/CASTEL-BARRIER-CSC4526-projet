@@ -73,13 +73,11 @@ void Game::update()
 			r->updateObjects(elapsed);
 		}
 	}
-	//monster->update(elapsed);
+	monster->update(elapsed);
 	treasureManager->update(elapsed);
 	fishSpawner->update(elapsed);
 	minimap->updatePlayerPosition(player->get_x(), player->get_y());
-	std::cout << "(" << (player->get_x() - currentRoom->get_x()) / (roomWidth * tileWidth) - currentRoom->get_x() -0.5 << ", " <<
-		(player->get_y() - currentRoom->get_y()) / (roomWidth * tileWidth) - currentRoom->get_y() -0.5 << ")" << std::endl;
-
+	
 	if ((!player->isAlive() || treasureManager->gameWon()) && gameState == GameState::Playing) {
 		// The game is finished. Start a fade out and transition before the end screen.
 		endType = player->getEndType();
