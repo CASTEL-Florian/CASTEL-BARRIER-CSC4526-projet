@@ -15,6 +15,7 @@ Game::Game()
 	initWindow();
 	loadTextures();
 	loadMainMenu();
+	//loadEndScreen();
 }
 
 
@@ -97,6 +98,8 @@ void Game::update()
 	view.reset(sf::FloatRect(player->get_x() - window_length / 2, player->get_y() - window_height / 2, window_length, window_height));
 	view.zoom(1/10.f);
 	
+	if (gameState == GameState::Playing)
+		time += elapsed.asSeconds();
 	//std::cout << 1 / elapsed.asSeconds() << " fps" << std::endl;
 }
 
@@ -174,11 +177,11 @@ void Game::loadEndScreen()
 {
 	// Load a different end screen background depending on the way the game ended.
 	if (endType == EndType::DeathByMonster) 
-		endScreen = std::make_unique<EndScreen>(&textures[8], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
+		endScreen = std::make_unique<EndScreen>(&textures[8], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), time, window_length, window_height);
 	else if (endType == EndType::Drowning) 
-		endScreen = std::make_unique<EndScreen>(&textures[9], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
+		endScreen = std::make_unique<EndScreen>(&textures[9], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), time, window_length, window_height);
 	else
-		endScreen = std::make_unique<EndScreen>(&textures[10], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), window_length, window_height);
+		endScreen = std::make_unique<EndScreen>(&textures[10], &textures[4], &textures[5], fader.get(), treasureManager.get(), soundHandler.get(), time, window_length, window_height);
 	gameState = GameState::EndScreen;
 	fader->fadeIn();
 	clock.restart();
@@ -225,6 +228,7 @@ void Game::initGameVariables() {
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get(), soundHandler.get());
 	
+	time = 0;
 	fader->fadeIn(1);
 	clock.restart();
 }

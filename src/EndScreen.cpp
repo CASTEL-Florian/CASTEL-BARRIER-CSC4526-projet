@@ -1,6 +1,8 @@
 #include "EndScreen.h"
+#include <sstream>
+#include <iomanip>
 
-EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float width, float height) :
+EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float time, float width, float height) :
 	fader(fader), soundHandler(soundHandler), backgroundTexture(backgroundTexture), width(width), height(height)
 {
 	if (!font.loadFromFile("resources/Pixeled.ttf"))
@@ -23,6 +25,13 @@ EndScreen::EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, s
 	coinText.setCharacterSize(30);
 	coinText.setPosition(300, 420);
 	coinText.setOutlineThickness(3.f);
+	timeText.setFont(font);
+	std::stringstream stream;
+	stream << std::fixed << std::setprecision(2) << time;
+	timeText.setString("Temps : " + stream.str() + "s");
+	timeText.setCharacterSize(30);
+	timeText.setPosition(300, 520);
+	timeText.setOutlineThickness(3.f);
 	sf::FloatRect returnTextBounds = returnText.getGlobalBounds();
 	returnText.setPosition((width - returnTextBounds.width) / 2, 700);
 
@@ -73,6 +82,7 @@ void EndScreen::display(sf::RenderWindow& window) const
 	treasureAnimator->display(window);
 	window.draw(coinText);
 	window.draw(treasureText);
+	window.draw(timeText);
 	window.draw(returnText);
 }
 

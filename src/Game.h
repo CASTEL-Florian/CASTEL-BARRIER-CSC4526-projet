@@ -82,5 +82,7 @@ private:
 
 	float userVolume = 1;
 
+	float time = 0;
+
 	EndType endType = EndType::Victory;
 };

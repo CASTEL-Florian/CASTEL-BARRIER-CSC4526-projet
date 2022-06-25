@@ -15,7 +15,7 @@ enum class EndScreenState {Wait, Transition, TransitionFinished};
  */
 class EndScreen {
 public:
-	EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float width, float height);
+	EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float time, float width, float height);
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 	void mousePressed(int x, int y);
@@ -25,6 +25,7 @@ private:
 	sf::Text coinText;
 	sf::Text treasureText;
 	sf::Text returnText;
+	sf::Text timeText;
 	Fader* fader;
 	SoundHandler* soundHandler;
 	sf::Texture* backgroundTexture;
