@@ -2,7 +2,7 @@
 #include <cmath>
 
 
-Player::Player(b2World* world, const float enginePower, sf::Texture* texture, float scale) :
+Player::Player(b2World* world, const float enginePower, sf::Texture* texture, sf::Texture* particleTexture, float scale) :
 	enginePower(enginePower)
 {
 	animator = std::make_unique<Animator>(texture, scale, 64, 32, 0.1f, std::vector<int> {14});
@@ -10,7 +10,7 @@ Player::Player(b2World* world, const float enginePower, sf::Texture* texture, fl
 	w = bounds.width * scale;
 	h = bounds.height * scale;
 	initBox(world, b2Vec2(roomWidth * tileWidth / 2, roomHeight * tileHeight / 2), b2_dynamicBody);
-	particleSystem = std::make_unique<ParticleSystem>(texture, 0);
+	particleSystem = std::make_unique<ParticleSystem>(particleTexture);
 }
 
 /**

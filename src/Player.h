@@ -12,7 +12,7 @@ enum class EndType {Victory, DeathByMonster, Drowning};
  */
 class Player : public Box, public Object {
 public:
-	Player(b2World* world, const float enginePower, sf::Texture* texture, float scale);
+	Player(b2World* world, const float enginePower, sf::Texture* texture, sf::Texture* particleTexture, float scale);
 	void move(const b2Vec2& vec);
 	void boost();
 	void update(sf::Time elapsed) override;

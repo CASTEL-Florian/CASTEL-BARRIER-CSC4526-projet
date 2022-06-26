@@ -1,10 +1,15 @@
 #include "ParticleSystem.h"
 #include "myRandom.h"
 
-ParticleSystem::ParticleSystem(sf::Texture* texture, float scale) : texture(texture)
+ParticleSystem::ParticleSystem(sf::Texture* texture) : texture(texture)
 {
 }
 
+/**
+ * Update the particles, generate new ones, or make them inactive if their lifetime reaches zero.
+ *
+ * @param elapsed time since last frame.
+ */
 void ParticleSystem::update(sf::Time elapsed)
 {
     if (active)
@@ -28,34 +33,54 @@ void ParticleSystem::update(sf::Time elapsed)
 
 void ParticleSystem::display(sf::RenderWindow& window) const
 {
-    sf::Sprite sprite;
     sf::CircleShape circle(0.6f);
+    sf::Sprite particleSprite;
+    particleSprite.setTexture(*texture);
+    particleSprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
+    particleSprite.setScale(sf::Vector2f(0.1f, 0.1f));
     circle.setOrigin(sf::Vector2f(0.3f, 0.3f));
     for (auto const& particle : particles) {
-        //sprite.setPosition(sf::Vector2f(particle->get_x(), particle->get_y()));
-        circle.setPosition(sf::Vector2f(particle->get_x(), particle->get_y()));
-        circle.setFillColor(sf::Color(0, 255, 0, 255 * alphaFromLifetime(particle->getLifetime())));
-        //window.draw(sprite);
+        particleSprite.setPosition(sf::Vector2f(particle->get_x(), particle->get_y()));
+        particleSprite.setColor(sf::Color(0, 255, 0, 255 * alphaFromLifetime(particle->getLifetime())));
+        window.draw(particleSprite);
         window.draw(circle);
     }
 }
 
+/**
+ * Change the position of the particle system.
+ *
+ * @param pos : new position of the particle system.
+ */
 void ParticleSystem::setPosition(sf::Vector2f pos)
 {
     x = pos.x;
     y = pos.y;
 }
 
+/**
+ * Change the rotation of the particle system.
+ *
+ * @param angle_ : new angle of the particle system.
+ */
 void ParticleSystem::setRotation(float angle_)
 {
     angle = angle_;
 }
 
+/**
+ * Change whether the particle system spawns particles or not.
+ *
+ * @param flag : true if the particle system has to spawn particles.
+ */
 void ParticleSystem::setActive(bool flag)
 {
     active = flag;
 }
 
+/**
+ * Spawn a particle.
+ */
 void ParticleSystem::spawnParticle()
 {
     float particle_angle = angle + (random_0_to_1() - 0.5f) * dAngle;
@@ -73,6 +98,11 @@ void ParticleSystem::spawnParticle()
     }
 }
 
+/**
+ * Calculate the alpha of the particle depending on it's remaining lifetime.
+ *
+ * @param lifetime of the particle.
+ */
 float ParticleSystem::alphaFromLifetime(float lifetime) const {
     float value = 1 - (lifetime / particleLifetime);
     return 1 - value * value * value * value;

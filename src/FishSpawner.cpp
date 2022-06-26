@@ -10,7 +10,7 @@ FishSpawner::FishSpawner(sf::Texture* fishTexture, Player* player, SoundHandler*
 }
 
 /**
- * Update the fish, generate new ones or make theme inactive if necessary.
+ * Update the fish, generate new ones or make them inactive if necessary.
  *
  * @param elapsed time since last frame.
  */

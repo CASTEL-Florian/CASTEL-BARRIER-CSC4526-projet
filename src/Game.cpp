@@ -213,7 +213,7 @@ void Game::initGameVariables() {
 	depth[4].color = sf::Color::Black;
 	depth[5].color = sf::Color::Black;
 
-	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], 0.2f);
+	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], &textures[11], 0.2f);
 	oxygenBar = std::make_unique<OxygenBar>(20, 130, oxygenTime, player.get());
 		
 	soundHandler->setUserVolume(userVolume);
@@ -272,6 +272,9 @@ void Game::loadTextures()
 	sf::Texture victory_background_texture; // 10
 	victory_background_texture.loadFromFile("resources/victory_treasure.png");
 	textures.push_back(victory_background_texture);
+	sf::Texture bubble_texture; // 11
+	bubble_texture.loadFromFile("resources/bubble_spritesheet.png");
+	textures.push_back(bubble_texture);
 }
 
 /**

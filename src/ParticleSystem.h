@@ -5,7 +5,7 @@
 
 class ParticleSystem {
 public:
-	ParticleSystem(sf::Texture* texture, float scale);
+	ParticleSystem(sf::Texture* texture);
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 	void setPosition(sf::Vector2f pos);
@@ -18,8 +18,8 @@ private:
 	float y = 0;
 	float angle = 0;
 	const float speed = 10;
-	const float timeBetweenSpawns = 0.1f;
-	const float dAngle = 0.5f;
+	const float timeBetweenSpawns = 0.03f;
+	const float dAngle = 0.9f;
 	const float particleLifetime = 1.f;
 	float time = 0;
 	bool active = false;
