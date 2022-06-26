@@ -1,4 +1,5 @@
 #include "Animator.h"
+#include "Animator.h"
 
 Animator::Animator(sf::Texture* texture, const float scale, int spriteWidth, int spriteHeight, float animationTimestep, std::vector<int> const& imagesNumber) :
 	texture(texture), imagesNumber(imagesNumber), spriteWidth(spriteWidth), spriteHeight(spriteHeight), animationTimestep(animationTimestep)
@@ -74,6 +75,11 @@ void Animator::setPosition(sf::Vector2f pos)
 void Animator::setScale(sf::Vector2f s)
 {
 	sprite.setScale(s);
+}
+
+void Animator::setColor(sf::Color color)
+{
+	sprite.setColor(color);
 }
 
 /**

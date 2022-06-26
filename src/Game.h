@@ -17,6 +17,7 @@
 #include "FishSpawner.h"
 #include "MainMenu.h"
 #include "EndScreen.h"
+#include "BubbleSpawner.h"
 
 /**
  * The different states of the game.
@@ -69,6 +70,7 @@ private:
 	std::unique_ptr<TreasureManager> treasureManager;
 	std::unique_ptr<SoundHandler> soundHandler;
 	std::unique_ptr<FishSpawner> fishSpawner;
+	std::unique_ptr<BubbleSpawner> bubbleSpawner;
 
 	sf::View view;
 	sf::VertexArray depth;

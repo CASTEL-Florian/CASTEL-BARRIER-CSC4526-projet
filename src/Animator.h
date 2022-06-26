@@ -15,6 +15,7 @@ public:
 	void setRotation(float angle);
 	void setPosition(sf::Vector2f pos);
 	void setScale(sf::Vector2f s);
+	void setColor(sf::Color color);
 	sf::FloatRect getLocalBounds() const;
 	void setMirrored(bool mirrored, bool verticalAxis = false, bool bothAxis = false);
 private:

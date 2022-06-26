@@ -1,6 +1,5 @@
 #pragma once
 #include "Box.h"
-#include "Animator.h"
 #include "Object.h"
 
 /**

@@ -15,7 +15,7 @@ enum class EndScreenState {Wait, Transition, TransitionFinished};
  */
 class EndScreen {
 public:
-	EndScreen(sf::Texture* backgroundTexture, sf::Texture* coinTexture, sf::Texture* treasureTexture, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float time, float width, float height);
+	EndScreen(std::vector<sf::Texture>* textures, Fader* fader, const TreasureManager* treasureManager, SoundHandler* soundHandler, float time, float width, float height, int backgroundId);
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 	void mousePressed(int x, int y);
@@ -26,6 +26,7 @@ private:
 	sf::Text treasureText;
 	sf::Text returnText;
 	sf::Text timeText;
+	sf::Text scoreText;
 	Fader* fader;
 	SoundHandler* soundHandler;
 	sf::Texture* backgroundTexture;
@@ -35,4 +36,9 @@ private:
 	float height;
 	EndScreenState state = EndScreenState::Wait;
 	sf::Sprite background;
+
+	const int treasureScore = 500;
+	const int coinScore = 100;
+	const int timeScore = 2000;
+	const float timeScoreDecreaseSpeed = 0.006f;
 };
