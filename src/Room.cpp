@@ -131,20 +131,20 @@ void Room::updateFog(float px, float py) {
     fogOpenL[7].position.y = (offset + corridorWidth + 4) * tileWidth - ((py - y) / (roomWidth * tileWidth) - y -0.5) * 400;
     fogOpenL[8].position.y = (offset + corridorWidth + 4) * tileWidth - ((py - y) / (roomWidth * tileWidth) - y -0.5) * 400;
     //down array of light
-    fogOpenD[3].position.y = (offset - 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
-    fogOpenD[4].position.y = (offset - 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
-    fogOpenD[7].position.y = (offset + corridorWidth + 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
-    fogOpenD[8].position.y = (offset + corridorWidth + 4) * tileWidth - ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenD[3].position.y = (offset - 4) * tileWidth - ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
+    fogOpenD[4].position.y = (offset - 4) * tileWidth - ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
+    fogOpenD[7].position.y = (offset + corridorWidth + 4) * tileWidth - ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
+    fogOpenD[8].position.y = (offset + corridorWidth + 4) * tileWidth - ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
     //right array of light
     fogOpenR[3].position.y = (offset - 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
     fogOpenR[4].position.y = (offset - 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
     fogOpenR[7].position.y = (offset + corridorWidth + 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
     fogOpenR[8].position.y = (offset + corridorWidth + 4) * tileWidth + ((py - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
     //up array of light
-    fogOpenU[3].position.y = (offset - 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
-    fogOpenU[4].position.y = (offset - 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
-    fogOpenU[7].position.y = (offset + corridorWidth + 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
-    fogOpenU[8].position.y = (offset + corridorWidth + 4) * tileWidth + ((px - y) / (roomWidth * tileWidth) - y - 0.5) * 400;
+    fogOpenU[3].position.y = (offset - 4) * tileWidth + ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
+    fogOpenU[4].position.y = (offset - 4) * tileWidth + ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
+    fogOpenU[7].position.y = (offset + corridorWidth + 4) * tileWidth + ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
+    fogOpenU[8].position.y = (offset + corridorWidth + 4) * tileWidth + ((px - x) / (roomWidth * tileWidth) - x - 0.5) * 400;
 }
 
 /**
