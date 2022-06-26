@@ -36,7 +36,6 @@ EndScreen::EndScreen(std::vector<sf::Texture>* textures, Fader* fader, const Tre
 	timeText.setPosition(300, 420);
 	timeText.setOutlineThickness(3.f);
 
-	std::cout << std::exp2f(-time / timeScoreDecreaseSpeed) << "\n";
 	int score = (coinFoundCount * coinScore) + (treasuresFoundCount * treasureScore);
 
 	if (backgroundId == 10)
