@@ -1,17 +1,24 @@
 #include "Bubble.h"
 
-Bubble::Bubble(sf::Texture* texture, Player* player) : player(player)
+Bubble::Bubble(sf::Texture* texture, Player* player, OxygenBar* oxygenBar) : player(player), oxygenBar(oxygenBar)
 {
 	animator = std::make_unique<Animator>(texture, 0.25f, 16, 16, 0.1f, std::vector<int> {8});
 }
 
 void Bubble::update(sf::Time elapsed)
 {
+	if (!alive)
+		return;
 	y -= speed * elapsed.asSeconds();
 	time += elapsed.asSeconds();
 	animator->update(elapsed);
-	if (distanceFromPlayer() < playerCatchRange || time > lifetime) {
+	if (time > lifetime) {
 		alive = false;
+		return;
+	}
+	if (distanceFromPlayer() < playerCatchRange) {
+		alive = false;
+		oxygenBar->refill(oxygenAmount);
 	}
 }
 

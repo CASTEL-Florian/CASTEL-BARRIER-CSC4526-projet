@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Player.h"
 #include <cmath>
 
 
@@ -44,11 +45,15 @@ void Player::update(sf::Time elapsed) {
 	rota = -body->GetAngle();
 	animator->update(elapsed);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+		boostActive = true;
 		particleSystem->setActive(true);
 		particleSystem->setPosition(sf::Vector2f(x - w * std::cos(rota) / 2, y - w * std::sin(rota) / 2));
 		particleSystem->setRotation(rota + b2_pi);
-	}else
+	}
+	else {
+		boostActive = false;
 		particleSystem->setActive(false);
+	}
 	particleSystem->update(elapsed);
 }
 
@@ -188,6 +193,8 @@ bool Player::isAlive() const
  */
 void Player::kill(EndType end)
 {
+	if (!alive)
+		return;
 	alive = false;
 	endType = end;
 }
@@ -204,6 +211,11 @@ void Player::changeLight()
 EndType Player::getEndType() const
 {
 	return endType;
+}
+
+bool Player::isBoosting() const
+{
+	return boostActive;
 }
 
 

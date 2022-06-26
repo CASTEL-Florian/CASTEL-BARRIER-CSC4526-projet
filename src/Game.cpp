@@ -7,7 +7,7 @@ const int window_height = 900;
 const int nb_rooms = 20;
 const float gravity_down = -3.0f;
 const float engine_power = 750.0f;
-const float oxygenTime = 360;
+const float oxygenTime = 30;
 
 
 Game::Game()
@@ -230,7 +230,7 @@ void Game::initGameVariables() {
 	treasureManager->createTreasures(rooms);
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get(), soundHandler.get());
-	bubbleSpawner = std::make_unique<BubbleSpawner>(&textures[11], player.get());
+	bubbleSpawner = std::make_unique<BubbleSpawner>(&textures[11], player.get(), oxygenBar.get());
 	
 	time = 0;
 	fader->fadeIn(1);

@@ -28,12 +28,14 @@ public:
 	void kill(EndType end);
 	void changeLight();
 	EndType getEndType() const;
+	bool isBoosting() const;
 private:
 	float enginePower;
 	int roomX = 0;
 	int roomY = 0;
 	bool alive = true;
 	bool lightOn = true;
+	bool boostActive = false;
 	EndType endType = EndType::Victory;
 	std::unique_ptr<ParticleSystem> particleSystem;
 };

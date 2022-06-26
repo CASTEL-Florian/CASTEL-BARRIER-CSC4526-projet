@@ -12,7 +12,11 @@ OxygenBar::OxygenBar(float x, float y, float timeMax, Player* player) : timeMax(
 void OxygenBar::update(sf::Time elapsed)
 {
 	if (time >= 0)
-		time -= elapsed.asSeconds();
+		if (player->isBoosting()) {
+			time -= elapsed.asSeconds() * boostMultiplier;
+		}
+		else
+			time -= elapsed.asSeconds();
 	else {
 		time = 0;
 		player->kill(EndType::Drowning);
@@ -40,4 +44,12 @@ void OxygenBar::display(sf::RenderWindow& window) const
 	window.draw(rectangle);
 	window.draw(borders);
 
+}
+
+void OxygenBar::refill(float amount)
+{
+	time += amount;
+	if (time > timeMax) {
+		time = timeMax;
+	}
 }
