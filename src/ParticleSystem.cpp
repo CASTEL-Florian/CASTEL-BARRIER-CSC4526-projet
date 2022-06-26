@@ -33,17 +33,14 @@ void ParticleSystem::update(sf::Time elapsed)
 
 void ParticleSystem::display(sf::RenderWindow& window) const
 {
-    sf::CircleShape circle(0.6f);
     sf::Sprite particleSprite;
     particleSprite.setTexture(*texture);
     particleSprite.setTextureRect(sf::IntRect(0, 0, 16, 16));
     particleSprite.setScale(sf::Vector2f(0.1f, 0.1f));
-    circle.setOrigin(sf::Vector2f(0.3f, 0.3f));
     for (auto const& particle : particles) {
         particleSprite.setPosition(sf::Vector2f(particle->get_x(), particle->get_y()));
-        particleSprite.setColor(sf::Color(0, 255, 0, 255 * alphaFromLifetime(particle->getLifetime())));
+        particleSprite.setColor(sf::Color(255, 255, 255, 255 * alphaFromLifetime(particle->getLifetime())));
         window.draw(particleSprite);
-        window.draw(circle);
     }
 }
 
