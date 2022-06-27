@@ -86,20 +86,6 @@ void Player::display_particles(sf::RenderWindow& window) const
  * @param window window in which to render
  */
 void Player::renderLight(sf::RenderWindow& window) const {
-	if (!lightOn) {
-		sf::ConvexShape polygon1;
-		polygon1.setPointCount(4);
-		polygon1.setPoint(0, sf::Vector2f(0, 0));
-		polygon1.setPoint(1, sf::Vector2f(0, 170));
-		polygon1.setPoint(2, sf::Vector2f(170, 170));
-		polygon1.setPoint(3, sf::Vector2f(170, 0));
-		polygon1.setFillColor(sf::Color(0, 0, 15, 230));
-		polygon1.setOrigin(sf::Vector2f(85, 90));
-		polygon1.setRotation(rota * 180.0f / b2_pi - 90.f);
-		polygon1.setPosition(x + w / 2 * std::cos(rota), y + w / 2 * std::sin(rota));
-		window.draw(polygon1);
-		return;
-	}
 	sf::ConvexShape polygon1;
 	polygon1.setPointCount(7);
 	polygon1.setPoint(0, sf::Vector2f(0, 0));
@@ -197,11 +183,6 @@ void Player::kill(EndType end)
 		return;
 	alive = false;
 	endType = end;
-}
-
-void Player::changeLight()
-{
-	lightOn = !lightOn;
 }
 
 /**

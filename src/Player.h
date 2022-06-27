@@ -26,7 +26,6 @@ public:
 	float get_y() const override;
 	bool isAlive() const;
 	void kill(EndType end);
-	void changeLight();
 	EndType getEndType() const;
 	bool isBoosting() const;
 private:
@@ -34,7 +33,6 @@ private:
 	int roomX = 0;
 	int roomY = 0;
 	bool alive = true;
-	bool lightOn = true;
 	bool boostActive = false;
 	EndType endType = EndType::Victory;
 	std::unique_ptr<ParticleSystem> particleSystem;
