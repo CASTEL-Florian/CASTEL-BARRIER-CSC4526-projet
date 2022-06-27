@@ -38,8 +38,12 @@ EndScreen::EndScreen(std::vector<sf::Texture>* textures, Fader* fader, const Tre
 
 	int score = (coinFoundCount * coinScore) + (treasuresFoundCount * treasureScore);
 
-	if (backgroundId == 10)
+	if (backgroundId == 10) {
 		score += (int)(std::exp2f(-time * timeScoreDecreaseSpeed) * (float)timeScore);
+		if (coinFoundCount == coinCount) {
+			score += allCoinsBonus;
+		}
+	}
 	scoreText.setFont(font);
 	scoreText.setString("Score : " + std::to_string(score));
 	scoreText.setCharacterSize(30);

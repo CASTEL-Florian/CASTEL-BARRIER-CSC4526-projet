@@ -41,4 +41,5 @@ private:
 	const int coinScore = 100;
 	const int timeScore = 2000;
 	const float timeScoreDecreaseSpeed = 0.006f;
+	const int allCoinsBonus = 500;
 };
