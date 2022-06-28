@@ -15,7 +15,6 @@ Game::Game()
 	initWindow();
 	loadTextures();
 	loadMainMenu();
-	//loadEndScreen();
 }
 
 
@@ -102,7 +101,6 @@ void Game::update()
 	
 	if (gameState == GameState::Playing)
 		time += elapsed.asSeconds();
-	//std::cout << 1 / elapsed.asSeconds() << " fps" << std::endl;
 }
 
 /**
@@ -200,20 +198,6 @@ void Game::initGameVariables() {
 	world = std::make_unique<b2World>(gravity);
 
 
-	depth.setPrimitiveType(sf::Quads);
-	depth.resize(6);
-	depth[0].position = sf::Vector2f(-1800.f, -500.f);
-	depth[1].position = sf::Vector2f(1800.f, -500.f);
-	depth[2].position = sf::Vector2f(1800.f, 500.f);
-	depth[3].position = sf::Vector2f(-1800.f, 500.f);
-	depth[4].position = sf::Vector2f(-1800.f, 1800.f);
-	depth[5].position = sf::Vector2f(-1800.f, 1800.f);
-	depth[0].color = sf::Color::Transparent;
-	depth[1].color = sf::Color::Transparent;
-	depth[2].color = sf::Color::Black;
-	depth[3].color = sf::Color::Black;
-	depth[4].color = sf::Color::Black;
-	depth[5].color = sf::Color::Black;
 
 	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], &textures[11], 0.2f);
 	oxygenBar = std::make_unique<OxygenBar>(20, 130, oxygenTime, player.get());
@@ -224,7 +208,36 @@ void Game::initGameVariables() {
 	rooms = roomGenerator->generateMap(nb_rooms);
 	rooms = roomGenerator->buildRooms(world.get(), std::move(rooms), &textures);
 	currentRoom = rooms[0].get();
+	float minX = -tileWidth;
+	float maxX = (roomWidth + 1) * tileWidth;
+	float minY = -tileHeight;
+	float maxY = (roomHeight + 1) * tileHeight;
+	for (auto const& room : rooms) {
+		float x = (room->get_x() * roomWidth - 1) * tileWidth;
+		float y = (room->get_y() * roomHeight - 1) * tileHeight;
+		if (x < minX)
+			minX = x;
+		if (y < minY)
+			minY = y;
+		x = ((room->get_x() + 1) * roomWidth + 1) * tileWidth;
+		y = ((room->get_y() + 1) * roomHeight + 1) *  tileHeight;
+		if (x > maxX)
+			maxX = x;
+		if (y > maxY)
+			maxY = y;
+	}
 	
+	depth.setPrimitiveType(sf::Quads);
+	depth.resize(4);
+	depth[0].position = sf::Vector2f(minX, minY);
+	depth[1].position = sf::Vector2f(maxX, minY);
+	depth[2].position = sf::Vector2f(maxX, maxY);
+	depth[3].position = sf::Vector2f(minX, maxY);
+	depth[0].color = sf::Color::Transparent;
+	depth[1].color = sf::Color::Transparent;
+	depth[2].color = sf::Color::Black;
+	depth[3].color = sf::Color::Black;
+
 	monster = std::make_unique<Monster>(player.get(), roomGenerator.get(), &textures[3], 0.2f, soundHandler.get());
 	treasureManager = std::make_unique<TreasureManager>(player.get(), &textures[4], &textures[5], soundHandler.get());
 	treasureManager->createTreasures(rooms);
