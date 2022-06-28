@@ -22,6 +22,12 @@ SoundHandler::SoundHandler()
 	fish_sound = std::make_unique<sf::Music>();
 	fish_sound->openFromFile("resources/fish_sound.wav");
 	fish_sound->setVolume(15);
+	bubble_sound = std::make_unique<sf::Music>();
+	bubble_sound->openFromFile("resources/bubble.wav");
+	bubble_sound->setVolume(50);
+	boost_sound = std::make_unique<sf::Music>();
+	boost_sound->openFromFile("resources/boost_bubble.wav");
+	boost_sound->setVolume(50);
 }
 
 /**
@@ -118,4 +124,24 @@ void SoundHandler::playFishSound() const {
 	fish_sound->stop();
 	fish_sound->setVolume(15 * currentVolume * userVolume);
 	fish_sound->play();
+}
+
+/**
+* Play sound of bubble.
+* 
+*/
+void SoundHandler::playBubbleSound() const {
+	bubble_sound->stop();
+	bubble_sound->setVolume(50 * currentVolume * userVolume);
+	bubble_sound->play();
+}
+
+/**
+* Play sound of boost.
+* 
+*/
+void SoundHandler::playBoostSound() const {
+	boost_sound->stop();
+	boost_sound->setVolume(50 * currentVolume * userVolume);
+	boost_sound->play();
 }

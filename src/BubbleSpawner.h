@@ -9,7 +9,7 @@
  */
 class BubbleSpawner {
 public:
-	BubbleSpawner(sf::Texture* bubbleTexture, Player* player, OxygenBar* oxygenBar);
+	BubbleSpawner(sf::Texture* bubbleTexture, Player* player, OxygenBar* oxygenBar, SoundHandler* soundHandler);
 	void update(sf::Time elapsed);
 	void display(sf::RenderWindow& window) const;
 private:
@@ -23,4 +23,5 @@ private:
 	const float maxSpawnRadius = 150;
 	const float timeBetweenSpawn = 1.f;
 	float time = 0;
+	SoundHandler* soundHandler;
 };

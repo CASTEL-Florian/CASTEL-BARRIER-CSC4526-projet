@@ -8,7 +8,7 @@
  */
 class Bubble : public Object {
 public:
-	Bubble(sf::Texture* texture, Player* player, OxygenBar* oxygenBar);
+	Bubble(sf::Texture* texture, Player* player, OxygenBar* oxygenBar, SoundHandler* soundHandler);
 	void update(sf::Time elapsed) override;
 	void display(sf::RenderWindow& window) const override;
 	float get_x() const override;
@@ -29,4 +29,5 @@ private:
 	float distanceFromPlayer() const;
 	Player* player;
 	OxygenBar* oxygenBar;
+	SoundHandler* soundHandler;
 };

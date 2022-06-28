@@ -1,6 +1,7 @@
 #include "BubbleSpawner.h"
 
-BubbleSpawner::BubbleSpawner(sf::Texture* bubbleTexture, Player* player, OxygenBar* oxygenBar) : bubbleTexture(bubbleTexture), player(player), oxygenBar(oxygenBar)
+BubbleSpawner::BubbleSpawner(sf::Texture* bubbleTexture, Player* player, OxygenBar* oxygenBar, SoundHandler* soundHandler) :
+   bubbleTexture(bubbleTexture), player(player), oxygenBar(oxygenBar), soundHandler(soundHandler)
 {
 }
 
@@ -44,7 +45,7 @@ void BubbleSpawner::spawnBubble(float x, float y)
     }
     else {
         // There are no inactive bubble. Create a new one.
-        auto bubble = std::make_unique<Bubble>(bubbleTexture, player, oxygenBar);
+        auto bubble = std::make_unique<Bubble>(bubbleTexture, player, oxygenBar, soundHandler);
         bubble->init(x, y);
         bubbleVector.push_back(std::move(bubble));
     }

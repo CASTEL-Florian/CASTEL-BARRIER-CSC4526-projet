@@ -4,6 +4,7 @@
 #include "Animator.h"
 #include "Object.h"
 #include "ParticleSystem.h"
+#include "SoundHandler.h"
 
 enum class EndType {Victory, DeathByMonster, Drowning};
 
@@ -12,7 +13,7 @@ enum class EndType {Victory, DeathByMonster, Drowning};
  */
 class Player : public Box, public Object {
 public:
-	Player(b2World* world, const float enginePower, sf::Texture* texture, sf::Texture* particleTexture, float scale);
+	Player(b2World* world, const float enginePower, sf::Texture* texture, sf::Texture* particleTexture, float scale, SoundHandler* soundHandler);
 	void move(const b2Vec2& vec);
 	void boost();
 	void update(sf::Time elapsed) override;
@@ -36,4 +37,5 @@ private:
 	bool boostActive = false;
 	EndType endType = EndType::Victory;
 	std::unique_ptr<ParticleSystem> particleSystem;
+	SoundHandler* soundHandler;
 };

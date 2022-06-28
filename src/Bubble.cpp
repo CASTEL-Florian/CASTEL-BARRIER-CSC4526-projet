@@ -1,6 +1,7 @@
 #include "Bubble.h"
 
-Bubble::Bubble(sf::Texture* texture, Player* player, OxygenBar* oxygenBar) : player(player), oxygenBar(oxygenBar)
+Bubble::Bubble(sf::Texture* texture, Player* player, OxygenBar* oxygenBar, SoundHandler* soundHandler) : 
+	player(player), oxygenBar(oxygenBar), soundHandler(soundHandler)
 {
 	animator = std::make_unique<Animator>(texture, 0.25f, 16, 16, 0.1f, std::vector<int> {8});
 }
@@ -19,6 +20,7 @@ void Bubble::update(sf::Time elapsed)
 	if (distanceFromPlayer() < playerCatchRange) {
 		alive = false;
 		oxygenBar->refill(oxygenAmount);
+		soundHandler->playBubbleSound();
 	}
 }
 

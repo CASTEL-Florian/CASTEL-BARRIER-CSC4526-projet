@@ -15,6 +15,8 @@ public:
 	void playCoinSound() const;
 	void playChestSound() const;
 	void playFishSound() const;
+	void playBubbleSound() const;
+	void playBoostSound() const;
 	void fadeOut();
 	void setUserVolume(float volume);
 private:
@@ -23,6 +25,8 @@ private:
 	std::unique_ptr<sf::Music> coin_sound;
 	std::unique_ptr<sf::Music> chest_sound;
 	std::unique_ptr<sf::Music> fish_sound;
+	std::unique_ptr<sf::Music> bubble_sound;
+	std::unique_ptr<sf::Music> boost_sound;
 	sf::Clock timer;
 	const float transitionTimeToCalm = 3;
 	const float transitionTimeToFrantic = 1;

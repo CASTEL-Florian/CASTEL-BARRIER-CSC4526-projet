@@ -3,8 +3,8 @@
 #include <cmath>
 
 
-Player::Player(b2World* world, const float enginePower, sf::Texture* texture, sf::Texture* particleTexture, float scale) :
-	enginePower(enginePower)
+Player::Player(b2World* world, const float enginePower, sf::Texture* texture, sf::Texture* particleTexture, float scale, SoundHandler* soundHandler) :
+	enginePower(enginePower), soundHandler(soundHandler)
 {
 	animator = std::make_unique<Animator>(texture, scale, 64, 32, 0.1f, std::vector<int> {14});
 	sf::FloatRect bounds = animator->getLocalBounds();
@@ -45,6 +45,7 @@ void Player::update(sf::Time elapsed) {
 	rota = -body->GetAngle();
 	animator->update(elapsed);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
+		if(!boostActive) soundHandler->playBoostSound();
 		boostActive = true;
 		particleSystem->setActive(true);
 		particleSystem->setPosition(sf::Vector2f(x - w * std::cos(rota) / 2, y - w * std::sin(rota) / 2));

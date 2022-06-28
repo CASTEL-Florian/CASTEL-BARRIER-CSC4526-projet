@@ -199,7 +199,7 @@ void Game::initGameVariables() {
 
 
 
-	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], &textures[11], 0.2f);
+	player = std::make_unique<Player>(world.get(), engine_power, &textures[0], &textures[11], 0.2f, soundHandler.get());
 	oxygenBar = std::make_unique<OxygenBar>(20, 130, oxygenTime, player.get());
 		
 	soundHandler->setUserVolume(userVolume);
@@ -243,7 +243,7 @@ void Game::initGameVariables() {
 	treasureManager->createTreasures(rooms);
 
 	fishSpawner = std::make_unique<FishSpawner>(&textures[6], player.get(), soundHandler.get());
-	bubbleSpawner = std::make_unique<BubbleSpawner>(&textures[11], player.get(), oxygenBar.get());
+	bubbleSpawner = std::make_unique<BubbleSpawner>(&textures[11], player.get(), oxygenBar.get(), soundHandler.get());
 	
 	time = 0;
 	fader->fadeIn(1);
