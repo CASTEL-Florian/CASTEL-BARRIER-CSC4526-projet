@@ -31,6 +31,11 @@ void ParticleSystem::update(sf::Time elapsed)
     }
 }
 
+/**
+ * Display the bubbles on the window.
+ *
+ * @param window on which the bubbles are drawn.
+ */
 void ParticleSystem::display(sf::RenderWindow& window) const
 {
     sf::Sprite particleSprite;
