@@ -124,7 +124,6 @@ void Game::render() const
 	window->setView(view);
 	window->draw(depth);
 	currentRoom->display(*window);
-	currentRoom->displayObjects(*window);
 
 	// Only display the current room and adjacent rooms.
 	for (auto& r : currentRoom->getAjacentRooms()) {
@@ -133,6 +132,7 @@ void Game::render() const
 			r->displayObjects(*window);
 		}
 	}
+	currentRoom->displayObjects(*window);
 
 	bubbleSpawner->display(*window);
 	fishSpawner->display(*window);
