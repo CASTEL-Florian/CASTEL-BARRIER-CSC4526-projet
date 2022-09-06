@@ -24,6 +24,7 @@ Sous-marin contrôlé par les touches leftArrow, rightArrow, upArrow et downArro
 Le boost consomme de l'oxygène mais le joueur peut ramasser des bulles d'air pour remplir son réservoir.
 Le joueur peut aussi partir à la recherche de pièces pour augmenter son score.
 
+Vidéo de gameplay du jeu : https://youtu.be/y6IpxH4acL8
 .
 
 Télécharger l'exécutable : [ici](https://github.com/CASTEL-Florian/CASTEL-BARRIER-CSC4526-projet/releases)
