@@ -26,6 +26,10 @@ Le joueur peut aussi partir à la recherche de pièces pour augmenter son score.
 
 .
 
+Télécharger l'exécutable : [ici](https://github.com/CASTEL-Florian/CASTEL-BARRIER-CSC4526-projet/releases)
+
+.
+
 Bibliothèques utilisées : SFML, box2d, Tile.
 
 Assets et musiques par Guillaume Barrier (piskelapp.com, beepbox.co).
